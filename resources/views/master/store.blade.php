@@ -13,7 +13,6 @@
           }
      </style>
      @endsection
-
      <div class="container-fluid">
           <div class="card">
                <div class="card-body">
@@ -93,7 +92,15 @@
      @section('javascript')
      <script src="./jsgrid/gridjs.umd.js"></script>
      <script>
-          const url = `http://ihsan-virtualbox/gais/public/api/tbstore`
+          const url = `http://ihsan-virtualbox/gais/public/api/store`
+
+          const cr8Tables = document.getElementById('creating')
+          cr8Tables.addEventListener('show.bs.modal', function (event) {
+               const button = event.relatedTarget
+               const receiptId = button.getAttribute('data-bs-id')
+               const modalTitle = exampleModal.querySelector('.modal-title')
+          })
+          
           const tablesLoad = loadTables(url)
           function loadTables(url){
                new gridjs.Grid({
@@ -110,7 +117,9 @@
                     formatter: (cell, row) => {
                          return gridjs.h('button', {
                               className: 'btn btn-warning btn-sm',
-                              onClick: () => alert(`Editing "${row.cells[0].data}" "${row.cells[1].data}"`)
+                              "data-bs-toggle" : "modal",
+                              "data-bs-target" : "#creating",
+                              "data-bs-id" : cell
                          }, 'Edit');
                     }
                }],
@@ -120,7 +129,7 @@
                     },
                server: {
                     url: url,
-                    then: data => data.map(card => [card.nama_toko, card.vstore.kode_toko, card.no_toko, card.alamat_toko,card.alamat_toko])
+                    then: data => data.map(card => [card.nama_toko, card.vstore.kode_toko, card.no_toko, card.alamat_toko,card.id])
                }
                }).render(document.getElementById("wrapper"));
           }

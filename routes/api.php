@@ -16,7 +16,7 @@ use App\Http\Controllers\ApiInventoryController;
 |
 */
 
-Route::get('tbstore', [ApiStoreController::class, 'index']);
+Route::get('store', [ApiStoreController::class, 'index']);
 Route::get('inventory', [ApiInventoryController::class, 'index']);
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
