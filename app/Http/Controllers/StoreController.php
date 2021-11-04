@@ -17,7 +17,7 @@ class StoreController extends Controller
         return view('master.store', [
             'treeMenu' => 'master',
             'subMenu' => 'store',
-            'data' => Store::all()
+            'stores' => Store::OrderBy('id', 'desc')->get()
         ]);
     }
 
@@ -74,7 +74,8 @@ class StoreController extends Controller
      */
     public function update(Request $request, Store $store)
     {
-        //
+        Store::find($store->id)->update($request->all());
+        return redirect('store');
     }
 
     /**
@@ -85,6 +86,7 @@ class StoreController extends Controller
      */
     public function destroy(Store $Store)
     {
-        //
+        Store::find($Store->id)->delete();
+        return redirect('store');
     }
 }

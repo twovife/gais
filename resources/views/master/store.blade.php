@@ -2,6 +2,7 @@
 
      @section('css')
      <link rel="stylesheet" href="./jsgrid/theme/mermaid.min.css">
+     <link rel="stylesheet" href="./mazer/vendors/sweetalert2/sweetalert2.min.css">
      <style>
           .extra-btn {
                display: flex;
@@ -30,8 +31,7 @@
                               </div>
                               <div class="extra-btn ms-auto">
                                    <button type="button" class="btn btn-secondary btn-sm" data-bs-toggle="modal"
-                                        data-bs-backdrop="false" data-bs-target="#creating">
-                                        Create
+                                        data-bs-backdrop="false" data-bs-target="#creating">Create
                                    </button>
                                    <button class="btn btn-outline-info btn-sm">Export</button>
                               </div>
@@ -45,13 +45,11 @@
                </div>
           </div>
      </div>
-
-
      <div class="modal fade text-left" id="creating" tabindex="-1" role="dialog" aria-labelledby="myModalLabel4"
           aria-hidden="true">
           <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg" role="document">
                <div class="modal-content">
-                    <form action="{{ route('store.store') }}" method="post">
+                    <form id="formCreate">
                          @csrf
                          <div class="modal-header">
                               <h4 class="modal-title" id="myModalLabel4">Create</h4>
@@ -79,7 +77,7 @@
                                    <span class="d-none d-sm-block">Close</span>
                               </button>
                               <button type="submit" class="btn btn-primary ml-1">
-                                   <i class="bi bi-check d-block d-sm-none"></i>
+                                   <i class=" bi bi-check d-block d-sm-none"></i>
                                    <span class="d-none d-sm-block">Accept</span>
                               </button>
                          </div>
@@ -91,21 +89,63 @@
 
      @section('javascript')
      <script src="./jsgrid/gridjs.umd.js"></script>
+     <script src="./mazer/vendors/sweetalert2/sweetalert2.all.min.js"></script>
      <script>
           const url = `http://ihsan-virtualbox/gais/public/api/store`
 
           const cr8Tables = document.getElementById('creating')
-          cr8Tables.addEventListener('show.bs.modal', function (event) {
+          cr8Tables.addEventListener('show.bs.modal', async function (event) {
                const button = event.relatedTarget
                const receiptId = button.getAttribute('data-bs-id')
-               const modalTitle = exampleModal.querySelector('.modal-title')
+               var urlupdate = '{{ route('store.update',':id') }}'
+               urlupdate = urlupdate.replace(':id',receiptId)
+               if (receiptId) {
+                    const data = await fetchData(url+'?id='+receiptId)
+                    this.querySelector('#nama_toko').value = data.nama_toko
+                    this.querySelector('#no_toko').value = data.no_toko
+                    this.querySelector('#alamat_toko').value = data.alamat_toko
+                    this.querySelector('.modal-body').insertAdjacentHTML('beforeend','<input type="hidden" class="form-control" name="id" id="id" value="'+data.id+'">')
+                    this.querySelector('#formCreate').insertAdjacentHTML('afterbegin','<input type="hidden" name="_method" id="_method" value="put">')
+                    this.querySelector('#formCreate').setAttribute('method','post')
+                    this.querySelector('#formCreate').setAttribute('action',urlupdate)
+               }else{
+                    this.querySelector('#formCreate').setAttribute('method','post')
+               }
+          })
+
+          cr8Tables.addEventListener('hidden.bs.modal', function (event) {
+               const domId = this.querySelector('#id')
+               if (domId) {
+                    this.querySelector('#id').remove()
+                    this.querySelector('#_method').remove()
+               }
+               this.querySelectorAll('.form-control').forEach(elems=>elems.value=null)
           })
           
+          function fetchData(url,id){
+               return fetch(url,{
+                    headers: {
+                         'Accept':'application/json'
+                    },
+                    method: 'GET'
+               })
+               .then(response=>response.json())
+               .then(data=>data[0])
+          }
           const tablesLoad = loadTables(url)
           function loadTables(url){
                new gridjs.Grid({
                columns: [{
-                    name: "Nama Toko"
+                    name: "Nama Toko",
+                    formatter: (cell, row) => {
+                         return gridjs.html(`<a href="#" class="link-primary fw-bold" data-bs-toggle="modal" data-bs-target="#creating", data-bs-id=${row._cells[4].data}>${cell}</a>`)
+                         return gridjs.h('a', {
+                              className: 'pe-auto',
+                              "data-bs-toggle" : "modal",
+                              "data-bs-target" : "#creating",
+                              "data-bs-id" : cell,
+                         }, cell);
+                    }
                }, {
                     name: "Kode Toko"
                },{
@@ -113,14 +153,9 @@
                },{
                     name: "Alamat"
                },{
-                    name: "Action",
+                    name: "Delete",
                     formatter: (cell, row) => {
-                         return gridjs.h('button', {
-                              className: 'btn btn-warning btn-sm',
-                              "data-bs-toggle" : "modal",
-                              "data-bs-target" : "#creating",
-                              "data-bs-id" : cell
-                         }, 'Edit');
+                         return gridjs.html(formDelete(cell))
                     }
                }],
                search: true,
@@ -133,9 +168,32 @@
                }
                }).render(document.getElementById("wrapper"));
           }
+          
+          function formDelete(id){
+               var urlupdate = '{{ route('store.destroy',':id') }}'
+               urlupdate = urlupdate.replace(':id',id)
+               return `<form action="${urlupdate}" method="post">@csrf @method("delete")<button onClick="validate(this)" type="button" class="btn btn-danger"><i class="bi bi-trash"></i></button></form>`
+          }
 
-          function huttons(){
-               return `<button>asdasd</button>`
+          function validate(e) {
+               
+               const domForm = e.parentNode
+               Swal.fire({
+               title: 'Are you sure?',
+               text: "You won't be able to revert this!",
+               icon: 'warning',
+               showCancelButton: true,
+               confirmButtonColor: '#3085d6',
+               cancelButtonColor: '#d33',
+               confirmButtonText: 'Yes, delete it!'
+          }).then((result) => {
+               if (result.isConfirmed) {
+                    Swal.fire(
+                         'Deleted!',
+                         'Your file has been deleted.',
+                         'success').then((result)=>domForm.submit())
+               }
+          })
           }
      </script>
      @endsection
