@@ -30,8 +30,6 @@ class ApiStoreController extends Controller
         foreach ($data as $key) {
             $key->vstore;
         }
-
-
         return response()->json($data);
     }
 

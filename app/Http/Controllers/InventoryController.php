@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Inventory;
+use App\Models\Component_category;
+use App\Models\Component_unit;
 use Illuminate\Http\Request;
 
 class InventoryController extends Controller
@@ -17,7 +19,8 @@ class InventoryController extends Controller
         return view('master.inventory', [
             'treeMenu' => 'master',
             'subMenu' => 'inventory',
-            'datas' => Inventory::all()
+            'kategories' => Component_category::all(),
+            'units' => Component_unit::all()
         ]);
     }
 
@@ -39,7 +42,8 @@ class InventoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        Inventory::create($request->all());
+        return back();
     }
 
     /**
@@ -73,7 +77,8 @@ class InventoryController extends Controller
      */
     public function update(Request $request, Inventory $inventory)
     {
-        //
+        Inventory::find($inventory->id)->update($request->all());
+        return redirect('inventory');
     }
 
     /**
@@ -84,6 +89,7 @@ class InventoryController extends Controller
      */
     public function destroy(Inventory $inventory)
     {
-        //
+        Inventory::find($inventory->id)->delete();
+        return back();
     }
 }

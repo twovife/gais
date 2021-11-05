@@ -14,12 +14,25 @@ class ApiInventoryController extends Controller
      */
     public function index()
     {
-        $datas = Inventory::all();
-        foreach ($datas as $key) {
+        $actual_link = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+        $url_components = parse_url($actual_link);
+        if (isset($url_components['query'])) {
+            parse_str($url_components['query'] ? $url_components['query'] : null, $query);
+            $straws = Inventory::query();
+            foreach ($query as $key => $vals) {
+                $straws->where($key, $vals);
+            }
+            $data = $straws->get();
+        } else {
+            $data = Inventory::all();
+        }
+        foreach ($data as $key) {
             $key->component_category;
             $key->component_unit;
+            $key->vinventory;
         }
-        return response()->json($datas);
+
+        return response()->json($data);
     }
 
     // /**

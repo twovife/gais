@@ -97,6 +97,7 @@
           cr8Tables.addEventListener('show.bs.modal', async function (event) {
                const button = event.relatedTarget
                const receiptId = button.getAttribute('data-bs-id')
+               var urlCreate = '{{ route('store.store') }}'
                var urlupdate = '{{ route('store.update',':id') }}'
                urlupdate = urlupdate.replace(':id',receiptId)
                if (receiptId) {
@@ -110,6 +111,7 @@
                     this.querySelector('#formCreate').setAttribute('action',urlupdate)
                }else{
                     this.querySelector('#formCreate').setAttribute('method','post')
+                    this.querySelector('#formCreate').setAttribute('action',urlCreate)
                }
           })
 
@@ -132,6 +134,7 @@
                .then(response=>response.json())
                .then(data=>data[0])
           }
+
           const tablesLoad = loadTables(url)
           function loadTables(url){
                new gridjs.Grid({
@@ -169,6 +172,7 @@
                }).render(document.getElementById("wrapper"));
           }
           
+
           function formDelete(id){
                var urlupdate = '{{ route('store.destroy',':id') }}'
                urlupdate = urlupdate.replace(':id',id)
