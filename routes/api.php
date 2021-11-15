@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ApiGeneralAffairController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ApiStoreController;
@@ -17,7 +18,9 @@ use App\Http\Controllers\ApiInventoryController;
 */
 
 Route::get('store', [ApiStoreController::class, 'index']);
-Route::get('inventory', [ApiInventoryController::class, 'index']);
+Route::get('inventory', [ApiGeneralAffairController::class, 'Inventory']);
+Route::get('gaisstock', [ApiGeneralAffairController::class, 'BarangMasuk']);
+Route::get('isitembtbduplicate', [ApiGeneralAffairController::class, 'isExistItem']);
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });

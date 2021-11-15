@@ -4,7 +4,7 @@
 <head>
      <meta charset="UTF-8">
      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-     <title>Dashboard - Mazer Admin Dashboard</title>
+     <title>{{ $treeMenu }} || General Affair</title>
 
      <link rel="preconnect" href="https://fonts.gstatic.com">
      <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&display=swap"
@@ -38,7 +38,6 @@
                     <div class="sidebar-menu">
                          <ul class="menu">
                               <li class="sidebar-title">Menu</li>
-                              {{ $subMenu; }}
                               <li class="sidebar-item {{ $treeMenu=='home'?'active':''; }} ">
                                    <a href="{{ url('/') }}" class='sidebar-link'>
                                         <i class="bi bi-grid-fill"></i>
@@ -60,14 +59,19 @@
                                         </li>
                                    </ul>
                               </li>
-
-                              <li class="sidebar-title">Pages</li>
-
-                              <li class="sidebar-item  ">
-                                   <a href="application-email.html" class='sidebar-link'>
-                                        <i class="bi bi-envelope-fill"></i>
-                                        <span>Email Application</span>
+                              <li class="sidebar-item {{ $treeMenu=='stock'?'active':''; }} has-sub">
+                                   <a href="#" class='sidebar-link'>
+                                        <i class="bi bi-stack"></i>
+                                        <span>Stock</span>
                                    </a>
+                                   <ul class="submenu" style="display: {{ $treeMenu=='stock'?'block':'none'; }}">
+                                        <li class="submenu-item {{ $subMenu=='income'?'active':''; }}">
+                                             <a href="{{ route('income.index') }}">Barang Masuk</a>
+                                        </li>
+                                        <li class="submenu-item {{ $subMenu=='inventory'?'active':''; }}">
+                                             <a href="{{ route('inventory.index') }}">Bararng Keluar</a>
+                                        </li>
+                                   </ul>
                               </li>
 
                               <li class="sidebar-item  ">

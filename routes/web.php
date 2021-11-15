@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\IncomeController;
 use App\Http\Controllers\StoreController;
 use App\Http\Controllers\InventoryController;
 
@@ -19,6 +20,7 @@ use App\Http\Controllers\InventoryController;
 Route::get('/', [HomeController::class, 'index']);
 Route::resource('store', StoreController::class);
 Route::resource('inventory', InventoryController::class);
+Route::resource('income', IncomeController::class);
 // Route::get('/store', [StoreController::class, 'index']);
 // Route::get('/', function () {
 //     return view('welcome');
