@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Income;
 use App\Models\Inventory;
+use App\Models\Outcome;
 use Illuminate\Http\Request;
 
 class ApiGeneralAffairController extends Controller
@@ -34,9 +35,35 @@ class ApiGeneralAffairController extends Controller
         }
 
         foreach ($data as $key) {
+            $key->inventory->vinventory;
             $key->inventory->component_category;
             $key->inventory->component_unit;
+            $key->store;
+        }
+
+        return response()->json($data);
+    }
+
+    public function BarangKeluar()
+    {
+        $actual_link = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+        $url_components = parse_url($actual_link);
+        if (isset($url_components['query'])) {
+            parse_str($url_components['query'] ? $url_components['query'] : null, $query);
+            $straws = Outcome::query();
+            foreach ($query as $key => $vals) {
+                $straws->where($key, $vals);
+            }
+            $data = $straws->get();
+        } else {
+            $data = Outcome::all();
+        }
+
+        foreach ($data as $key) {
             $key->inventory->vinventory;
+            $key->inventory->component_category;
+            $key->inventory->component_unit;
+            $key->store;
         }
 
         return response()->json($data);
@@ -50,7 +77,7 @@ class ApiGeneralAffairController extends Controller
             parse_str($url_components['query'] ? $url_components['query'] : null, $query);
             $straws = Inventory::query();
             foreach ($query as $key => $vals) {
-                $straws->where($key, $vals);
+                $straws->where($key, 'LIKE', "%{$vals}%");
             }
             $data = $straws->get();
         } else {
@@ -78,6 +105,27 @@ class ApiGeneralAffairController extends Controller
             $data = $straws->count();
         } else {
             $data = Income::count();
+        }
+
+        return response()->json($data);
+    }
+
+    public function lastStock()
+    {
+        $actual_link = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+        $url_components = parse_url($actual_link);
+        if (isset($url_components['query'])) {
+            parse_str($url_components['query'] ? $url_components['query'] : null, $query);
+            $straws = Inventory::query();
+            foreach ($query as $key => $vals) {
+                $straws->where($key, $vals);
+            }
+            $data = $straws->get();
+        } else {
+            $data = Inventory::all();
+        }
+        foreach ($data as $key) {
+            $key->vinventory;
         }
 
         return response()->json($data);

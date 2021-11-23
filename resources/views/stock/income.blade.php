@@ -1,7 +1,7 @@
-<x-main :treeMenu="$treeMenu" :subMenu="$subMenu">
+<x-nosidebar :treeMenu="$treeMenu" :subMenu="$subMenu">
      @section('css')
      <link rel="stylesheet" href="{{ asset('jsgrid/theme/mermaid.min.css') }}">
-     <link rel="stylesheet" href="./tom-select/dist/css/tom-select.default.css">
+     <link rel="stylesheet" href="{{ asset('tom-select/dist/css/tom-select.default.css') }}">
      <style>
           .table-responsive {
                height: 50vh;
@@ -286,9 +286,9 @@
      </div>
 
      @section('javascript')
-     <script src="./jsgrid/gridjs.umd.js"></script>
-     <script src="./mazer/vendors/sweetalert2/sweetalert2.all.min.js"></script>
-     <script src="./tom-select/dist/js/tom-select.complete.js"></script>
+     <script src="{{ asset('jsgrid/gridjs.umd.js') }}"></script>
+     <script src="{{ asset('mazer/vendors/sweetalert2/sweetalert2.all.min.js') }}"></script>
+     <script src="{{ asset('tom-select/dist/js/tom-select.complete.js') }}"></script>
      <script>
           const url = '{{ url('api/gaisstock') }}'
           const urlInventory = '{{ url('api/inventory') }}'
@@ -404,24 +404,66 @@
                new gridjs.Grid({
                     columns: [{
                          name: "BTB",
-                    }, {
+                    },{
                          name: "Tanggal"
-                    }, {
+                    },{
+                         name: "Nama Toko"
+                    },{
+                         name: "Kode Barang"
+                    },{
                          name: "Nama Barang"
-                    }, {
+                    },{
+                         name: "Jenis Barang"
+                    },{
+                         name: "Satuan"
+                    },{
                          name: "BKK"
-                    }, {
-                         name: "QTY"
+                    },{
+                         name: "Tgl BKK"
+                    },{
+                         name: "Qty"
+                    },{
+                         name: "Harga"
+                    },{
+                         name: "Keterangan"
+                    },{
+                         name: "User"
                     }],
                     search: true,
+                    className: {
+                         table: "table table-sm"
+                    },
                     pagination: {
                     limit: 10
                },
                     server: {
                     url: url,
-                    then: data => data.map(card => [card.btb, card.created_at, card.inventory.nama_barang, card.bkk, card.qty_in])
+                    then: data => data.map(card => [card.btb, convertDate(card.created_at), card.store.nama_toko, card.inventory.vinventory.barcode, card.inventory.nama_barang, card.inventory.component_category.kategori, card.inventory.component_unit.satuan, card.bkk, convertDate(card.tanggal_bkk), card.qty_in, card.harga, card.keterangan, card.user_input])
                }
                }).render(document.getElementById("wrapper"));
+          }
+          function convertDate(params) {
+               const month = new Array();
+               month[0] = "01";
+               month[1] = "02";
+               month[2] = "03";
+               month[3] = "04";
+               month[4] = "05";
+               month[5] = "06";
+               month[6] = "07";
+               month[7] = "08";
+               month[8] = "09";
+               month[9] = "10";
+               month[10] = "11";
+               month[11] = "12";
+
+               let d = new Date(params)
+               let hari = d.getDate()
+               let bulan = month[d.getMonth()]
+               let tahun = d.getFullYear()
+               let margeTanggal = `${hari}/${bulan}/${tahun}`
+
+               return margeTanggal
           }
           
           function tomSelect(id){
@@ -460,4 +502,4 @@
           }
      </script>
      @endsection
-</x-main>
+</x-nosidebar>

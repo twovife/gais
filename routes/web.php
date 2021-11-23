@@ -5,6 +5,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\IncomeController;
 use App\Http\Controllers\StoreController;
 use App\Http\Controllers\InventoryController;
+use App\Http\Controllers\OutcomeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,9 +19,12 @@ use App\Http\Controllers\InventoryController;
 */
 
 Route::get('/', [HomeController::class, 'index']);
+Route::get('outcome/print', [OutcomeController::class, 'print']);
 Route::resource('store', StoreController::class);
 Route::resource('inventory', InventoryController::class);
 Route::resource('income', IncomeController::class);
+Route::resource('outcome', OutcomeController::class);
+
 // Route::get('/store', [StoreController::class, 'index']);
 // Route::get('/', function () {
 //     return view('welcome');

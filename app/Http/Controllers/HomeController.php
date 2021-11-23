@@ -10,8 +10,7 @@ class HomeController extends Controller
      {
           return view('home.home', [
                'treeMenu' => 'home',
-               'subMenu' => 'home',
-               'judul' => 'Home'
+               'subMenu' => 'home'
           ]);
      }
 }

@@ -9,14 +9,14 @@
      <link rel="preconnect" href="https://fonts.gstatic.com">
      <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&display=swap"
           rel="stylesheet">
-     <link rel="stylesheet" href="./mazer/css/bootstrap.css">
+     <link rel="stylesheet" href="{{ asset('mazer/css/bootstrap.css')}}">
 
-     <link rel="stylesheet" href="./mazer/vendors/iconly/bold.css">
+     <link rel="stylesheet" href="{{ asset('mazer/vendors/iconly/bold.css')}}">
 
-     <link rel="stylesheet" href="./mazer/vendors/perfect-scrollbar/perfect-scrollbar.css">
-     <link rel="stylesheet" href="./mazer/vendors/bootstrap-icons/bootstrap-icons.css">
-     <link rel="stylesheet" href="./mazer/css/app.css">
-     <link rel="shortcut icon" href="./mazer/images/favicon.svg" type="image/x-icon">
+     <link rel="stylesheet" href="{{ asset('mazer/vendors/perfect-scrollbar/perfect-scrollbar.css')}}">
+     <link rel="stylesheet" href="{{ asset('mazer/vendors/bootstrap-icons/bootstrap-icons.css')}}">
+     <link rel="stylesheet" href="{{ asset('mazer/css/app.css')}}">
+     <link rel="shortcut icon" href="{{ asset('favicon.ico') }}">
      @yield('css')
 </head>
 
@@ -69,7 +69,7 @@
                                              <a href="{{ route('income.index') }}">Barang Masuk</a>
                                         </li>
                                         <li class="submenu-item {{ $subMenu=='inventory'?'active':''; }}">
-                                             <a href="{{ route('inventory.index') }}">Bararng Keluar</a>
+                                             <a href="{{ route('outcome.index') }}">Bararng Keluar</a>
                                         </li>
                                    </ul>
                               </li>
@@ -116,7 +116,7 @@
                                    </div>
                                    <div class="user-img d-flex align-items-center">
                                         <div class="avatar avatar-md">
-                                             <img src="./mazer/images/faces/1.jpg">
+                                             <img src="../mazer/images/faces/1.jpg">
                                         </div>
                                    </div>
                               </div>
@@ -138,9 +138,9 @@
                </section>
           </div>
      </div>
-     <script src="./mazer/vendors/perfect-scrollbar/perfect-scrollbar.min.js"></script>
-     <script src="./mazer/js/bootstrap.bundle.min.js"></script>
-     <script src="./mazer/js/mazer.js"></script>
+     <script src="{{ asset('mazer/vendors/perfect-scrollbar/perfect-scrollbar.min.js') }}"></script>
+     <script src="{{ asset('mazer/js/bootstrap.bundle.min.js') }}"></script>
+     <script src="{{ asset('mazer/js/mazer.js') }}"></script>
      @yield('javascript')
 </body>
 

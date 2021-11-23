@@ -2,11 +2,11 @@
 
 namespace App\Policies;
 
-use App\Models\Store;
+use App\Models\Outcome;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class StorePolicy
+class OutcomePolicy
 {
     use HandlesAuthorization;
 
@@ -25,10 +25,10 @@ class StorePolicy
      * Determine whether the user can view the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Store  $store
+     * @param  \App\Models\Outcome  $outcome
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user, Store $store)
+    public function view(User $user, Outcome $outcome)
     {
         //
     }
@@ -48,10 +48,10 @@ class StorePolicy
      * Determine whether the user can update the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Store  $store
+     * @param  \App\Models\Outcome  $outcome
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(User $user, Store $store)
+    public function update(User $user, Outcome $outcome)
     {
         //
     }
@@ -60,10 +60,10 @@ class StorePolicy
      * Determine whether the user can delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Store  $store
+     * @param  \App\Models\Outcome  $outcome
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user, Store $store)
+    public function delete(User $user, Outcome $outcome)
     {
         //
     }
@@ -72,10 +72,10 @@ class StorePolicy
      * Determine whether the user can restore the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Store  $store
+     * @param  \App\Models\Outcome  $outcome
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function restore(User $user, Store $store)
+    public function restore(User $user, Outcome $outcome)
     {
         //
     }
@@ -84,10 +84,10 @@ class StorePolicy
      * Determine whether the user can permanently delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Store  $store
+     * @param  \App\Models\Outcome  $outcome
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function forceDelete(User $user, Store $store)
+    public function forceDelete(User $user, Outcome $outcome)
     {
         //
     }

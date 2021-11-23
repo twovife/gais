@@ -20,7 +20,9 @@ use App\Http\Controllers\ApiInventoryController;
 Route::get('store', [ApiStoreController::class, 'index']);
 Route::get('inventory', [ApiGeneralAffairController::class, 'Inventory']);
 Route::get('gaisstock', [ApiGeneralAffairController::class, 'BarangMasuk']);
+Route::get('barangkeluar', [ApiGeneralAffairController::class, 'BarangKeluar']);
 Route::get('isitembtbduplicate', [ApiGeneralAffairController::class, 'isExistItem']);
+Route::get('laststock', [ApiGeneralAffairController::class, 'lastStock']);
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
