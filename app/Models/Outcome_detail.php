@@ -5,16 +5,19 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Outcome extends Model
+class Outcome_detail extends Model
 {
     use HasFactory;
 
     protected $guarded = ['id', 'created_at', 'updated_at'];
 
-    public function outcome_detail()
+    public function inventory()
     {
-        return $this->hasMany(Outcome_detail::class);
+        return $this->belongsTo(Inventory::class)->withTrashed();
     }
 
-    // relasi tabel untuk pembuatan API BKB 
+    public function outcome()
+    {
+        return $this->belongsTo(Outcome::class);
+    }
 }

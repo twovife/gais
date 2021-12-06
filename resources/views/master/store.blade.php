@@ -199,6 +199,25 @@
                }
           })
           }
+
+
+          @if (Session::has('success'))
+               Swal.fire({
+                    position: 'top-end',
+                    icon: 'success',
+                    title: 'Your work has been saved',
+                    showConfirmButton: false,
+                    timer: 1500
+               })
+          @elseif (Session::has('error'))
+               Swal.fire({
+                    position: 'top-end',
+                    icon: 'error',
+                    title: 'Your work has been saved',
+                    showConfirmButton: false,
+                    timer: 1500
+               })
+          @endif
      </script>
      @endsection
 </x-main>

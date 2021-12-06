@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Income;
+use App\Models\Income_detail;
 use App\Models\Inventory;
 use App\Models\Vinventory;
 use Illuminate\Http\Request;
@@ -30,7 +31,11 @@ class IncomeController extends Controller
      */
     public function create()
     {
-        //
+        return view('stock.incomecreate', [
+            'treeMenu' => 'stock',
+            'subMenu' => 'outcome',
+            'inventories' => Inventory::all()
+        ]);
     }
 
     /**
@@ -41,47 +46,42 @@ class IncomeController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request->all());
-        if ($request->inputversion == '2') {
-            $inventory_id = $request->inventory_id;
-            for ($i = 0; $i < count($inventory_id); $i++) {
-                $lastSaldo = Vinventory::find($request->inventory_id[$i])->saldo_temp;
-                $request->validate([
-                    'btb' => ['required'],
-                    'inventory_id.*' => ['required', 'numeric'],
-                    'qty_in.*' => ['required', 'numeric'],
-                    'harga.*' => ['required', 'numeric'],
-                ]);
+
+        $request->validate([
+            'btb' => ['required', 'unique:incomes'],
+            'inventory_id.*' => ['required', 'numeric'],
+            'qty_in.*' => ['required', 'numeric']
+        ]);
+
+        $dataIncome = [
+            'store_id' => $request->store_id,
+            'btb' => $request->btb,
+            'tanggal_btb' => $request->tanggal_btb,
+            'user_input' => 'wong ganteng'
+        ];
+        $response_out = Income::create($dataIncome);
+        if ($response_out) {
+            $detail = $request->inventory_id;
+            for ($i = 0; $i < count($detail); $i++) {
+                $lastSaldo = Inventory::find($request->inventory_id[$i]);
                 $data = [
-                    'btb' => $request->btb,
-                    'tanggal_btb' => $request->tanggal_btb,
-                    'store_id' => $request->store_id,
                     'inventory_id' => $request->inventory_id[$i],
-                    'qty_in' => $request->qty_in[$i],
-                    'harga' => $request->harga[$i],
-                    'saldo' => $lastSaldo + $request->qty_in[$i],
+                    'income_id' => $response_out->id,
                     'bkk' => $request->bkk[$i],
                     'tanggal_bkk' => $request->tanggal_bkk[$i],
-                    'user_input' => 'abang ganteng',
+                    'qty_in' => $request->qty_in[$i],
+                    'harga' => $request->harga[$i],
+                    'saldo' => $lastSaldo->stock + $request->qty_in[$i],
+                    'keterangan' => $request->keterangan[$i]
                 ];
-                Income::create($data);
-            };
+                Income_detail::create($data);
+                $lastSaldo->stock = $lastSaldo->stock + $request->qty_in[$i];
+                $lastSaldo->save();
+            }
         }
 
-        return back();
-
-        // $lastSaldo = Vinventory::find($request->inventory_id)->saldo_temp;
-        // $data = [
-        //     'inventory_id' => $request->inventory_id,
-        //     'qty_in' => $request->qty_in,
-        //     'saldo' => $lastSaldo + $request->qty_in,
-        //     'btb' => $request->btb,
-        //     'bkk' => $request->bkk,
-        //     'keterangan' => $request->keterangan,
-        //     'user_input' => 'admin'
-        // ];
-        // $dataSaldo = Income::create($data);
-        // return back();
+        session()->flash('success', $response_out->id);
+        return redirect('/income');
     }
 
     /**

@@ -7,11 +7,11 @@
                height: 50vh;
           }
 
-          tr th:not(:first-child) {
+          tr th {
                text-align: center;
           }
 
-          tr td:not(:first-child) {
+          tr td {
                text-align: center;
           }
 
@@ -27,6 +27,10 @@
      <div class="alert alert-success" role="alert">
           Berhasil Menambahkan Data
      </div>
+     <script>
+          var newTab = window.open('outcome/print/{{ session()->get('success') }}');
+          newTab.location
+     </script>
      @elseif (session()->has('eror'))
      <div class="alert alert-danger" role="alert">
           {{ session()->get('eror') }}
@@ -37,12 +41,12 @@
           <div class="card mb-3">
                <div class="card-body">
                     <div class="card-title">
-                         <h5 class="mb-3">Master Barang</h5>
+                         <h5 class="mb-3">Return Barang Dari BKB</h5>
                          <div class="d-flex align-items-center">
                               <div class="row w-50">
                               </div>
                               <div class="extra-btn ms-auto">
-                                   <a href="{{ route('income.create') }}" role="button"
+                                   <a href="{{ route('bkbreturn.create') }}" role="button"
                                         class="btn btn-secondary btn-sm">Create
                                    </a>
                                    <button class="btn btn-outline-info btn-sm">Export</button>
@@ -60,20 +64,21 @@
 
      @section('javascript')
      <script src="{{ asset('jsgrid/gridjs.umd.js') }}"></script>
-     <script src="{{ asset('mazer/vendors/sweetalert2/sweetalert2.all.min.js') }}"></script>
-     <script src="{{ asset('tom-select/dist/js/tom-select.complete.js') }}"></script>
+     <script src="{{ asset('mazer/vendors/sweetalert2/sweetalert2.all.min.js') }}">
+     </script>
      <script>
-          const url = '{{ url('api/gaisstock') }}'
+          const url = '{{ url('api/barangkeluar') }}'
+          const urlInventory = '{{ url('api/inventory') }}'
+          const urlIsDuplicate = '{{ url('api/isitembtbduplicate') }}'
+
           const data = loadInventorTables(url)
           
           function loadInventorTables(url) {
                new gridjs.Grid({
                     columns: [{
-                         name: "Tanggal",
-                    },{
-                         name: "BTB"
-                    },{
-                         name: "Nama Toko"
+                         name: "Tanggal"
+                    }, {
+                         name: "BKB"
                     },{
                          name: "Kode Barang"
                     },{
@@ -83,15 +88,13 @@
                     },{
                          name: "Satuan"
                     },{
-                         name: "BKK"
-                    },{
-                         name: "Tgl BKK"
-                    },{
                          name: "Qty"
                     },{
-                         name: "Harga"
+                         name: "Unit"
                     },{
-                         name: "Keterangan"
+                         name: "Divisi"
+                    },{
+                         name: "Request"
                     },{
                          name: "User"
                     }],
@@ -104,10 +107,22 @@
                },
                     server: {
                     url: url,
-                    then: data => data.map(card => [convertDate(card.income.created_at),card.income.btb,card.income.store?card.income.store.nama_toko:'',card.inventory.vinventory.barcode,card.inventory.nama_barang,card.inventory.component_category.kategori,card.inventory.component_unit.satuan,card.bkk,card.tanggal_bkk,card.qty_in,card.harga,card.keterangan,card.income.user_input])
+                    then: data => data.map(card => [
+                         convertDate(card.outcome.created_at),
+                         card.outcome.bkb,
+                         card.inventory.vinventory.barcode,
+                         card.inventory.nama_barang,
+                         card.inventory.component_category.kategori,
+                         card.inventory.component_unit.satuan,
+                         card.qty_out,
+                         card.outcome.unit,
+                         card.outcome.divisi,
+                         card.outcome.nama_request,
+                         card.outcome.user_input])
                }
                }).render(document.getElementById("wrapper"));
           }
+
           function convertDate(params) {
                const month = new Array();
                month[0] = "01";

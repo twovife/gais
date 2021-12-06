@@ -86,7 +86,7 @@ class StoreController extends Controller
      */
     public function destroy(Store $Store)
     {
-        Store::find($Store->id)->delete();
+        $Store->delete();
         return redirect('store');
     }
 }

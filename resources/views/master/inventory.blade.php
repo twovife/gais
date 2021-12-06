@@ -46,7 +46,7 @@
 
      <div class="modal fade text-left" id="creating" tabindex="-1" role="dialog" aria-labelledby="myModalLabel4"
           aria-hidden="true">
-          <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg" role="document">
+          <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-md" role="document">
                <div class="modal-content">
                     <form id="formCreate">
                          @csrf
@@ -78,6 +78,10 @@
                               <div class="mb-3">
                                    <label for="nama_barang" class="form-label">Nama Barang</label>
                                    <input type="text" class="form-control" name="nama_barang" id="nama_barang" required>
+                              </div>
+                              <div class="mb-3">
+                                   <label for="min_stock" class="form-label">Min Stock</label>
+                                   <input type="number" class="form-control" name="min_stock" id="min_stock" required>
                               </div>
                          </div>
                          <div class="modal-footer">
@@ -134,17 +138,19 @@
           })
 
           const tablesLoad = loadInventorTables(url)
+
           function loadInventorTables(url) {
                new gridjs.Grid({
                     columns: [{
                          name: "Kode Barang",
                          formatter: (cell, row) => {
-                              return gridjs.html(`<a href="#" class="link-primary fw-bold" data-bs-toggle="modal" data-bs-target="#creating", data-bs-id=${row._cells[4].data}>${cell}</a>`)
+                              return gridjs.html(`<a href="#" class="link-primary fw-bold" data-bs-toggle="modal" data-bs-target="#creating", data-bs-id=${row._cells[5].data}>${cell}</a>`)
                               return gridjs.h('a', {
                                    className: 'pe-auto',
                                    "data-bs-toggle": "modal",
                                    "data-bs-target": "#creating",
                                    "data-bs-id": cell,
+                                   "disabled":"disabled"
                               }, cell);
                          }
                     }, {
@@ -154,20 +160,27 @@
                     }, {
                          name: "Satuan"
                     }, {
-                         name: "Delete",
+                         name: "Keterangan",
                          formatter: (cell, row) => {
-                              const routes = '{{ route('inventory.destroy','theid') }}'
-                              return gridjs.html(formDeleteMaster(cell, routes))
-                    }
+                              return !cell ? 'Aktif' : 'Non Aktif';
+                         }
+                    }, {
+                         name: "Action",
+                         formatter: (cell, row) => {
+                              if (row._cells[4].data === null) {
+                                   const routes = '{{ route('inventory.destroy','theid') }}'
+                                   return gridjs.html(formDeleteMaster(cell, routes))
+                              }
+                         }
                     }],
                     search: true,
                     pagination: {
-                    limit: 10
-               },
+                         limit: 10
+                    },
                     server: {
-                    url: url,
-                    then: data => data.map(card => [card.vinventory.barcode, card.component_category.kategori, card.nama_barang, card.component_unit.satuan, card.id])
-               }
+                         url: url,
+                         then: data => data.map(card => [card.vinventory.barcode, card.component_category.kategori, card.nama_barang, card.component_unit.satuan, card.deleted_at, card.id])
+                    }
                }).render(document.getElementById("wrapper"));
           }
           
@@ -185,7 +198,7 @@
           function formDeleteMaster(id, routes) {
                var urlupdate = routes
                urlupdate = urlupdate.replace('theid', id)
-               return `<form action="${urlupdate}" method="post">@csrf @method("delete")<button onClick="validateDeleteMaster(this)" type="button" class="btn btn-danger"><i class="bi bi-trash"></i></button></form>`
+               return `<form action="${urlupdate}" method="post">@csrf @method("delete")<button onClick="validateDeleteMaster(this)" type="button" class="btn btn-danger">Delete</button></form>`
           }
 
           function validateDeleteMaster(e) {
@@ -208,6 +221,24 @@
                     }
                })
           }
+
+          @if (Session::has('success'))
+               Swal.fire({
+                    position: 'top-end',
+                    icon: 'success',
+                    title: 'Your work has been saved',
+                    showConfirmButton: false,
+                    timer: 1500
+               })
+          @elseif (Session::has('error'))
+               Swal.fire({
+                    position: 'top-end',
+                    icon: 'error',
+                    title: 'Your work has been saved',
+                    showConfirmButton: false,
+                    timer: 1500
+               })
+          @endif
      </script>
      @endsection
 </x-main>

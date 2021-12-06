@@ -1,11 +1,13 @@
 <?php
 
+use App\Http\Controllers\BkbreturnController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\IncomeController;
 use App\Http\Controllers\StoreController;
 use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\OutcomeController;
+use App\Http\Controllers\VmutationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,11 +21,17 @@ use App\Http\Controllers\OutcomeController;
 */
 
 Route::get('/', [HomeController::class, 'index']);
-Route::get('outcome/print', [OutcomeController::class, 'print']);
+Route::get('outcome/print/{outcome}', [OutcomeController::class, 'print']);
 Route::resource('store', StoreController::class);
 Route::resource('inventory', InventoryController::class);
 Route::resource('income', IncomeController::class);
 Route::resource('outcome', OutcomeController::class);
+Route::resource('bkbreturn', BkbreturnController::class);
+// Route::resource('mutasi', VmutationController::class);
+
+Route::get('mutasi', [VmutationController::class, 'index'])->name('mutasi.index');
+Route::get('mutasi/create', [VmutationController::class, 'create'])->name('mutasi.create');
+Route::get('mutasi/{id}', [VmutationController::class, 'show'])->name('mutasi.show');
 
 // Route::get('/store', [StoreController::class, 'index']);
 // Route::get('/', function () {

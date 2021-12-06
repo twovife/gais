@@ -47,6 +47,7 @@
                                              <span>Home</span>
                                         </a>
                                    </li>
+
                                    <li class="menu-item active has-sub">
                                         <a href="#" class='menu-link'>
                                              <i class="bi bi-grid-1x2-fill"></i>
@@ -68,6 +69,7 @@
                                              </div>
                                         </div>
                                    </li>
+
                                    <li class="menu-item active has-sub">
                                         <a href="#" class='menu-link'>
                                              <i class="bi bi-grid-1x2-fill"></i>
@@ -88,6 +90,28 @@
                                              </div>
                                         </div>
                                    </li>
+
+                                   <li class="menu-item active has-sub">
+                                        <a href="#" class='menu-link'>
+                                             <i class="bi bi-grid-1x2-fill"></i>
+                                             <span>Mutasi</span>
+                                        </a>
+                                        <div class="submenu ">
+                                             <div class="submenu-group-wrapper">
+                                                  <ul class="submenu-group">
+                                                       <li class="submenu-item  ">
+                                                            <a href="{{ route('mutasi.index') }}"
+                                                                 class='submenu-link'>Mutasi Global</a>
+                                                       </li>
+                                                       <li class="submenu-item  ">
+                                                            <a href="{{ route('mutasi.create') }}"
+                                                                 class='submenu-link'>Kartu Stock</a>
+                                                       </li>
+                                                  </ul>
+                                             </div>
+                                        </div>
+                                   </li>
+
                               </ul>
                          </div>
                     </nav>

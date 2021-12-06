@@ -11,12 +11,8 @@ class Income extends Model
 
     protected $guarded = ['id', 'created_at'];
 
-    public function inventory()
-    {
-        return $this->belongsTo(Inventory::class, 'inventory_id', 'id');
-    }
     public function store()
     {
-        return $this->belongsTo(Store::class, 'store_id', 'id');
+        return $this->belongsTo(Store::class, 'store_id', 'id')->withTrashed();
     }
 }

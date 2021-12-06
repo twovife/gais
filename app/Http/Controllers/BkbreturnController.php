@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Bkbreturn;
 use App\Models\Inventory;
-use App\Models\Component_category;
-use App\Models\Component_unit;
 use Illuminate\Http\Request;
 
-class InventoryController extends Controller
+class BkbreturnController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,11 +15,10 @@ class InventoryController extends Controller
      */
     public function index()
     {
-        return view('master.inventory', [
-            'treeMenu' => 'master',
-            'subMenu' => 'inventory',
-            'kategories' => Component_category::all(),
-            'units' => Component_unit::all()
+        return view('stock.bkbreturn', [
+            'treeMenu' => 'stock',
+            'subMenu' => 'returnbkb',
+            'inventories' => Inventory::all()
         ]);
     }
 
@@ -31,7 +29,11 @@ class InventoryController extends Controller
      */
     public function create()
     {
-        //
+        return view('stock.bkbreturncreate', [
+            'treeMenu' => 'stock',
+            'subMenu' => 'returnbkb',
+            'inventories' => Inventory::all()
+        ]);
     }
 
     /**
@@ -42,23 +44,15 @@ class InventoryController extends Controller
      */
     public function store(Request $request)
     {
-        $request['stock'] = 0;
-        $responseOut = Inventory::create($request->all());
-        if ($responseOut) {
-            session()->flash('success', 'Sukses Menambahkan Data');
-        } else {
-            session()->flash('error', 'Data Gagal ditambahkan');
-        }
-        return back();
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Inventory  $inventory
+     * @param  \App\Models\Return  $bkbreturn
      * @return \Illuminate\Http\Response
      */
-    public function show(Inventory $inventory)
+    public function show(Bkbreturn $bkbreturn)
     {
         //
     }
@@ -66,10 +60,10 @@ class InventoryController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Inventory  $inventory
+     * @param  \App\Models\Return  $bkbreturn
      * @return \Illuminate\Http\Response
      */
-    public function edit(Inventory $inventory)
+    public function edit(Bkbreturn $bkbreturn)
     {
         //
     }
@@ -78,24 +72,22 @@ class InventoryController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Inventory  $inventory
+     * @param  \App\Models\Return  $bkbreturn
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Inventory $inventory)
+    public function update(Request $request, Bkbreturn $bkbreturn)
     {
-        Inventory::find($inventory->id)->update($request->all());
-        return redirect('inventory');
+        //
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Inventory  $inventory
+     * @param  \App\Models\Return  $bkbreturn
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Inventory $inventory)
+    public function destroy(Bkbreturn $bkbreturn)
     {
-        $inventory->delete();
-        return back();
+        //
     }
 }

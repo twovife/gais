@@ -9,7 +9,7 @@
                text-align: center;
           }
 
-          td>input {
+          td>input.noborder {
                border: none;
                text-align: center;
           }
@@ -24,13 +24,21 @@
           }
      </style>
      @endsection
+     @if ($errors->all())
+     <div class="alert alert-danger">
+          @if ($errors->has('qty_in'))
+          ada item dengan jumlah masuk kosong -
+          @endif
+          Data yang anda masukkan tidak valid
+     </div>
+     @endif
      <div class="container-fluid">
           <div class="card mb-3 bg-transparent">
                <div class="card-body">
                     <div class="card-title mb-3">
                          <div class="d-flex align-items-center">
                               <div class="row w-50">
-                                   <h5 class="mb-3">Master Barang</h5>
+                                   <h5 class="mb-3">Tambahkan Barang Masuk</h5>
                               </div>
                               <div class="extra-btn ms-auto">
                                    <a href="{{ route('outcome.index') }}" role="button"
@@ -39,7 +47,7 @@
                               </div>
                          </div>
                     </div>
-                    <form action="{{ route('outcome.store') }}" method="post">
+                    <form action="{{ route('income.store') }}" method="post">
                          @csrf
                          <div class="row">
                               <div class="col-3">
@@ -51,25 +59,21 @@
                                                        value="Hari Ini">
                                              </div>
                                              <div class="mb-3">
-                                                  <label for="bkb" class="form-label required">Nomor BKB</label>
-                                                  <input type="text" class="form-control" name="bkb" id="bkb"
-                                                       placeholder="Nomor BKK" required>
+                                                  <label for="btb" class="form-label required">Nomor BTB</label>
+                                                  <input type="text" class="form-control" name="btb" id="btb"
+                                                       placeholder="Nomor BTB">
+                                                  @error('btb')
+                                                  <small class="text-danger">{{ $message }}</small>
+                                                  @enderror
                                              </div>
                                              <div class="mb-3">
-                                                  <label for="unit" class="form-label required">Unit</label>
-                                                  <input type="text" class="form-control" name="unit" id="unit"
-                                                       placeholder="Nomor BKK" required>
+                                                  <label for="tanggal_btb" class="form-label">Tanggal BTB</label>
+                                                  <input type="date" class="form-control" name="tanggal_btb"
+                                                       id="tanggal_btb" placeholder="Tanggal BTB">
                                              </div>
                                              <div class="mb-3">
-                                                  <label for="divisi" class="form-label required">Divisi</label>
-                                                  <input type="text" class="form-control" name="divisi" id="divisi"
-                                                       placeholder="Nomor BKK" required>
-                                             </div>
-                                             <div class="mb-3">
-                                                  <label for="nama_request" class="form-label required">PIC
-                                                       Request</label>
-                                                  <input type="text" class="form-control" name="nama_request"
-                                                       id="nama_request" placeholder="PIC" required>
+                                                  <label for="store_id" class="form-label">Store</label>
+                                                  <input type="text" class="form-control" name="store_id" id="store_id">
                                              </div>
                                         </div>
                                    </div>
@@ -78,8 +82,8 @@
                                    <div class="card shadow">
                                         <div class="card-body">
                                              <div class="input-group mb-3">
-                                                  <input type="text" class="form-control" id="inputItem"
-                                                       placeholder="Input Barcode" disabled>
+                                                  <input disabled type="text" class="form-control" id="inputItem"
+                                                       placeholder="Input Barcode">
                                                   <button class="btn btn-outline-secondary" type="button"
                                                        id="addons">Data Barang
                                                        (F4)
@@ -91,8 +95,12 @@
                                                             <tr>
                                                                  <th scope="col">#</th>
                                                                  <th scope="col">Barcode</th>
-                                                                 <th scope="col">Nama Barang</th>
-                                                                 <th scope="col">Qty Out</th>
+                                                                 <th scope="col" class="required">Nama Barang</th>
+                                                                 <th scope="col" class="required">Qty In</th>
+                                                                 <th scope="col">BKK</th>
+                                                                 <th scope="col">BKK Date</th>
+                                                                 <th scope="col">Harga</th>
+                                                                 <th scope="col">Keterangan</th>
                                                             </tr>
                                                        </thead>
                                                        <tbody id="daftarKeluar">
@@ -148,23 +156,23 @@
      <script src="{{ asset('mazer/vendors/sweetalert2/sweetalert2.all.min.js') }}"></script>
      <script>
           const modalId = document.getElementById('selectItem');
-          const myModal = new bootstrap.Modal(modalId);
-          const url = '{{ url('api/inventory') }}'
+          const inputan = modalId.querySelector('#findItem');
+          var myModal = new bootstrap.Modal(modalId);
+          const url = '{{ url('api/inventory') }}';
           const btnModal = document.getElementById('addons');
-          const inputan = modalId.querySelector('#findItem')
-
 
           btnModal.addEventListener('click',function(e){
-                    if (document.getElementById('bkb').value!=='') {
+                    if (document.getElementById('btb').value!=='') {
                          myModal.toggle();
                     }else{
                          Swal.fire({
                               icon: 'error',
                               title: 'Oops...!',
-                              text: 'BKB Tidak Boleh Dikosongkan'
+                              text: 'BTB Tidak Boleh Dikosongkan'
                          })
                     }
           })
+
 
           // disabled IE help popup
           window.onhelp = function() {
@@ -175,13 +183,13 @@
           window.onkeydown = evt => {
                switch(evt.keyCode){
                     case 115:
-                    if (document.getElementById('bkb').value!=='') {
+                    if (document.getElementById('btb').value!=='') {
                          myModal.toggle();
                     }else{
                          Swal.fire({
                               icon: 'error',
                               title: 'Oops...!',
-                              text: 'BKB Tidak Boleh Dikosongkan'
+                              text: 'BTB Tidak Boleh Dikosongkan'
                          })
                     }
                     break;
@@ -191,58 +199,34 @@
                return false;
           }
 
-          modalId.addEventListener('shown.bs.modal',function(e){
-               this.addEventListener('click',function(e){
-                    if (e.target.classList.contains('adding')) {
-                         (async () => {
-                              const dataId = e.target.getAttribute('data-id')
-                              const dataBarcode = e.target.getAttribute('data-barcode')
-                              const dataNama = e.target.getAttribute('data-nama')
-                              const dataMax = parseInt(e.target.getAttribute('data-max'))
-                              const { value: tambahJumlah } = await Swal.fire({
-                                   title: 'Enter your IP address',
-                                   input: 'number',
-                                   inputLabel: `Jumlah Maksimal = ${dataMax}`,
-                                   // inputValue: inputValue,
-                                   showCancelButton: true,
-                                   inputValidator: (value) => {
-                                        if (value>dataMax) {
-                                             return 'Jumlah Terlalu Banyak'
-                                        }else if (!value) {
-                                             return 'Masukkan Jumlah Keluar'
-                                        }else if (value < 1) {
-                                             return 'Kok aneh aneh'
-                                        }
-                                   }
-                              })
-                              if (tambahJumlah) {
-                                   gotoTables({
-                                        id:dataId,
-                                        nama:dataNama,
-                                        barcode:dataBarcode,
-                                        qty:tambahJumlah
-                                   })
-                                   Swal.fire(`Berhasil Ditambah`)
-                              }
-                         })()
-                    }else{
-                         e.stopPropagation();
-                    }
-               })
-               
+          modalId.addEventListener('click',function(e){
+               if (e.target.classList.contains('adding')) {
+                    const dataId = e.target.getAttribute('data-id')
+                    const dataBarcode = e.target.getAttribute('data-barcode')
+                    const dataNama = e.target.getAttribute('data-nama')
+                    const createTables = gotoTables({
+                         id:dataId,
+                         nama:dataNama,
+                         barcode:dataBarcode
+                    })
+               }else{
+                    e.stopPropagation();
+               }
           })
 
           inputan.focus()
-               inputan.addEventListener('keydown',async function(e){
-                    if (e.which == 13) {
+          inputan.addEventListener('keydown',async function(e){
+               if (e.which == 13) {
                          let valuesThis = this.value
                          document.getElementById('resultSearch').innerHTML = ''
                          if (valuesThis.length >= 3) {
                               const loadData = await fetchingData(url,{
                                    nama_barang:valuesThis
-                         })
-                         const tables = createTables(loadData)
-                    }
+                              })
+                              const tables = createTables(loadData)
+                         }
+               }else{
+                    e.stopPropagation();
                }
           })
 
@@ -259,9 +243,9 @@
 
           function createTables(haystack){
                haystack.forEach(element => {
-                    let tr = document.createElement("tr");
-                    let actionBtn = document.createElement("button")
-                    var textnode = document.createTextNode("Select");
+                    const tr = document.createElement("tr");
+                    const actionBtn = document.createElement("button")
+                    const textnode = document.createTextNode("Select");
                     actionBtn.appendChild(textnode)
                     actionBtn.classList.add("btn")
                     actionBtn.classList.add("btn-danger")
@@ -271,7 +255,7 @@
                     actionBtn.setAttribute('data-barcode',element.vinventory.barcode)
                     actionBtn.setAttribute('data-nama',element.nama_barang)
                     actionBtn.setAttribute('data-max',element.vinventory.saldo_temp-element.vinventory.min_stock)
-                    if (element.vinventory.saldo_temp <= element.vinventory.min_stock ||element.deleted_at !== null) {
+                    if (element.deleted_at !== null) {
                          actionBtn.setAttribute('disabled','disabled')
                     }
                     tr.insertCell(0).innerHTML = element.nama_barang
@@ -288,29 +272,54 @@
                     var inputBarcode = document.createElement("input");
                     var inputNama = document.createElement("input");
                     var inputQty = document.createElement("input");
+                    var inputBkk = document.createElement("input");
+                    var inputBkkDate = document.createElement("input");
+                    var inputHarga = document.createElement("input");
+                    var inputKeterangan = document.createElement("input");
+
                     inputId.setAttribute("name","inventory_id[]")
                     inputId.setAttribute("type","hidden")
+                    inputId.classList.add("form-control")
                     inputId.value = haystack.id 
 
-                    inputQty.setAttribute("name","qty_out[]")
+                    inputQty.setAttribute("name","qty_in[]")
+                    inputQty.classList.add("form-control")
                     inputQty.setAttribute("type","number")
-                    inputQty.setAttribute("readonly","true")
-                    inputQty.value = haystack.qty 
 
                     inputBarcode.setAttribute("disabled","disabled")
+                    inputBarcode.classList.add("form-control")
                     inputBarcode.value = haystack.barcode   
 
                     inputNama.setAttribute("disabled","disabled")
+                    inputNama.classList.add("form-control")
                     inputNama.value = haystack.nama
+
+                    inputBkk.setAttribute("type","text")
+                    inputBkk.classList.add("form-control")
+                    inputBkk.setAttribute("name","bkk[]")  
+                    
+                    inputBkkDate.setAttribute("type","date")
+                    inputBkkDate.classList.add("form-control")
+                    inputBkkDate.setAttribute("name","tanggal_bkk[]")  
+                    
+                    inputHarga.setAttribute("type","number")
+                    inputHarga.classList.add("form-control")
+                    inputHarga.setAttribute("name","harga[]")  
+                    
+                    inputKeterangan.setAttribute("type","text")
+                    inputKeterangan.classList.add("form-control")
+                    inputKeterangan.setAttribute("name","keterangan[]")
 
                     tr.insertCell(0).appendChild(inputId)
                     tr.insertCell(1).appendChild(inputBarcode)
                     tr.insertCell(2).appendChild(inputNama)
                     tr.insertCell(3).appendChild(inputQty)
+                    tr.insertCell(4).appendChild(inputBkk)
+                    tr.insertCell(5).appendChild(inputBkkDate)
+                    tr.insertCell(6).appendChild(inputHarga)
+                    tr.insertCell(7).appendChild(inputKeterangan)
                     document.getElementById("daftarKeluar").insertAdjacentElement('beforeend',tr);
           }
-
-
      </script>
      @endsection
 

@@ -23,6 +23,20 @@
      </style>
      @endsection
 
+     @if (session()->has('success'))
+     <div class="alert alert-success" role="alert">
+          Berhasil Menambahkan Data
+     </div>
+     <script>
+          var newTab = window.open('outcome/print/{{ session()->get('success') }}');
+          newTab.location
+     </script>
+     @elseif (session()->has('eror'))
+     <div class="alert alert-danger" role="alert">
+          {{ session()->get('eror') }}
+     </div>
+     @endif
+
      <div class="container-fluid">
           <div class="card mb-3">
                <div class="card-body">
@@ -50,9 +64,7 @@
 
      @section('javascript')
      <script src="{{ asset('jsgrid/gridjs.umd.js') }}"></script>
-     <script src="{{ asset('mazer/vendors/sweetalert2/sweetalert2.all.min.js') }}">
-     </script>
-     <script src="{{ asset('tom-select/dist/cjs/tom-select.complete.js') }}"></script>
+     <script src="{{ asset('mazer/vendors/sweetalert2/sweetalert2.all.min.js') }}"></script>
      <script>
           const url = '{{ url('api/barangkeluar') }}'
           const urlInventory = '{{ url('api/inventory') }}'
@@ -63,7 +75,7 @@
           function loadInventorTables(url) {
                new gridjs.Grid({
                     columns: [{
-                         name: "Tanggal",
+                         name: "Tanggal"
                     }, {
                          name: "BKB"
                     },{
@@ -94,7 +106,18 @@
                },
                     server: {
                     url: url,
-                    then: data => data.map(card => [convertDate(card.created_at), card.bkb, card.inventory.vinventory.barcode, card.inventory.nama_barang, card.inventory.component_category.kategori, card.inventory.component_unit.satuan, card.qty_out, card.unit, card.divisi, card.nama_request, card.user_input])
+                    then: data => data.map(card => [
+                         convertDate(card.outcome.created_at),
+                         card.outcome.bkb,
+                         card.inventory.vinventory.barcode,
+                         card.inventory.nama_barang,
+                         card.inventory.component_category.kategori,
+                         card.inventory.component_unit.satuan,
+                         card.qty_out,
+                         card.outcome.unit,
+                         card.outcome.divisi,
+                         card.outcome.nama_request,
+                         card.outcome.user_input])
                }
                }).render(document.getElementById("wrapper"));
           }

@@ -71,6 +71,24 @@
                                         <li class="submenu-item {{ $subMenu=='inventory'?'active':''; }}">
                                              <a href="{{ route('outcome.index') }}">Bararng Keluar</a>
                                         </li>
+                                        <li class="submenu-item {{ $subMenu=='returnbkb'?'active':''; }}">
+                                             <a href="{{ route('bkbreturn.index') }}">Return BKB</a>
+                                        </li>
+                                   </ul>
+                              </li>
+
+                              <li class="sidebar-item {{ $treeMenu=='mutasi'?'active':''; }} has-sub">
+                                   <a href="#" class='sidebar-link'>
+                                        <i class="bi bi-stack"></i>
+                                        <span>Mutasi</span>
+                                   </a>
+                                   <ul class="submenu" style="display: {{ $treeMenu=='mutasi'?'block':'none'; }}">
+                                        <li class="submenu-item {{ $subMenu=='mutasi'?'active':''; }}">
+                                             <a href="{{ route('mutasi.index') }}">Mutasi In / Out</a>
+                                        </li>
+                                        <li class="submenu-item {{ $subMenu=='kartu'?'active':''; }}">
+                                             <a href="{{ route('mutasi.create') }}">Kartu Stock</a>
+                                        </li>
                                    </ul>
                               </li>
 
@@ -116,7 +134,7 @@
                                    </div>
                                    <div class="user-img d-flex align-items-center">
                                         <div class="avatar avatar-md">
-                                             <img src="../mazer/images/faces/1.jpg">
+                                             <img src="{{ asset('avatar-svgrepo-com.svg') }}">
                                         </div>
                                    </div>
                               </div>
