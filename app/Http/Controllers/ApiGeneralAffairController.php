@@ -171,9 +171,9 @@ class ApiGeneralAffairController extends Controller
             foreach ($query as $key => $vals) {
                 $straws->where($key, $vals);
             }
-            $data = $straws->with('inventory.component_category', 'inventory.component_unit', 'inventory.vinventory', 'vincome', 'voutcome', 'bkbreturn')->get();
+            $data = $straws->with('inventory.component_category', 'inventory.component_unit', 'inventory.vinventory', 'vincome', 'voutcome', 'incomereturn')->get();
         } else {
-            $data = Vmutation::with('inventory.component_category', 'inventory.component_unit', 'inventory.vinventory', 'vincome', 'voutcome', 'bkbreturn')->get();
+            $data = Vmutation::with('inventory.component_category', 'inventory.component_unit', 'inventory.vinventory', 'vincome', 'voutcome', 'incomereturn')->get();
         }
 
         return response()->json($data);

@@ -59,20 +59,20 @@
                                         </li>
                                    </ul>
                               </li>
-                              <li class="sidebar-item {{ $treeMenu=='stock'?'active':''; }} has-sub">
+                              <li class="sidebar-item {{ $treeMenu=='Transaction'?'active':''; }} has-sub">
                                    <a href="#" class='sidebar-link'>
                                         <i class="bi bi-stack"></i>
-                                        <span>Stock</span>
+                                        <span>Transaction</span>
                                    </a>
-                                   <ul class="submenu" style="display: {{ $treeMenu=='stock'?'block':'none'; }}">
-                                        <li class="submenu-item {{ $subMenu=='income'?'active':''; }}">
-                                             <a href="{{ route('income.index') }}">Barang Masuk</a>
+                                   <ul class="submenu" style="display: {{ $treeMenu=='Transaction'?'block':'none'; }}">
+                                        <li class="submenu-item {{ $subMenu=='Income'?'active':''; }}">
+                                             <a href="{{ route('income.index') }}">Income</a>
                                         </li>
-                                        <li class="submenu-item {{ $subMenu=='inventory'?'active':''; }}">
-                                             <a href="{{ route('outcome.index') }}">Bararng Keluar</a>
+                                        <li class="submenu-item {{ $subMenu=='Outcome'?'active':''; }}">
+                                             <a href="{{ route('outcome.index') }}">Outcome</a>
                                         </li>
-                                        <li class="submenu-item {{ $subMenu=='returnbkb'?'active':''; }}">
-                                             <a href="{{ route('bkbreturn.index') }}">Return BKB</a>
+                                        <li class="submenu-item {{ $subMenu=='Return Income'?'active':''; }}">
+                                             <a href="{{ route('inreturn.index') }}">Return Income</a>
                                         </li>
                                    </ul>
                               </li>
@@ -156,6 +156,7 @@
                </section>
           </div>
      </div>
+     <script src="{{ asset('system.js') }}"></script>
      <script src="{{ asset('mazer/vendors/perfect-scrollbar/perfect-scrollbar.min.js') }}"></script>
      <script src="{{ asset('mazer/js/bootstrap.bundle.min.js') }}"></script>
      <script src="{{ asset('mazer/js/mazer.js') }}"></script>

@@ -1,26 +1,32 @@
 <x-nosidebar :treeMenu="$treeMenu" :subMenu="$subMenu">
      @section('css')
      <link rel="stylesheet" href="{{ asset('jsgrid/theme/mermaid.min.css') }}">
+     <link rel="stylesheet" href="{{ asset('tom-select/dist/css/tom-select.default.css') }}">
      <style>
           .table-responsive {
                height: 50vh;
           }
 
-          tr th {
+          tr th:not(:first-child) {
                text-align: center;
           }
 
-          tr td {
+          tr td:not(:first-child) {
                text-align: center;
           }
 
-          tr td:nth-child(1),
-          tr td:nth-child(7) {
+          tr td:nth-child(3) {
                text-align: left;
           }
 
-          tr td:nth-child(9) {
+          tr td:nth-child(11) {
                text-align: right;
+          }
+
+          .harus::after {
+               content: '*';
+               padding-left: .6rem;
+               color: red;
           }
      </style>
      @endsection
@@ -35,6 +41,9 @@
                               <div class="row w-50">
                               </div>
                               <div class="extra-btn ms-auto">
+                                   <a href="{{ route('income.create') }}" role="button"
+                                        class="btn btn-secondary btn-sm">Create
+                                   </a>
                                    <button class="btn btn-outline-info btn-sm">Export</button>
                               </div>
                          </div>
@@ -48,56 +57,46 @@
           </div>
      </div>
 
+
      @section('javascript')
      <script src="{{ asset('jsgrid/gridjs.umd.js') }}"></script>
      <script src="{{ asset('mazer/vendors/sweetalert2/sweetalert2.all.min.js') }}"></script>
-
      <script>
-          const url = '{{ url('api/mutasi') }}'
-          const loadJsGrid = loadInventorTables(url)
+          const url = '{{ url('api/gaisstock') }}'
+          const data = loadInventorTables(url)
+          
           function loadInventorTables(url) {
                new gridjs.Grid({
                     columns: [{
-                         name: "Tanggal"
+                         name: "Tanggal",
                     },{
-                         name: "tag",
-                         formatter: (cell) => {
-                              if (cell == 'income') {
-                                   return gridjs.html(`<i class="bi bi-caret-down-fill" style="color:green;"></i>`)
-                              }else if (cell == 'outcome') {
-                                   return gridjs.html(`<i class="bi bi-caret-up-fill" style="color:red;"></i>`)
-                              }else if (cell == 'returnincome') {
-                                   return gridjs.html(`<i class="bi bi-caret-down-square-fill" style="color:blue;"></i>`)
-                              }else if (cell == 'returnoutcome') {
-                                   return gridjs.html(`<i class="bi bi-caret-down-square-fill" style="color:yellow;"></i>`)
-                              }
-                         }
+                         name: "BTB"
                     },{
-                         name: "Nomor Transaksi"
+                         name: "Nama Toko"
                     },{
-                         name: "Kategory"
-                    },{
-                         name: "Satuan"
-                    },{
-                         name: "Barcode"
+                         name: "Kode Barang"
                     },{
                          name: "Nama Barang"
                     },{
-                         name: "Masuk"
+                         name: "Jenis Barang"
+                    },{
+                         name: "Satuan"
+                    },{
+                         name: "BKK"
+                    },{
+                         name: "Tgl BKK"
+                    },{
+                         name: "Qty"
                     },{
                          name: "Harga"
                     },{
-                         name: "Keluar"
+                         name: "Keterangan"
                     },{
-                         name: "Pic Req"
-                    },{
-                         name: "Divisi"
-                    },{
-                         name: "Unit"
+                         name: "User"
                     }],
                     search: true,
                     className: {
-                         table: "table table-sm table-striped"
+                         table: "table table-sm"
                     },
                     pagination: {
                     limit: 10
@@ -105,26 +104,23 @@
                     server: {
                     url: url,
                     then: data => data.map(card => [
-                         convertDate(card.created_at),
-                         inOrOut(card.vincome,card.voutcome,card.bkbreturn,),
-                         showFlexyData(card.vincome,card.voutcome,card.bkbreturn),
-                         card.inventory.component_category.kategori,
-                         card.inventory.component_unit.satuan,
+                         convertDate(card.income.created_at),
+                         card.income.btb,
+                         card.income.store?card.income.store.nama_toko:'',
                          card.inventory.vinventory.barcode,
                          card.inventory.nama_barang,
-                         isFalse(card.vincome,'qty_in'),
-                         formatRupiah(isFalse(card.vincome,'harga')),
-                         isFalse(card.voutcome,'qty_out'),
-                         isFalse(card.voutcome,'nama_request'),
-                         isFalse(card.voutcome,'divisi'),
-                         isFalse(card.voutcome,'unit')
-                         ])
+                         card.inventory.component_category.kategori,
+                         card.inventory.component_unit.satuan,
+                         card.bkk,
+                         card.tanggal_bkk,
+                         card.qty_in,
+                         formatRupiah(card.harga),
+                         card.keterangan,
+                         card.income.user_input
+                    ])
                }
                }).render(document.getElementById("wrapper"));
           }
-
      </script>
      @endsection
-
-
 </x-nosidebar>

@@ -50,7 +50,7 @@
 
                                    <li class="menu-item active has-sub">
                                         <a href="#" class='menu-link'>
-                                             <i class="bi bi-grid-1x2-fill"></i>
+                                             <i class="bi bi-folder"></i>
                                              <span>Master Data</span>
                                         </a>
                                         <div class="submenu ">
@@ -72,8 +72,8 @@
 
                                    <li class="menu-item active has-sub">
                                         <a href="#" class='menu-link'>
-                                             <i class="bi bi-grid-1x2-fill"></i>
-                                             <span>Stock</span>
+                                             <i class="bi bi-calculator"></i>
+                                             <span>Transaction</span>
                                         </a>
                                         <div class="submenu ">
                                              <div class="submenu-group-wrapper">
@@ -86,6 +86,10 @@
                                                             <a href="{{ route('outcome.index') }}"
                                                                  class='submenu-link'>Barang Keluar</a>
                                                        </li>
+                                                       <li class="submenu-item  ">
+                                                            <a href="{{ route('inreturn.index') }}"
+                                                                 class='submenu-link'>Return Income</a>
+                                                       </li>
                                                   </ul>
                                              </div>
                                         </div>
@@ -93,8 +97,30 @@
 
                                    <li class="menu-item active has-sub">
                                         <a href="#" class='menu-link'>
-                                             <i class="bi bi-grid-1x2-fill"></i>
+                                             <i class="bi bi-stoplights"></i>
                                              <span>Mutasi</span>
+                                        </a>
+                                        <div class="submenu ">
+                                             <div class="submenu-group-wrapper">
+                                                  <ul class="submenu-group">
+                                                       <li class="submenu-item  ">
+                                                            <a href="{{ route('mutasi.index') }}"
+                                                                 class='submenu-link'>Mutasi Global</a>
+                                                       </li>
+                                                       <li class="submenu-item  ">
+                                                            <a href="{{ route('mutasi.create') }}"
+                                                                 class='submenu-link'>Kartu Stock</a>
+                                                       </li>
+                                                  </ul>
+                                             </div>
+                                        </div>
+                                   </li>
+
+
+                                   <li class="menu-item active has-sub">
+                                        <a href="#" class='menu-link'>
+                                             <i class="bi bi-box-seam"></i>
+                                             <span>Barang Non Rutin</span>
                                         </a>
                                         <div class="submenu ">
                                              <div class="submenu-group-wrapper">
@@ -124,6 +150,7 @@
                </div>
           </div>
      </div>
+     <script src="{{ asset('system.js') }}"></script>
      <script src="{{ asset('mazer/vendors/perfect-scrollbar/perfect-scrollbar.min.js') }}"></script>
      <script src="{{ asset('mazer/js/bootstrap.bundle.min.js') }}"></script>
      <script src="{{ asset('mazer/js/mazer.js') }}"></script>

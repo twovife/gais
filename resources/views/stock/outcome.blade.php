@@ -7,18 +7,20 @@
                height: 50vh;
           }
 
-          tr th {
+          tr th:not(:first-child) {
                text-align: center;
           }
 
-          tr td {
+          tr td:not(:first-child) {
                text-align: center;
           }
 
-          .harus::after {
-               content: '*';
-               padding-left: .6rem;
-               color: red;
+          tr td:nth-child(3) {
+               text-align: left;
+          }
+
+          tr td:nth-child(11) {
+               text-align: right;
           }
      </style>
      @endsection
@@ -79,9 +81,9 @@
                     }, {
                          name: "BKB"
                     },{
-                         name: "Kode Barang"
-                    },{
                          name: "Nama Barang"
+                    },{
+                         name: "Kode Barang"
                     },{
                          name: "Jenis Barang"
                     },{
@@ -109,8 +111,8 @@
                     then: data => data.map(card => [
                          convertDate(card.outcome.created_at),
                          card.outcome.bkb,
-                         card.inventory.vinventory.barcode,
                          card.inventory.nama_barang,
+                         card.inventory.vinventory.barcode,
                          card.inventory.component_category.kategori,
                          card.inventory.component_unit.satuan,
                          card.qty_out,
@@ -120,30 +122,6 @@
                          card.outcome.user_input])
                }
                }).render(document.getElementById("wrapper"));
-          }
-
-          function convertDate(params) {
-               const month = new Array();
-               month[0] = "01";
-               month[1] = "02";
-               month[2] = "03";
-               month[3] = "04";
-               month[4] = "05";
-               month[5] = "06";
-               month[6] = "07";
-               month[7] = "08";
-               month[8] = "09";
-               month[9] = "10";
-               month[10] = "11";
-               month[11] = "12";
-
-               let d = new Date(params)
-               let hari = d.getDate()
-               let bulan = month[d.getMonth()]
-               let tahun = d.getFullYear()
-               let margeTanggal = `${hari}/${bulan}/${tahun}`
-
-               return margeTanggal
           }
      </script>
      @endsection

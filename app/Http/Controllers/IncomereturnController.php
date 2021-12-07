@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Bkbreturn;
-use App\Models\Inventory;
+use App\Models\Incomereturn;
 use Illuminate\Http\Request;
 
-class BkbreturnController extends Controller
+class IncomereturnController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,10 +14,9 @@ class BkbreturnController extends Controller
      */
     public function index()
     {
-        return view('stock.bkbreturn', [
-            'treeMenu' => 'stock',
-            'subMenu' => 'returnbkb',
-            'inventories' => Inventory::all()
+        return view('return.income', [
+            'treeMenu' => 'Transaction',
+            'subMenu' => 'Return Income'
         ]);
     }
 
@@ -29,11 +27,7 @@ class BkbreturnController extends Controller
      */
     public function create()
     {
-        return view('stock.bkbreturncreate', [
-            'treeMenu' => 'stock',
-            'subMenu' => 'returnbkb',
-            'inventories' => Inventory::all()
-        ]);
+        //
     }
 
     /**
@@ -44,15 +38,16 @@ class BkbreturnController extends Controller
      */
     public function store(Request $request)
     {
+        //
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Return  $bkbreturn
+     * @param  \App\Models\Incomereturn  $incomereturn
      * @return \Illuminate\Http\Response
      */
-    public function show(Bkbreturn $bkbreturn)
+    public function show(Incomereturn $incomereturn)
     {
         //
     }
@@ -60,10 +55,10 @@ class BkbreturnController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Return  $bkbreturn
+     * @param  \App\Models\Incomereturn  $incomereturn
      * @return \Illuminate\Http\Response
      */
-    public function edit(Bkbreturn $bkbreturn)
+    public function edit(Incomereturn $incomereturn)
     {
         //
     }
@@ -72,10 +67,10 @@ class BkbreturnController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Return  $bkbreturn
+     * @param  \App\Models\Incomereturn  $incomereturn
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Bkbreturn $bkbreturn)
+    public function update(Request $request, Incomereturn $incomereturn)
     {
         //
     }
@@ -83,10 +78,10 @@ class BkbreturnController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Return  $bkbreturn
+     * @param  \App\Models\Incomereturn  $incomereturn
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Bkbreturn $bkbreturn)
+    public function destroy(Incomereturn $incomereturn)
     {
         //
     }

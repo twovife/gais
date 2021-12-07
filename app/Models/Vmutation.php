@@ -21,9 +21,10 @@ class Vmutation extends Model
     {
         return $this->belongsTo(Inventory::class)->withTrashed();
     }
-    public function bkbreturn()
+
+    public function Incomereturn()
     {
-        return $this->belongsTo(Voutcome::class);
+        return $this->belongsTo(Incomereturn::class);
     }
 
     public function getRouteKeyName()

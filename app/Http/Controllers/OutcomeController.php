@@ -19,8 +19,8 @@ class OutcomeController extends Controller
     public function index()
     {
         return view('stock.outcome', [
-            'treeMenu' => 'stock',
-            'subMenu' => 'outcome',
+            'treeMenu' => 'Transaction',
+            'subMenu' => 'Outcome',
             'inventories' => Inventory::all()
         ]);
     }
@@ -33,8 +33,8 @@ class OutcomeController extends Controller
     public function create()
     {
         return view('stock.outcomecreate', [
-            'treeMenu' => 'stock',
-            'subMenu' => 'outcome',
+            'treeMenu' => 'Transaction',
+            'subMenu' => 'Outcome',
             'inventories' => Inventory::all()
         ]);
     }

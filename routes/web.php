@@ -1,9 +1,9 @@
 <?php
 
-use App\Http\Controllers\BkbreturnController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\IncomeController;
+use App\Http\Controllers\IncomereturnController;
 use App\Http\Controllers\StoreController;
 use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\OutcomeController;
@@ -26,7 +26,7 @@ Route::resource('store', StoreController::class);
 Route::resource('inventory', InventoryController::class);
 Route::resource('income', IncomeController::class);
 Route::resource('outcome', OutcomeController::class);
-Route::resource('bkbreturn', BkbreturnController::class);
+Route::resource('inreturn', IncomereturnController::class);
 // Route::resource('mutasi', VmutationController::class);
 
 Route::get('mutasi', [VmutationController::class, 'index'])->name('mutasi.index');

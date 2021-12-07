@@ -18,8 +18,8 @@ class IncomeController extends Controller
     public function index()
     {
         return view('stock.income', [
-            'treeMenu' => 'stock',
-            'subMenu' => 'income',
+            'treeMenu' => 'Transaction',
+            'subMenu' => 'Income',
             'inventories' => Inventory::all()
         ]);
     }
@@ -32,8 +32,8 @@ class IncomeController extends Controller
     public function create()
     {
         return view('stock.incomecreate', [
-            'treeMenu' => 'stock',
-            'subMenu' => 'outcome',
+            'treeMenu' => 'Transaction',
+            'subMenu' => 'Income',
             'inventories' => Inventory::all()
         ]);
     }
