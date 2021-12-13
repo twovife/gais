@@ -7,26 +7,20 @@
                height: 50vh;
           }
 
-          tr th:not(:first-child) {
+          tr th {
                text-align: center;
           }
 
-          tr td:not(:first-child) {
+          tr td {
                text-align: center;
           }
 
-          tr td:nth-child(3) {
-               text-align: left;
-          }
-
-          tr td:nth-child(11) {
+          td:nth-child(9) {
                text-align: right;
           }
 
-          .harus::after {
-               content: '*';
-               padding-left: .6rem;
-               color: red;
+          td:nth-child(10) {
+               text-align: left;
           }
      </style>
      @endsection
@@ -102,10 +96,15 @@
                     then: data => data.map(card => [
                          convertDate(card.created_at),
                          card.nomor_return,
-                         card.income_detail.income.btb,
-                         card.income_detail.inventory.nama_barang,
-                         card.income_detail.inventory.nama_barang,
-                         card.income_detail.inventory.nama_barang
+                         card.income.btb,
+                         card.inventory.barcode,
+                         card.inventory.nama_barang,
+                         card.inventory.component_category.kategori,
+                         card.inventory.component_unit.satuan,
+                         card.qty_out,
+                         formatRupiah(card.income_detail.harga),
+                         card.reason,
+                         card.user_input,
                     ])
                }
                }).render(document.getElementById("wrapper"));

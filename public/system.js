@@ -66,3 +66,61 @@ const showFlexyData = (income, outcome, inret, outret) => {
           return outret['nomor_return']
      }
 }
+
+
+// function for fetch api
+const fetchGet = (paramsUrl, params) => {
+     return fetch(url + '?' + new URLSearchParams(params), {
+          headers: {
+               'Accept': 'application/json'
+          },
+          method: 'GET',
+     })
+          .then(response => response.json())
+          .then(data => data)
+}
+
+// dom affected and ontions (options on niceselect)
+const niceEvolution = (dom, option) => {
+     new NiceSelect.bind(dom, option = false);
+}
+
+// option is dom affected, id after created and mutable dom
+const returnSelectList = (options) => {
+     options.affectedDom.innerHTML = ''
+     const select = document.createElement('select')
+     select.setAttribute("name", `${options.id}`)
+     select.setAttribute("class", 'wide')
+     select.id = `${options.id}`
+     // create null options
+     const nullOpt = document.createElement("option")
+     nullOpt.value = '';
+     nullOpt.text = 'Pilih Item Yang direturn';
+     select.appendChild(nullOpt)
+
+     const data = options.data
+     for (let i = 0; i < data.length; i++) {
+          const option = document.createElement("option")
+          option.value = data[i].id;
+          option.setAttribute('data-max', data[i].qty_in)
+          option.setAttribute('data-saldo', data[i].saldo)
+          option.text = data[i].inventory.nama_barang;
+          select.appendChild(option)
+     }
+
+     options.affectedDom.appendChild(select)
+     const mutationDom = document.querySelector(`#${options.id}`)
+     niceEvolution(mutationDom, { searchable: true })
+}
+
+const replaceInputQty = (params, obj) => {
+     const max = obj.options[obj.selectedIndex].getAttribute('data-max');
+     const saldo = obj.options[obj.selectedIndex].getAttribute('data-saldo');
+     if (max <= saldo) {
+          console.log('pakai max');
+     } else {
+          console.log('pakai saldo');
+     }
+
+
+}

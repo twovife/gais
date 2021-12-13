@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Income;
 use App\Models\Incomereturn;
 use Illuminate\Http\Request;
 
@@ -27,7 +28,11 @@ class IncomereturnController extends Controller
      */
     public function create()
     {
-        //
+        return view('return.incomereturn', [
+            'treeMenu' => 'Transaction',
+            'subMenu' => 'Return Income',
+            'noBtb' => Income::all()
+        ]);
     }
 
     /**
