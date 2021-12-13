@@ -62,7 +62,7 @@
      <script src="{{ asset('jsgrid/gridjs.umd.js') }}"></script>
      <script src="{{ asset('mazer/vendors/sweetalert2/sweetalert2.all.min.js') }}"></script>
      <script>
-          const url = '{{ url('api/gaisstock') }}'
+          const url = '{{ url('api/inreturn') }}'
           const data = loadInventorTables(url)
           
           function loadInventorTables(url) {
@@ -70,9 +70,9 @@
                     columns: [{
                          name: "Tanggal",
                     },{
-                         name: "BTB"
+                         name: "Nomor Return"
                     },{
-                         name: "Nama Toko"
+                         name: "Nomor BTB"
                     },{
                          name: "Kode Barang"
                     },{
@@ -81,10 +81,6 @@
                          name: "Jenis Barang"
                     },{
                          name: "Satuan"
-                    },{
-                         name: "BKK"
-                    },{
-                         name: "Tgl BKK"
                     },{
                          name: "Qty"
                     },{
@@ -104,19 +100,12 @@
                     server: {
                     url: url,
                     then: data => data.map(card => [
-                         convertDate(card.income.created_at),
-                         card.income.btb,
-                         card.income.store?card.income.store.nama_toko:'',
-                         card.inventory.vinventory.barcode,
-                         card.inventory.nama_barang,
-                         card.inventory.component_category.kategori,
-                         card.inventory.component_unit.satuan,
-                         card.bkk,
-                         card.tanggal_bkk,
-                         card.qty_in,
-                         formatRupiah(card.harga),
-                         card.keterangan,
-                         card.income.user_input
+                         convertDate(card.created_at),
+                         card.nomor_return,
+                         card.income_detail.income.btb,
+                         card.income_detail.inventory.nama_barang,
+                         card.income_detail.inventory.nama_barang,
+                         card.income_detail.inventory.nama_barang
                     ])
                }
                }).render(document.getElementById("wrapper"));

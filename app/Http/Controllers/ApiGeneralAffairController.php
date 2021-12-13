@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Income;
 use App\Models\Income_detail;
+use App\Models\Incomereturn;
 use App\Models\Inventory;
 use App\Models\Outcome;
 use App\Models\Outcome_detail;
@@ -55,9 +56,9 @@ class ApiGeneralAffairController extends Controller
             foreach ($query as $key => $vals) {
                 $straws->where($key, 'LIKE', "%{$vals}%");
             }
-            $data = $straws->withTrashed()->with('component_category', 'component_unit', 'vinventory')->get();
+            $data = $straws->withTrashed()->with('component_category', 'component_unit')->get();
         } else {
-            $data = Inventory::withTrashed()->with('component_category', 'component_unit', 'vinventory')->get();
+            $data = Inventory::withTrashed()->with('component_category', 'component_unit')->get();
         }
 
         return response()->json($data);
@@ -93,9 +94,9 @@ class ApiGeneralAffairController extends Controller
             foreach ($query as $key => $vals) {
                 $straws->where($key, $vals);
             }
-            $data = $straws->with('income.store', 'inventory.component_category', 'inventory.component_unit', 'inventory.vinventory')->get();
+            $data = $straws->with('income.store', 'inventory.component_category', 'inventory.component_unit')->get();
         } else {
-            $data = Income_detail::with('income.store', 'inventory.component_category', 'inventory.component_unit', 'inventory.vinventory')->get();
+            $data = Income_detail::with('income.store', 'inventory.component_category', 'inventory.component_unit')->get();
         }
 
         return response()->json($data);
@@ -112,9 +113,27 @@ class ApiGeneralAffairController extends Controller
             foreach ($query as $key => $vals) {
                 $straws->where($key, $vals);
             }
-            $data = $straws->with('outcome', 'inventory', 'inventory.component_category', 'inventory.component_unit', 'inventory.vinventory')->get();
+            $data = $straws->with('outcome', 'inventory', 'inventory.component_category', 'inventory.component_unit')->get();
         } else {
-            $data = Outcome_detail::with('outcome', 'inventory', 'inventory.component_category', 'inventory.component_unit', 'inventory.vinventory')->get();
+            $data = Outcome_detail::with('outcome', 'inventory', 'inventory.component_category', 'inventory.component_unit')->get();
+        }
+
+        return response()->json($data);
+    }
+
+    public function IncomeReturn()
+    {
+        $actual_link = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+        $url_components = parse_url($actual_link);
+        if (isset($url_components['query'])) {
+            parse_str($url_components['query'] ? $url_components['query'] : null, $query);
+            $straws = Incomereturn::query();
+            foreach ($query as $key => $vals) {
+                $straws->where($key, $vals);
+            }
+            $data = $straws->with('income_detail.income', 'income_detail.inventory')->get();
+        } else {
+            $data = Incomereturn::with('income_detail', 'income', 'inventory.component_category', 'inventory.component_unit')->get();
         }
 
         return response()->json($data);
@@ -171,9 +190,9 @@ class ApiGeneralAffairController extends Controller
             foreach ($query as $key => $vals) {
                 $straws->where($key, $vals);
             }
-            $data = $straws->with('inventory.component_category', 'inventory.component_unit', 'inventory.vinventory', 'vincome', 'voutcome', 'incomereturn')->get();
+            $data = $straws->with('inventory.component_category', 'inventory.component_unit', 'inventory.vinventory', 'vincome', 'voutcome', 'incomereturn.income_detail')->get();
         } else {
-            $data = Vmutation::with('inventory.component_category', 'inventory.component_unit', 'inventory.vinventory', 'vincome', 'voutcome', 'incomereturn')->get();
+            $data = Vmutation::with('inventory.component_category', 'inventory.component_unit', 'inventory.vinventory', 'vincome', 'voutcome', 'incomereturn.income_detail')->get();
         }
 
         return response()->json($data);

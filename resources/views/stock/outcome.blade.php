@@ -112,7 +112,7 @@
                          convertDate(card.outcome.created_at),
                          card.outcome.bkb,
                          card.inventory.nama_barang,
-                         card.inventory.vinventory.barcode,
+                         card.inventory.barcode,
                          card.inventory.component_category.kategori,
                          card.inventory.component_unit.satuan,
                          card.qty_out,

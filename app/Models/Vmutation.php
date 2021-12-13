@@ -22,7 +22,7 @@ class Vmutation extends Model
         return $this->belongsTo(Inventory::class)->withTrashed();
     }
 
-    public function Incomereturn()
+    public function incomereturn()
     {
         return $this->belongsTo(Incomereturn::class);
     }

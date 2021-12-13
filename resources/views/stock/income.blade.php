@@ -116,7 +116,7 @@
                          convertDate(card.income.created_at),
                          card.income.btb,
                          card.income.store?card.income.store.nama_toko:'',
-                         card.inventory.vinventory.barcode,
+                         card.inventory.barcode,
                          card.inventory.nama_barang,
                          card.inventory.component_category.kategori,
                          card.inventory.component_unit.satuan,

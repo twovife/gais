@@ -42,6 +42,17 @@ class InventoryController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request->all());
+        $prefix = Component_category::where('id', $request->component_category_id)->first();
+        $rowNumb = Inventory::where('component_category_id', $request->component_category_id)->count() + 1;
+
+        if ($rowNumb < 10) {
+            $request['barcode'] = $prefix->prefiks . '00' . $rowNumb;
+        } else if ($rowNumb >= 10 && $rowNumb <= 99) {
+            $request['barcode'] = $prefix->prefiks . '0' . $rowNumb;
+        } else {
+            $request['barcode'] = $prefix->prefiks . $rowNumb;
+        }
         $request['stock'] = 0;
         $responseOut = Inventory::create($request->all());
         if ($responseOut) {

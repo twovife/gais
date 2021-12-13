@@ -21,6 +21,7 @@ Route::get('store', [ApiGeneralAffairController::class, 'store']);
 Route::get('inventory', [ApiGeneralAffairController::class, 'Inventory']);
 Route::get('gaisstock', [ApiGeneralAffairController::class, 'BarangMasuk']);
 Route::get('barangkeluar', [ApiGeneralAffairController::class, 'BarangKeluar']);
+Route::get('inreturn', [ApiGeneralAffairController::class, 'IncomeReturn']);
 Route::get('isitembtbduplicate', [ApiGeneralAffairController::class, 'isExistItem']);
 Route::get('laststock', [ApiGeneralAffairController::class, 'lastStock']);
 Route::get('mutasi', [ApiGeneralAffairController::class, 'vmutasi']);

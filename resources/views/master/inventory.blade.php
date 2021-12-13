@@ -179,7 +179,7 @@
                     },
                     server: {
                          url: url,
-                         then: data => data.map(card => [card.vinventory.barcode, card.component_category.kategori, card.nama_barang, card.component_unit.satuan, card.deleted_at, card.id])
+                         then: data => data.map(card => [card.barcode, card.component_category.kategori, card.nama_barang, card.component_unit.satuan, card.deleted_at, card.id])
                     }
                }).render(document.getElementById("wrapper"));
           }

@@ -53,17 +53,17 @@
                                              <div class="mb-3">
                                                   <label for="bkb" class="form-label required">Nomor BKB</label>
                                                   <input type="text" class="form-control" name="bkb" id="bkb"
-                                                       placeholder="Nomor BKK" required>
+                                                       placeholder="Nomor BKB" required>
                                              </div>
                                              <div class="mb-3">
                                                   <label for="unit" class="form-label required">Unit</label>
                                                   <input type="text" class="form-control" name="unit" id="unit"
-                                                       placeholder="Nomor BKK" required>
+                                                       placeholder="Unit" required>
                                              </div>
                                              <div class="mb-3">
                                                   <label for="divisi" class="form-label required">Divisi</label>
                                                   <input type="text" class="form-control" name="divisi" id="divisi"
-                                                       placeholder="Nomor BKK" required>
+                                                       placeholder="divisi" required>
                                              </div>
                                              <div class="mb-3">
                                                   <label for="nama_request" class="form-label required">PIC
@@ -268,15 +268,15 @@
                     actionBtn.classList.add("btn-sm")
                     actionBtn.classList.add("adding")
                     actionBtn.setAttribute('data-id',element.id)
-                    actionBtn.setAttribute('data-barcode',element.vinventory.barcode)
+                    actionBtn.setAttribute('data-barcode',element.barcode)
                     actionBtn.setAttribute('data-nama',element.nama_barang)
-                    actionBtn.setAttribute('data-max',element.vinventory.saldo_temp-element.vinventory.min_stock)
-                    if (element.vinventory.saldo_temp <= element.vinventory.min_stock ||element.deleted_at !== null) {
+                    actionBtn.setAttribute('data-max',element.stock-element.min_stock)
+                    if (element.stock <= element.min_stock ||element.deleted_at !== null) {
                          actionBtn.setAttribute('disabled','disabled')
                     }
                     tr.insertCell(0).innerHTML = element.nama_barang
-                    tr.insertCell(1).innerHTML = element.vinventory.min_stock
-                    tr.insertCell(2).innerHTML = element.vinventory.saldo_temp
+                    tr.insertCell(1).innerHTML = element.min_stock
+                    tr.insertCell(2).innerHTML = element.stock
                     tr.insertCell(3).appendChild(actionBtn)
                     document.getElementById("resultSearch").insertAdjacentElement('beforeend',tr);
                });

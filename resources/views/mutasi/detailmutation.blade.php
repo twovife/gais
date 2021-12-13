@@ -70,11 +70,25 @@
                          name: "tag",
                          formatter: (cell) => {
                               if (cell == 'income') {
-                                   return gridjs.html(`<i class="bi bi-caret-down-fill" style="color:green;"></i>`)
+                                   return gridjs.html(`<button type="button" class="btn btn-success btn-sm disabled" style="user-select: auto;">
+                                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-up" viewBox="0 0 16 16" style="user-select: auto;">
+                                   <path fill-rule="evenodd" d="M8 1a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 13.293V1.5A.5.5 0 0 1 8 1z"/>
+                                   </svg></button>`)
                               }else if (cell == 'outcome') {
-                                   return gridjs.html(`<i class="bi bi-caret-up-fill" style="color:red;"></i>`)
-                              }else if (cell == 'return') {
-                                   return gridjs.html(`<i class="bi bi-caret-down-square-fill" style="color:red;"></i>`)
+                                   return gridjs.html(`<button type="button" class="btn btn-danger btn-sm disabled" style="user-select: auto;">
+                                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-up" viewBox="0 0 16 16" style="user-select: auto;">
+                                   <path fill-rule="evenodd" d="M8 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L7.5 2.707V14.5a.5.5 0 0 0 .5.5z"/>
+                                   </svg></button>`)
+                              }else if (cell == 'returnincome') {
+                                   return gridjs.html(`<button type="button" class="btn btn-warning btn-sm disabled" style="user-select: auto;">
+                                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-up" viewBox="0 0 16 16" style="user-select: auto;">
+                                   <path fill-rule="evenodd" d="M8 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L7.5 2.707V14.5a.5.5 0 0 0 .5.5z"/>
+                                   </svg></button>`)
+                              }else if (cell == 'returnoutcome') {
+                                   return gridjs.html(`<button type="button" class="btn btn-info btn-sm disabled" style="user-select: auto;">
+                                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-up" viewBox="0 0 16 16" style="user-select: auto;">
+                                   <path fill-rule="evenodd" d="M8 1a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 13.293V1.5A.5.5 0 0 1 8 1z"/>
+                                   </svg></button>`)
                               }
                          }
                     },{
@@ -113,17 +127,17 @@
                     url: url,
                     then: data => data.map(card => [
                          convertDate(card.created_at),
-                         inOrOut(card.vincome,card.voutcome,card.bkbreturn),
-                         showFlexyData(card.vincome,card.voutcome,card.bkbreturn),
+                         inOrOut(card.vincome,card.voutcome,card.incomereturn),
+                         showFlexyData(card.vincome,card.voutcome,card.incomereturn),
                          // isFalse(card.vincome,'btb'),
                          card.inventory.component_category.kategori,
                          card.inventory.component_unit.satuan,
                          card.inventory.vinventory.barcode,
                          card.inventory.nama_barang,
                          isFalse(card.vincome,'qty_in'),
-                         isFalse(card.voutcome,'qty_out'),
-                         showSaldo(card.voutcome??card.vincome),
-                         formatRupiah(isFalse(card.vincome,'harga')),
+                         isFalse(card.voutcome??card.incomereturn,'qty_out'),
+                         showSaldo(card.voutcome,card.vincome,card.incomereturn),
+                         formatRupiah(isFalse(card.vincome??(card.incomereturn?card.incomereturn.income_detail:null),'harga')),
                          isFalse(card.voutcome,'nama_request'),
                          isFalse(card.voutcome,'divisi'),
                          isFalse(card.voutcome,'unit')
@@ -132,8 +146,14 @@
                }).render(document.getElementById("wrapper"));
           }
 
-          function showSaldo(data){
-               return data.saldo
+          function showSaldo(income,outcome,inreturn){
+               if (income !== null) {
+                    return income.saldo
+               }else if (outcome) {
+                    return outcome.saldo
+               }else if (inreturn) {
+                    return inreturn.saldo
+               }
           }
 
 

@@ -22,9 +22,4 @@ class Inventory extends Model
     {
         return $this->belongsTo(Component_unit::class);
     }
-
-    public function vinventory()
-    {
-        return $this->hasOne(Vinventory::class, 'id', 'id');
-    }
 }

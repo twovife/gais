@@ -252,15 +252,15 @@
                     actionBtn.classList.add("btn-sm")
                     actionBtn.classList.add("adding")
                     actionBtn.setAttribute('data-id',element.id)
-                    actionBtn.setAttribute('data-barcode',element.vinventory.barcode)
+                    actionBtn.setAttribute('data-barcode',element.barcode)
                     actionBtn.setAttribute('data-nama',element.nama_barang)
-                    actionBtn.setAttribute('data-max',element.vinventory.saldo_temp-element.vinventory.min_stock)
+                    actionBtn.setAttribute('data-max',element.stock-element.min_stock)
                     if (element.deleted_at !== null) {
                          actionBtn.setAttribute('disabled','disabled')
                     }
                     tr.insertCell(0).innerHTML = element.nama_barang
-                    tr.insertCell(1).innerHTML = element.vinventory.min_stock
-                    tr.insertCell(2).innerHTML = element.vinventory.saldo_temp
+                    tr.insertCell(1).innerHTML = element.min_stock
+                    tr.insertCell(2).innerHTML = element.stock
                     tr.insertCell(3).appendChild(actionBtn)
                     document.getElementById("resultSearch").insertAdjacentElement('beforeend',tr);
                });
