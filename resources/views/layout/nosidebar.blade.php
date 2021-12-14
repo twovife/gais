@@ -90,6 +90,10 @@
                                                             <a href="{{ route('inreturn.index') }}"
                                                                  class='submenu-link'>Return Income</a>
                                                        </li>
+                                                       <li class="submenu-item  ">
+                                                            <a href="{{ route('outreturn.index') }}"
+                                                                 class='submenu-link'>Return Outcome</a>
+                                                       </li>
                                                   </ul>
                                              </div>
                                         </div>

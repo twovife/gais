@@ -62,7 +62,7 @@ const showFlexyData = (income, outcome, inret, outret) => {
           return outcome['bkb']
      } else if (inret) {
           return inret['nomor_return']
-     } else if (riten) {
+     } else if (outret) {
           return outret['nomor_return']
      }
 }
@@ -78,6 +78,20 @@ const fetchGet = (paramsUrl, params) => {
      })
           .then(response => response.json())
           .then(data => data)
+}
+
+const fetchPost = (paramsUrl) => {
+     return fetch(url, {
+          headers: {
+               'Accept': 'application/json'
+          },
+          method: 'POST',
+          data: {
+               id: 38
+          }
+     })
+          .then(response => response.json())
+          .then(data => console.log(data))
 }
 
 // dom affected and ontions (options on niceselect)
@@ -100,12 +114,18 @@ const returnSelectList = (options) => {
 
      const data = options.data
      for (let i = 0; i < data.length; i++) {
-          const option = document.createElement("option")
-          option.value = data[i].id;
-          option.setAttribute('data-max', data[i].qty_in)
-          option.setAttribute('data-saldo', data[i].saldo)
-          option.text = data[i].inventory.nama_barang;
-          select.appendChild(option)
+
+          if (data[i].inventory.deleted_at === null) {
+               const quality = data[i].qty_in ? data[i].qty_in : data[i].qty_out
+               const option = document.createElement("option")
+               option.value = data[i].id;
+               option.setAttribute('data-max', quality)
+               option.setAttribute('data-saldo', data[i].inventory.stock)
+               option.setAttribute('data-idinv', data[i].inventory_id)
+               option.text = data[i].inventory.nama_barang;
+               select.appendChild(option)
+          }
+
      }
 
      options.affectedDom.appendChild(select)
@@ -114,13 +134,13 @@ const returnSelectList = (options) => {
 }
 
 const replaceInputQty = (params, obj) => {
-     const max = obj.options[obj.selectedIndex].getAttribute('data-max');
+     const dataMax = obj.options[obj.selectedIndex].getAttribute('data-max');
      const saldo = obj.options[obj.selectedIndex].getAttribute('data-saldo');
-     if (max <= saldo) {
-          console.log('pakai max');
+     let max = ''
+     if (dataMax <= saldo) {
+          max = dataMax
      } else {
-          console.log('pakai saldo');
+          max = saldo
      }
-
-
+     return max;
 }

@@ -73,33 +73,33 @@
                     <div class="formInput container">
                          <div class="card">
                               <div class="card-body mt-3">
-                                   <form action="{{ route('inreturn.store') }}" method="post">
+                                   <form action="{{ route('outreturn.store') }}" method="post">
                                         @csrf
                                         <div class="row mb-5">
-                                             <label for="income_id" class="col col-form-label">Nomor BTB</label>
+                                             <label for="outcome_id" class="col col-form-label">Nomor BKB</label>
                                              <div class="col-sm-10">
-                                                  <select class="wide" id="income_id" name="income_id">
-                                                       <option value="">Select BTB</option>
+                                                  <select class="wide" id="outcome_id" name="outcome_id">
+                                                       <option value="">Select BKB</option>
                                                        @foreach ($noBtb as $item)
-                                                       <option value="{{ $item->id }}">{{ $item->btb }}</option>
+                                                       <option value="{{ $item->id }}">{{ $item->bkb }}</option>
                                                        @endforeach
                                                   </select>
                                              </div>
                                         </div>
                                         <div class="row mb-5">
-                                             <label for="income_detail_id" class="col col-form-label">Nama
+                                             <label for="outcome_detail_id" class="col col-form-label">Nama
                                                   Barang</label>
-                                             <div class="col-sm-10" id="income_detail">
+                                             <div class="col-sm-10" id="outcome_detail">
                                              </div>
                                              <input type="hidden" class="form-control" id="inventory_id"
                                                   name="inventory_id">
                                         </div>
                                         <div class="row mb-5">
-                                             <label for="qty_out" class="col col-form-label">Jumlah Return</label>
+                                             <label for="qty_in" class="col col-form-label">Jumlah Return</label>
                                              <div class="col-sm-10 mb-3">
                                                   <div class="input-group">
-                                                       <input type="number" min="1" class="form-control" id="qty_out"
-                                                            name="qty_out">
+                                                       <input type="number" min="1" class="form-control" id="qty_in"
+                                                            name="qty_in">
                                                        <span class="input-group-text" id="basic-addon2"></span>
                                                   </div>
                                              </div>
@@ -125,28 +125,24 @@
 
 
      <script>
-          const itemBtb = document.querySelector('#income_id')
-          const url = `http://ihsan-virtualbox/gais/public/api/gaisstock`
-          const url2 = `http://ihsan-virtualbox/gais/public/api/valbtb`
-
-          const testData = fetchPost(url2)
+          const itemBtb = document.querySelector('#outcome_id')
+          const url = `http://ihsan-virtualbox/gais/public/api/barangkeluar`
 
           itemBtb.onchange = async (e) => {
                const options = {
-                    affectedDom : document.querySelector('#income_detail'),
-                    id : 'income_detail_id',
-                    data : await fetchGet(url,{income_id:e.target.value})
+                    affectedDom : document.querySelector('#outcome_detail'),
+                    id : 'outcome_detail_id',
+                    data : await fetchGet(url,{outcome_id:e.target.value})
                }
                returnSelectList(options)
           }
 
           document.onchange = (e) => {
-               if (e.target.id == 'income_detail_id') {
+               if (e.target.id == 'outcome_detail_id') {
                     const obj = e.target
-                    const qtyOut = document.querySelector('#qty_out')
-                    const inputQty = document.querySelector('#qty_out')
+                    const inputQty = document.querySelector('#qty_in')
                     const inputInventory = document.querySelector('#inventory_id')
-                    const maximal_qty = replaceInputQty(qtyOut,obj)
+                    const maximal_qty = obj.options[obj.selectedIndex].getAttribute('data-max');
                     const idinv = obj.options[obj.selectedIndex].getAttribute('data-idinv');
                     inputQty.setAttribute('max',maximal_qty)
                     inputQty.nextElementSibling.innerHTML = `Max Out : ${maximal_qty}`

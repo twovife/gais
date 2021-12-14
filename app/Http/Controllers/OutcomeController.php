@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Inventory;
 use App\Models\Outcome;
 use App\Models\Outcome_detail;
-use App\Models\Vinventory;
 use Illuminate\Http\Request;
 use Dompdf\Dompdf;
 

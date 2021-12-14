@@ -22,9 +22,12 @@ Route::get('inventory', [ApiGeneralAffairController::class, 'Inventory']);
 Route::get('gaisstock', [ApiGeneralAffairController::class, 'BarangMasuk']);
 Route::get('barangkeluar', [ApiGeneralAffairController::class, 'BarangKeluar']);
 Route::get('inreturn', [ApiGeneralAffairController::class, 'IncomeReturn']);
+Route::get('outreturn', [ApiGeneralAffairController::class, 'OutcomeReturn']);
 Route::get('isitembtbduplicate', [ApiGeneralAffairController::class, 'isExistItem']);
 Route::get('laststock', [ApiGeneralAffairController::class, 'lastStock']);
 Route::get('mutasi', [ApiGeneralAffairController::class, 'vmutasi']);
+Route::post('valbtb', [ApiGeneralAffairController::class, 'lastValBtb']);
+Route::get('valbkb/{id}', [ApiGeneralAffairController::class, 'lastValBkb']);
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });

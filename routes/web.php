@@ -7,6 +7,7 @@ use App\Http\Controllers\IncomereturnController;
 use App\Http\Controllers\StoreController;
 use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\OutcomeController;
+use App\Http\Controllers\OutcomereturnController;
 use App\Http\Controllers\VmutationController;
 
 /*
@@ -27,6 +28,7 @@ Route::resource('inventory', InventoryController::class);
 Route::resource('income', IncomeController::class);
 Route::resource('outcome', OutcomeController::class);
 Route::resource('inreturn', IncomereturnController::class);
+Route::resource('outreturn', OutcomereturnController::class);
 // Route::resource('mutasi', VmutationController::class);
 
 Route::get('mutasi', [VmutationController::class, 'index'])->name('mutasi.index');

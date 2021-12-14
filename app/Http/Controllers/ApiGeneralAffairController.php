@@ -8,6 +8,7 @@ use App\Models\Incomereturn;
 use App\Models\Inventory;
 use App\Models\Outcome;
 use App\Models\Outcome_detail;
+use App\Models\Outcomereturn;
 use App\Models\Store;
 use App\Models\Vmutation;
 use Illuminate\Http\Request;
@@ -140,6 +141,25 @@ class ApiGeneralAffairController extends Controller
     }
 
 
+    public function OutcomeReturn()
+    {
+        $actual_link = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+        $url_components = parse_url($actual_link);
+        if (isset($url_components['query'])) {
+            parse_str($url_components['query'] ? $url_components['query'] : null, $query);
+            $straws = Outcomereturn::query();
+            foreach ($query as $key => $vals) {
+                $straws->where($key, $vals);
+            }
+            $data = $straws->with('outcome_detail.outcome', 'outcome_detail.inventory')->get();
+        } else {
+            $data = Outcomereturn::with('outcome_detail', 'outcome', 'inventory.component_category', 'inventory.component_unit')->get();
+        }
+
+        return response()->json($data);
+    }
+
+
 
     public function isExistItem()
     {
@@ -173,10 +193,27 @@ class ApiGeneralAffairController extends Controller
         } else {
             $data = Inventory::with('vinventory')->all();
         }
-        // foreach ($data as $key) {
-        //     $key->vinventory;
-        // }
+        return response()->json($data);
+    }
 
+    public function lastValBtb($id)
+    {
+        dd($id);
+        // $qtyin = Income_detail::find($id);
+        // $sumreturn = Incomereturn::where('income_detail_id', $id)->sum('qty_out');
+        // $data = [
+        //     'saldo' => $qtyin->qty_in - $sumreturn
+        // ];
+        // return response()->json($data);
+    }
+
+    public function lastValBkb($id)
+    {
+        $qtyout = Outcome_detail::find($id);
+        $sumreturn = Outcomereturn::where('outcome_detail_id', $id)->sum('qty_in');
+        $data = [
+            'saldo' => $qtyout->qty_out - $sumreturn
+        ];
         return response()->json($data);
     }
 
@@ -190,9 +227,9 @@ class ApiGeneralAffairController extends Controller
             foreach ($query as $key => $vals) {
                 $straws->where($key, $vals);
             }
-            $data = $straws->with('inventory.component_category', 'inventory.component_unit', 'inventory.vinventory', 'vincome', 'voutcome', 'incomereturn.income_detail')->get();
+            $data = $straws->with('inventory.component_category', 'inventory.component_unit', 'vincome', 'voutcome', 'incomereturn.income_detail', 'outcomereturn.outcome_detail')->get();
         } else {
-            $data = Vmutation::with('inventory.component_category', 'inventory.component_unit', 'inventory.vinventory', 'vincome', 'voutcome', 'incomereturn.income_detail')->get();
+            $data = Vmutation::with('inventory.component_category', 'inventory.component_unit', 'vincome', 'voutcome', 'incomereturn.income_detail', 'outcomereturn.outcome_detail')->get();
         }
 
         return response()->json($data);

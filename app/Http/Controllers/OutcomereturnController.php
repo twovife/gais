@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Income;
-use App\Models\Incomereturn;
 use App\Models\Inventory;
+use App\Models\Outcome;
+use App\Models\Outcomereturn;
 use Illuminate\Http\Request;
 
-class IncomereturnController extends Controller
+class OutcomereturnController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,9 +16,9 @@ class IncomereturnController extends Controller
      */
     public function index()
     {
-        return view('return.income', [
+        return view('return.outcome', [
             'treeMenu' => 'Transaction',
-            'subMenu' => 'Return Income'
+            'subMenu' => 'Return Outcome'
         ]);
     }
 
@@ -29,10 +29,10 @@ class IncomereturnController extends Controller
      */
     public function create()
     {
-        return view('return.incomereturn', [
+        return view('return.outcomereturn', [
             'treeMenu' => 'Transaction',
-            'subMenu' => 'Return Income',
-            'noBtb' => Income::all()
+            'subMenu' => 'Return Outcome',
+            'noBtb' => Outcome::all()
         ]);
     }
 
@@ -44,20 +44,21 @@ class IncomereturnController extends Controller
      */
     public function store(Request $request)
     {
+        // dd(Outcomereturn::count() + 1);
         $masterInventory = Inventory::find($request->inventory_id);
-        if ($masterInventory->stock < $request->qty_out) {
+        if ($masterInventory->stock < $request->qty_in) {
             session()->flash('eror', 'barang yang diretun mengalami perubahan stock');
-            return redirect('/inreturn');
+            return redirect('/outreturn');
             exit;
         } else {
-            $request['saldo'] = $masterInventory->stock - $request->qty_out;
-            $request['nomor_return'] = 'RTI-' . $request->income_id . '-' . $request->income_detail_id . '-' . Incomereturn::count() + 1;
-            $response_out = Incomereturn::create($request->all());
+            $request['saldo'] = $masterInventory->stock + $request->qty_in;
+            $request['nomor_return'] = 'RTO-' . $request->outcome_id . '-' . $request->outcome_detail_id . '-' . (Outcomereturn::count() + 1);
+            $response_out = Outcomereturn::create($request->all());
             if ($response_out) {
-                $masterInventory->stock = $masterInventory->stock - $request->qty_out;
+                $masterInventory->stock = $masterInventory->stock + $request->qty_in;
                 $masterInventory->save();
                 session()->flash('success', $response_out->id);
-                return redirect('/inreturn');
+                return redirect('/outreturn');
             }
         }
     }
@@ -65,10 +66,10 @@ class IncomereturnController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Incomereturn  $incomereturn
+     * @param  \App\Models\Outcomereturn  $outcomereturn
      * @return \Illuminate\Http\Response
      */
-    public function show(Incomereturn $incomereturn)
+    public function show(Outcomereturn $outcomereturn)
     {
         //
     }
@@ -76,10 +77,10 @@ class IncomereturnController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Incomereturn  $incomereturn
+     * @param  \App\Models\Outcomereturn  $outcomereturn
      * @return \Illuminate\Http\Response
      */
-    public function edit(Incomereturn $incomereturn)
+    public function edit(Outcomereturn $outcomereturn)
     {
         //
     }
@@ -88,10 +89,10 @@ class IncomereturnController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Incomereturn  $incomereturn
+     * @param  \App\Models\Outcomereturn  $outcomereturn
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Incomereturn $incomereturn)
+    public function update(Request $request, Outcomereturn $outcomereturn)
     {
         //
     }
@@ -99,10 +100,10 @@ class IncomereturnController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Incomereturn  $incomereturn
+     * @param  \App\Models\Outcomereturn  $outcomereturn
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Incomereturn $incomereturn)
+    public function destroy(Outcomereturn $outcomereturn)
     {
         //
     }

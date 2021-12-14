@@ -79,12 +79,12 @@
                     server: {
                     url: url,
                     then: data => data.map(card => [
-                         card.vinventory.barcode,
+                         card.barcode,
                          card.nama_barang,
                          card.component_category.kategori,
                          card.component_unit.satuan,
-                         card.vinventory.qty_in,
-                         card.vinventory.saldo_temp,
+                         card.qty_in,
+                         card.saldo_temp,
                          card.id,
                          ])
                }

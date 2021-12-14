@@ -127,16 +127,17 @@
                     url: url,
                     then: data => data.map(card => [
                          convertDate(card.created_at),
-                         inOrOut(card.vincome,card.voutcome,card.incomereturn),
-                         showFlexyData(card.vincome,card.voutcome,card.incomereturn),
-                         // isFalse(card.vincome,'btb'),
+                         inOrOut(card.vincome,card.voutcome,card.incomereturn,card.outcomereturn),
+                         showFlexyData(card.vincome,card.voutcome,card.incomereturn,card.outcomereturn),
                          card.inventory.component_category.kategori,
                          card.inventory.component_unit.satuan,
-                         card.inventory.vinventory.barcode,
+                         card.inventory.barcode,
                          card.inventory.nama_barang,
-                         isFalse(card.vincome,'qty_in'),
+                         // isFalse(card.vincome,'qty_in'),
+                         // isFalse(card.voutcome??card.incomereturn,'qty_out'),
+                         isFalse(card.vincome??card.outcomereturn,'qty_in'),
                          isFalse(card.voutcome??card.incomereturn,'qty_out'),
-                         showSaldo(card.voutcome,card.vincome,card.incomereturn),
+                         showSaldo(card.voutcome,card.vincome,card.incomereturn,card.outcomereturn),
                          formatRupiah(isFalse(card.vincome??(card.incomereturn?card.incomereturn.income_detail:null),'harga')),
                          isFalse(card.voutcome,'nama_request'),
                          isFalse(card.voutcome,'divisi'),
@@ -146,13 +147,15 @@
                }).render(document.getElementById("wrapper"));
           }
 
-          function showSaldo(income,outcome,inreturn){
+          function showSaldo(income,outcome,inreturn,outreturn){
                if (income !== null) {
                     return income.saldo
                }else if (outcome) {
                     return outcome.saldo
                }else if (inreturn) {
                     return inreturn.saldo
+               }else if (outreturn) {
+                    return outreturn.saldo
                }
           }
 

@@ -5,20 +5,20 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Incomereturn extends Model
+class Outcomereturn extends Model
 {
     use HasFactory;
 
     protected $guarded = ['id', 'created_at', 'updated_at'];
 
-    public function income_detail()
+    public function outcome_detail()
     {
-        return $this->belongsTo(Income_detail::class);
+        return $this->belongsTo(Outcome_detail::class);
     }
 
-    public function income()
+    public function outcome()
     {
-        return $this->belongsTo(Income::class);
+        return $this->belongsTo(Outcome::class);
     }
 
     public function inventory()

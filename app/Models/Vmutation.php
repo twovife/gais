@@ -27,6 +27,11 @@ class Vmutation extends Model
         return $this->belongsTo(Incomereturn::class);
     }
 
+    public function outcomereturn()
+    {
+        return $this->belongsTo(Outcomereturn::class);
+    }
+
     public function getRouteKeyName()
     {
         return 'inventory_id';

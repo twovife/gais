@@ -74,6 +74,9 @@
                                         <li class="submenu-item {{ $subMenu=='Return Income'?'active':''; }}">
                                              <a href="{{ route('inreturn.index') }}">Return Income</a>
                                         </li>
+                                        <li class="submenu-item {{ $subMenu=='Return Income'?'active':''; }}">
+                                             <a href="{{ route('outreturn.index') }}">Return Outcome</a>
+                                        </li>
                                    </ul>
                               </li>
 

@@ -16,10 +16,6 @@
           }
 
           td:nth-child(9) {
-               text-align: right;
-          }
-
-          td:nth-child(10) {
                text-align: left;
           }
      </style>
@@ -35,7 +31,7 @@
                               <div class="row w-50">
                               </div>
                               <div class="extra-btn ms-auto">
-                                   <a href="{{ route('inreturn.create') }}" role="button"
+                                   <a href="{{ route('outreturn.create') }}" role="button"
                                         class="btn btn-secondary btn-sm">Create
                                    </a>
                                    <button class="btn btn-outline-info btn-sm">Export</button>
@@ -56,7 +52,7 @@
      <script src="{{ asset('jsgrid/gridjs.umd.js') }}"></script>
      <script src="{{ asset('mazer/vendors/sweetalert2/sweetalert2.all.min.js') }}"></script>
      <script>
-          const url = '{{ url('api/inreturn') }}'
+          const url = '{{ url('api/outreturn') }}'
           const data = loadInventorTables(url)
           
           function loadInventorTables(url) {
@@ -66,7 +62,7 @@
                     },{
                          name: "Nomor Return"
                     },{
-                         name: "Nomor BTB"
+                         name: "Nomor BKB"
                     },{
                          name: "Kode Barang"
                     },{
@@ -77,8 +73,6 @@
                          name: "Satuan"
                     },{
                          name: "Qty"
-                    },{
-                         name: "Harga"
                     },{
                          name: "Keterangan"
                     },{
@@ -96,13 +90,12 @@
                     then: data => data.map(card => [
                          convertDate(card.created_at),
                          card.nomor_return,
-                         card.income.btb,
+                         card.outcome.bkb,
                          card.inventory.barcode,
                          card.inventory.nama_barang,
                          card.inventory.component_category.kategori,
                          card.inventory.component_unit.satuan,
-                         card.qty_out,
-                         formatRupiah(card.income_detail.harga),
+                         card.qty_in,
                          card.reason,
                          card.user_input,
                     ])
