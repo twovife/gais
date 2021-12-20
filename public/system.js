@@ -94,17 +94,31 @@ const fetchPost = (paramsUrl) => {
           .then(data => console.log(data))
 }
 
-// dom affected and ontions (options on niceselect)
-const niceEvolution = (dom, option) => {
-     new NiceSelect.bind(dom, option = false);
+
+const initialChoices = (choices) => {
+     let initChoice;
+     for (let i = 0; i < choices.length; i++) {
+          if (choices[i].classList.contains("multiple-remove")) {
+               initChoice = new Choices(choices[i],
+                    {
+                         delimiter: ',',
+                         editItems: true,
+                         maxItemCount: -1,
+                         removeItemButton: true,
+                    });
+          } else {
+               initChoice = new Choices(choices[i]);
+          }
+     }
 }
+// dom affected and ontions (options on niceselect)
 
 // option is dom affected, id after created and mutable dom
 const returnSelectList = (options) => {
      options.affectedDom.innerHTML = ''
      const select = document.createElement('select')
      select.setAttribute("name", `${options.id}`)
-     select.setAttribute("class", 'wide')
+     select.setAttribute("class", 'choices form-select choices__input')
      select.id = `${options.id}`
      // create null options
      const nullOpt = document.createElement("option")
@@ -130,7 +144,8 @@ const returnSelectList = (options) => {
 
      options.affectedDom.appendChild(select)
      const mutationDom = document.querySelector(`#${options.id}`)
-     niceEvolution(mutationDom, { searchable: true })
+     let initialize;
+     initialize = initChoice = new Choices(mutationDom);
 }
 
 const replaceInputQty = (params, obj) => {
@@ -144,3 +159,4 @@ const replaceInputQty = (params, obj) => {
      }
      return max;
 }
+

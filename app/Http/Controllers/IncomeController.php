@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Income;
 use App\Models\Income_detail;
 use App\Models\Inventory;
+use App\Models\Store;
 use App\Models\Vinventory;
 use Illuminate\Http\Request;
 
@@ -34,7 +35,8 @@ class IncomeController extends Controller
         return view('stock.incomecreate', [
             'treeMenu' => 'Transaction',
             'subMenu' => 'Income',
-            'inventories' => Inventory::all()
+            'inventories' => Inventory::all(),
+            'stores' => Store::all()
         ]);
     }
 

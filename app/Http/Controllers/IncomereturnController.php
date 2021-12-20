@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Income;
 use App\Models\Incomereturn;
 use App\Models\Inventory;
+use App\Models\Store;
 use Illuminate\Http\Request;
 
 class IncomereturnController extends Controller
@@ -18,7 +19,8 @@ class IncomereturnController extends Controller
     {
         return view('return.income', [
             'treeMenu' => 'Transaction',
-            'subMenu' => 'Return Income'
+            'subMenu' => 'Return Income',
+
         ]);
     }
 
@@ -32,7 +34,7 @@ class IncomereturnController extends Controller
         return view('return.incomereturn', [
             'treeMenu' => 'Transaction',
             'subMenu' => 'Return Income',
-            'noBtb' => Income::all()
+            'noBtb' => Income::all(),
         ]);
     }
 

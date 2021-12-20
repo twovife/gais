@@ -1,6 +1,6 @@
 <x-nosidebar :treeMenu="$treeMenu" :subMenu="$subMenu">
      @section('css')
-     <link rel="stylesheet" href="{{ asset('nice-select2/css/nice-select2.css') }}">
+     <link rel="stylesheet" href="{{ asset('mazer/vendors/choices.js/choices.min.css') }}">
      <style>
           tr>th {
                text-align: center;
@@ -13,10 +13,6 @@
           td>input.noborder {
                border: none;
                text-align: center;
-          }
-
-          .swal2-container {
-               z-index: 100000,  !important;
           }
 
           .required::after {
@@ -78,7 +74,8 @@
                                         <div class="row mb-5">
                                              <label for="outcome_id" class="col col-form-label">Nomor BKB</label>
                                              <div class="col-sm-10">
-                                                  <select class="wide" id="outcome_id" name="outcome_id">
+                                                  <select class="choices form-select choices__input" id="outcome_id"
+                                                       name="outcome_id">
                                                        <option value="">Select BKB</option>
                                                        @foreach ($noBtb as $item)
                                                        <option value="{{ $item->id }}">{{ $item->bkb }}</option>
@@ -120,13 +117,15 @@
      </div>
 
      @section('javascript')
-     <script src="{{ asset('nice-select2/js/nice-select2.js') }}"></script>
+     <script src="{{ asset('mazer/vendors/choices.js/choices.min.js') }}"></script>
      <script src="{{ asset('mazer/vendors/sweetalert2/sweetalert2.all.min.js') }}"></script>
 
 
      <script>
-          const itemBtb = document.querySelector('#outcome_id')
+          const itemBtb = document.querySelectorAll('.choices')
           const url = `http://ihsan-virtualbox/gais/public/api/barangkeluar`
+          
+          const coises = initialChoices(itemBtb)
 
           itemBtb.onchange = async (e) => {
                const options = {
@@ -136,7 +135,7 @@
                }
                returnSelectList(options)
           }
-
+          
           document.onchange = (e) => {
                if (e.target.id == 'outcome_detail_id') {
                     const obj = e.target
@@ -151,9 +150,7 @@
                     e.stopPropagation()
                }
           }
-          const onloadSelect =  niceEvolution(itemBtb,{
-               searchable: true
-          })
+
      </script>
      @endsection
 
