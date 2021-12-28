@@ -1,5 +1,6 @@
 <x-nosidebar :treeMenu="$treeMenu" :subMenu="$subMenu">
      @section('css')
+     <link rel="stylesheet" href="{{ asset('mazer/vendors/choices.js/choices.min.css') }}">
      <style>
           tr>th {
                text-align: center;
@@ -51,19 +52,16 @@
                                                        value="Hari Ini">
                                              </div>
                                              <div class="mb-3">
-                                                  <label for="bkb" class="form-label required">Nomor BKB</label>
-                                                  <input type="text" class="form-control" name="bkb" id="bkb"
-                                                       placeholder="Nomor BKB" required>
-                                             </div>
-                                             <div class="mb-3">
-                                                  <label for="unit" class="form-label required">Unit</label>
-                                                  <input type="text" class="form-control" name="unit" id="unit"
-                                                       placeholder="Unit" required>
-                                             </div>
-                                             <div class="mb-3">
-                                                  <label for="divisi" class="form-label required">Divisi</label>
-                                                  <input type="text" class="form-control" name="divisi" id="divisi"
-                                                       placeholder="divisi" required>
+                                                  <label for="struktur_id" class="form-label required">Divisi</label>
+                                                  <select class="form-select choice" name="struktur_id" id="struktur_id"
+                                                       required>
+                                                       <option value="" selected>Pilih Divisi</option>
+                                                       @foreach ($struktur as $item)
+                                                       <option value="{{ $item->id }}">{{
+                                                            $item->hc_unit->unit }} > {{ $item->hc_sub_unit->sub_unit }}
+                                                       </option>
+                                                       @endforeach
+                                                  </select>
                                              </div>
                                              <div class="mb-3">
                                                   <label for="nama_request" class="form-label required">PIC
@@ -92,7 +90,7 @@
                                                                  <th scope="col">#</th>
                                                                  <th scope="col">Barcode</th>
                                                                  <th scope="col">Nama Barang</th>
-                                                                 <th scope="col">Qty Out</th>
+                                                                 <th scope="col" style="width: 20%;">Qty Out</th>
                                                             </tr>
                                                        </thead>
                                                        <tbody id="daftarKeluar">
@@ -145,25 +143,43 @@
      </div>
 
      @section('javascript')
+     <script src="{{ asset('mazer/vendors/choices.js/choices.min.js') }}"></script>
      <script src="{{ asset('mazer/vendors/sweetalert2/sweetalert2.all.min.js') }}"></script>
      <script>
+          const choiseSelect = document.querySelectorAll('.choice')
           const modalId = document.getElementById('selectItem');
           const myModal = new bootstrap.Modal(modalId);
           const url = '{{ url('api/inventory') }}'
           const btnModal = document.getElementById('addons');
           const inputan = modalId.querySelector('#findItem')
+          const coises = initialChoices(choiseSelect)
+
+          const inputQuantity = async(target,maksimalOut) =>{
+               const { value: tambahJumlah } = await Swal.fire({
+                    title: 'Enter your IP address',
+                    input: 'number',
+                    inputLabel: `Jumlah Maksimal = ${maksimalOut}`,
+                    // inputValue: inputValue,
+                    showCancelButton: true,
+                    inputValidator: (value) => {
+                         if (value> +maksimalOut) {
+                              return 'Jumlah Terlalu Banyak'
+                         }else if (!value) {
+                              return 'Masukkan Jumlah Keluar'
+                         }else if (value < 1) {
+                              return 'Kok aneh aneh'
+                         }
+                    }
+               })
+               if (tambahJumlah) {
+                    target.value = tambahJumlah
+                    Swal.fire(`Berhasil Ditambah`)
+               }
+          }
 
 
           btnModal.addEventListener('click',function(e){
-                    if (document.getElementById('bkb').value!=='') {
-                         myModal.toggle();
-                    }else{
-                         Swal.fire({
-                              icon: 'error',
-                              title: 'Oops...!',
-                              text: 'BKB Tidak Boleh Dikosongkan'
-                         })
-                    }
+               myModal.toggle();
           })
 
           // disabled IE help popup
@@ -175,15 +191,7 @@
           window.onkeydown = evt => {
                switch(evt.keyCode){
                     case 115:
-                    if (document.getElementById('bkb').value!=='') {
-                         myModal.toggle();
-                    }else{
-                         Swal.fire({
-                              icon: 'error',
-                              title: 'Oops...!',
-                              text: 'BKB Tidak Boleh Dikosongkan'
-                         })
-                    }
+                    myModal.toggle();
                     break;
                     default:
                          return true;
@@ -191,7 +199,6 @@
                return false;
           }
 
-          modalId.addEventListener('shown.bs.modal',function(e){
                this.addEventListener('click',function(e){
                     if (e.target.classList.contains('adding')) {
                          (async () => {
@@ -220,17 +227,22 @@
                                         id:dataId,
                                         nama:dataNama,
                                         barcode:dataBarcode,
-                                        qty:tambahJumlah
+                                        qty:tambahJumlah,
+                                        maximal:dataMax
                                    })
                                    Swal.fire(`Berhasil Ditambah`)
                               }
                          })()
+                    }else if(e.target.classList.contains('edit')){
+                         // console.log(e.target.getAttribute("id-max"))
+                         inputQuantity(e.target,e.target.getAttribute("id-max"))
+                    }else if(e.target.classList.contains('delete')){
+                         e.target.parentNode.parentNode.parentNode.remove()
                     }else{
                          e.stopPropagation();
                     }
                })
                
-          })
 
           inputan.focus()
                inputan.addEventListener('keydown',async function(e){
@@ -287,15 +299,35 @@
                     let inputId = document.createElement("input")
                     var inputBarcode = document.createElement("input");
                     var inputNama = document.createElement("input");
+                    let qtyWrapper = document.createElement("div");
+                    let qtyBtn = document.createElement("button")
+                    let qtyIcon = document.createElement("i")
                     var inputQty = document.createElement("input");
                     inputId.setAttribute("name","inventory_id[]")
                     inputId.setAttribute("type","hidden")
                     inputId.value = haystack.id 
 
+                    //<div class="input-group mb-3">
+                    //   <input type="text" class="form-control" placeholder="Recipient's username" aria-label="Recipient's username" aria-describedby="button-addon2">
+                    //   <button class="btn btn-outline-secondary" type="button" id="button-addon2">Button</button>
+                    // </div>
+
+                    qtyWrapper.setAttribute("class","input-group")
+
+                    qtyBtn.setAttribute("class","btn btn-danger delete")
+                    qtyBtn.setAttribute("type","button")
+                    qtyBtn.appendChild(document.createTextNode('X'))
+
+                    
                     inputQty.setAttribute("name","qty_out[]")
+                    inputQty.setAttribute("class","form-control edit")
                     inputQty.setAttribute("type","number")
                     inputQty.setAttribute("readonly","true")
+                    inputQty.setAttribute('id-max',haystack.maximal)
                     inputQty.value = haystack.qty 
+
+                    qtyWrapper.appendChild(inputQty)
+                    qtyWrapper.appendChild(qtyBtn)
 
                     inputBarcode.setAttribute("disabled","disabled")
                     inputBarcode.value = haystack.barcode   
@@ -306,7 +338,7 @@
                     tr.insertCell(0).appendChild(inputId)
                     tr.insertCell(1).appendChild(inputBarcode)
                     tr.insertCell(2).appendChild(inputNama)
-                    tr.insertCell(3).appendChild(inputQty)
+                    tr.insertCell(3).appendChild(qtyWrapper)
                     document.getElementById("daftarKeluar").insertAdjacentElement('beforeend',tr);
           }
 

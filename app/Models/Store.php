@@ -17,8 +17,4 @@ class Store extends Model
     {
         return $this->hasOne(Vstore::class, 'id', 'id');
     }
-    // public function getRouteKeyName()
-    // {
-    //     return 'id';
-    // }
 }

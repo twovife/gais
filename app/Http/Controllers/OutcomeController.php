@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Hc_rank_ga_structure;
 use App\Models\Inventory;
 use App\Models\Outcome;
 use App\Models\Outcome_detail;
@@ -34,7 +35,8 @@ class OutcomeController extends Controller
         return view('stock.outcomecreate', [
             'treeMenu' => 'Transaction',
             'subMenu' => 'Outcome',
-            'inventories' => Inventory::all()
+            'inventories' => Inventory::all(),
+            'struktur' => Hc_rank_ga_structure::with('hc_unit', 'hc_sub_unit')->get()
         ]);
     }
 
@@ -67,16 +69,14 @@ class OutcomeController extends Controller
         }
 
         $request->validate([
-            'bkb' => ['required', 'unique:outcomes'],
             'inventory_id.*' => ['required', 'numeric'],
             'qty_out.*' => ['required', 'numeric']
         ]);
 
-
+        $countOutcome = Outcome::count();
         $dataOutcome = [
-            'bkb' => $request->bkb,
-            'unit' => $request->unit,
-            'divisi' => $request->divisi,
+            'bkb' => 'BKB-' . sprintf("%05d", $countOutcome),
+            'struktur_id' => $request->struktur_id,
             'nama_request' => $request->nama_request,
             'user_input' => $request->user_input
         ];

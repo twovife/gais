@@ -122,10 +122,11 @@
 
 
      <script>
-          const itemBtb = document.querySelectorAll('.choices')
-          const url = `http://ihsan-virtualbox/gais/public/api/barangkeluar`
+          const choiseSelect = document.querySelectorAll('.choices')
+          const itemBtb = document.querySelector('#outcome_id')
+          const url = `{{ url('api/barangkeluar') }}`
           
-          const coises = initialChoices(itemBtb)
+          const coises = initialChoices(choiseSelect)
 
           itemBtb.onchange = async (e) => {
                const options = {

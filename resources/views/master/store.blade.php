@@ -78,7 +78,7 @@
                               </button>
                               <button type="submit" class="btn btn-primary ml-1">
                                    <i class=" bi bi-check d-block d-sm-none"></i>
-                                   <span class="d-none d-sm-block">Accept</span>
+                                   <span id="submitbtn" class="d-none d-sm-block">Create</span>
                               </button>
                          </div>
                     </form>
@@ -105,6 +105,7 @@
                     this.querySelector('#nama_toko').value = data.nama_toko
                     this.querySelector('#no_toko').value = data.no_toko
                     this.querySelector('#alamat_toko').value = data.alamat_toko
+                    this.querySelector('#submitbtn').innerHTML = 'Update'
                     this.querySelector('.modal-body').insertAdjacentHTML('beforeend','<input type="hidden" class="form-control" name="id" id="id" value="'+data.id+'">')
                     this.querySelector('#formCreate').insertAdjacentHTML('afterbegin','<input type="hidden" name="_method" id="_method" value="put">')
                     this.querySelector('#formCreate').setAttribute('method','post')
@@ -141,7 +142,7 @@
                columns: [{
                     name: "Nama Toko",
                     formatter: (cell, row) => {
-                         return gridjs.html(`<a href="#" class="link-primary fw-bold" data-bs-toggle="modal" data-bs-target="#creating", data-bs-id=${row._cells[4].data}>${cell}</a>`)
+                         return gridjs.html(`<a href="#" class="link-primary fw-bold" data-bs-toggle="modal" data-bs-target="#creating", data-bs-id=${row._cells[5].data}>${cell}</a>`)
                          return gridjs.h('a', {
                               className: 'pe-auto',
                               "data-bs-toggle" : "modal",
@@ -156,9 +157,18 @@
                },{
                     name: "Alamat"
                },{
-                    name: "Delete",
+                    name: "Status",
                     formatter: (cell, row) => {
-                         return gridjs.html(formDelete(cell))
+                         return !cell ? 'Aktif' : 'Non Aktif';
+                    }
+               },{
+                    name: "Action",
+                    formatter: (cell, row) => {
+                         if (row._cells[4].data === null) {
+                              return gridjs.html(formDelete(cell))
+                         }else{
+                              return gridjs.html(formRestore(cell))
+                         }
                     }
                }],
                search: true,
@@ -167,7 +177,7 @@
                     },
                server: {
                     url: url,
-                    then: data => data.map(card => [card.nama_toko, card.vstore.kode_toko, card.no_toko, card.alamat_toko,card.id])
+                    then: data => data.map(card => [card.nama_toko, card.vstore.kode_toko, card.no_toko, card.alamat_toko,card.deleted_at,card.id])
                }
                }).render(document.getElementById("wrapper"));
           }
@@ -179,22 +189,28 @@
                return `<form action="${urlupdate}" method="post">@csrf @method("delete")<button onClick="validate(this)" type="button" class="btn btn-danger"><i class="bi bi-trash"></i></button></form>`
           }
 
+          function formRestore(id){
+               var urlupdate = '{{ route('store.restore',':id') }}'
+               urlupdate = urlupdate.replace(':id',id)
+               return `<form action="${urlupdate}" method="post">@csrf @method("put")<button onClick="validate(this)" type="button" class="btn btn-warning"><i class="bi bi-arrow-clockwise"></i></button></form>`
+          }
+
           function validate(e) {
                
                const domForm = e.parentNode
                Swal.fire({
                title: 'Are you sure?',
-               text: "You won't be able to revert this!",
+               text: "Anda tidak bisa mengulang aksi ini",
                icon: 'warning',
                showCancelButton: true,
                confirmButtonColor: '#3085d6',
                cancelButtonColor: '#d33',
-               confirmButtonText: 'Yes, delete it!'
+               confirmButtonText: 'Yes, do it!'
           }).then((result) => {
                if (result.isConfirmed) {
                     Swal.fire(
-                         'Deleted!',
-                         'Your file has been deleted.',
+                         'Submited!',
+                         'Your file has been modified.',
                          'success').then((result)=>domForm.submit())
                }
           })

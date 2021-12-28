@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Hc_rank_ga_structure;
 use App\Models\Income;
 use App\Models\Income_detail;
 use App\Models\Inventory;
@@ -36,7 +37,7 @@ class IncomeController extends Controller
             'treeMenu' => 'Transaction',
             'subMenu' => 'Income',
             'inventories' => Inventory::all(),
-            'stores' => Store::all()
+            'stores' => Store::all(),
         ]);
     }
 

@@ -17,76 +17,32 @@ class StoreController extends Controller
         return view('master.store', [
             'treeMenu' => 'master',
             'subMenu' => 'store',
-            'stores' => Store::OrderBy('id', 'desc')->get()
+            'stores' => Store::withTrashed()->OrderBy('id', 'desc')->get()
         ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         Store::create($request->all());
         return back();
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Store  $store
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Store $store)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Store  $store
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Store $store)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Store  $store
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, Store $store)
     {
         Store::find($store->id)->update($request->all());
         return redirect('store');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Store  $store
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(Store $Store)
     {
         $Store->delete();
         return redirect('store');
+    }
+
+    public function restore(Request $request, $store)
+    {
+        Store::withTrashed()->find($store)->restore();
+        return redirect('store');
+        // $store = Store::withTrashed()->find($request->id)->first();
     }
 }

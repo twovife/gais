@@ -83,8 +83,8 @@
                          card.nama_barang,
                          card.component_category.kategori,
                          card.component_unit.satuan,
-                         card.qty_in,
-                         card.saldo_temp,
+                         card.min_stock,
+                         card.stock,
                          card.id,
                          ])
                }

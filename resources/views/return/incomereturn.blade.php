@@ -1,6 +1,6 @@
 <x-nosidebar :treeMenu="$treeMenu" :subMenu="$subMenu">
      @section('css')
-     <link rel="stylesheet" href="{{ asset('nice-select2/css/nice-select2.css') }}">
+     <link rel="stylesheet" href="{{ asset('mazer/vendors/choices.js/choices.min.css') }}">
      <style>
           tr>th {
                text-align: center;
@@ -78,7 +78,8 @@
                                         <div class="row mb-5">
                                              <label for="income_id" class="col col-form-label">Nomor BTB</label>
                                              <div class="col-sm-10">
-                                                  <select class="wide" id="income_id" name="income_id">
+                                                  <select class="choices form-select choices__input" id="income_id"
+                                                       name="income_id">
                                                        <option value="">Select BTB</option>
                                                        @foreach ($noBtb as $item)
                                                        <option value="{{ $item->id }}">{{ $item->btb }}</option>
@@ -120,16 +121,18 @@
      </div>
 
      @section('javascript')
-     <script src="{{ asset('nice-select2/js/nice-select2.js') }}"></script>
+     <script src="{{ asset('mazer/vendors/choices.js/choices.min.js') }}"></script>
      <script src="{{ asset('mazer/vendors/sweetalert2/sweetalert2.all.min.js') }}"></script>
 
 
      <script>
+          const choiseSelect = document.querySelectorAll('.choices')
           const itemBtb = document.querySelector('#income_id')
-          const url = `http://ihsan-virtualbox/gais/public/api/gaisstock`
-          const url2 = `http://ihsan-virtualbox/gais/public/api/valbtb`
+          const url = `{{ url('api/gaisstock') }}`
+          const url2 = `{{ url('api/valbtb') }}`
 
-          const testData = fetchPost(url2)
+          const coises = initialChoices(choiseSelect)
+
 
           itemBtb.onchange = async (e) => {
                const options = {
@@ -155,9 +158,6 @@
                     e.stopPropagation()
                }
           }
-          const onloadSelect =  niceEvolution(itemBtb,{
-               searchable: true
-          })
      </script>
      @endsection
 

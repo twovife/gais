@@ -34,6 +34,10 @@ const convertDate = (dates) => {
      return margeTanggal
 }
 
+const generategetUrl = (url, param) => {
+     return url + '?' + new URLSearchParams(param)
+}
+
 const isFalse = (data, object) => {
      const _object = object
      if (data === null) {
@@ -128,7 +132,6 @@ const returnSelectList = (options) => {
 
      const data = options.data
      for (let i = 0; i < data.length; i++) {
-
           if (data[i].inventory.deleted_at === null) {
                const quality = data[i].qty_in ? data[i].qty_in : data[i].qty_out
                const option = document.createElement("option")
@@ -139,13 +142,12 @@ const returnSelectList = (options) => {
                option.text = data[i].inventory.nama_barang;
                select.appendChild(option)
           }
-
      }
 
      options.affectedDom.appendChild(select)
      const mutationDom = document.querySelector(`#${options.id}`)
      let initialize;
-     initialize = initChoice = new Choices(mutationDom);
+     // initialize = initChoice = new Choices(mutationDom);
 }
 
 const replaceInputQty = (params, obj) => {
@@ -159,4 +161,6 @@ const replaceInputQty = (params, obj) => {
      }
      return max;
 }
+
+
 

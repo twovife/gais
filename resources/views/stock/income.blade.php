@@ -1,7 +1,6 @@
 <x-nosidebar :treeMenu="$treeMenu" :subMenu="$subMenu">
      @section('css')
      <link rel="stylesheet" href="{{ asset('jsgrid/theme/mermaid.min.css') }}">
-     <link rel="stylesheet" href="{{ asset('tom-select/dist/css/tom-select.default.css') }}">
      <style>
           .table-responsive {
                height: 50vh;
@@ -41,13 +40,42 @@
      </div>
      @endif
 
+
      <div class="container-fluid">
           <div class="card mb-3">
                <div class="card-body">
                     <div class="card-title">
-                         <h5 class="mb-3">Master Barang</h5>
+                         <h5 class="mb-3">Barang Masuk</h5>
                          <div class="d-flex align-items-center">
                               <div class="row w-50">
+                                   <div class="col">
+                                        <div class="row row-cols-lg-auto g-3 align-items-center">
+                                             <div class="col-5">
+                                                  <label class="visually-hidden" for="fromdate">Username</label>
+                                                  <div class="input-group">
+                                                       <div class="input-group-text">From</div>
+                                                       <input type="date" class="form-control" id="fromdate"
+                                                            name="fromdate" placeholder="Username"
+                                                            value="{{ $tanggal = date('Y-m-d') }}">
+                                                  </div>
+                                             </div>
+
+                                             <div class="col-5">
+                                                  <label class="visually-hidden" for="enddate">Username</label>
+                                                  <div class="input-group">
+                                                       <div class="input-group-text">To</div>
+                                                       <input type="date" class="form-control" id="enddate"
+                                                            name="enddate" placeholder="Username"
+                                                            value="{{ $tanggal = date('Y-m-d') }}">
+                                                  </div>
+                                             </div>
+
+                                             <div class="col">
+                                                  <button type="btn" class="btn btn-primary"
+                                                       onclick="setDate()">Search</button>
+                                             </div>
+                                        </div>
+                                   </div>
                               </div>
                               <div class="extra-btn ms-auto">
                                    <a href="{{ route('income.create') }}" role="button"
@@ -60,7 +88,7 @@
                </div>
           </div>
           <div class="card mb-3">
-               <div class="card-body">
+               <div class="card-body card-warpper">
                     <div id="wrapper"></div>
                </div>
           </div>
@@ -69,12 +97,14 @@
      @section('javascript')
      <script src="{{ asset('jsgrid/gridjs.umd.js') }}"></script>
      <script src="{{ asset('mazer/vendors/sweetalert2/sweetalert2.all.min.js') }}"></script>
-     <script src="{{ asset('tom-select/dist/js/tom-select.complete.js') }}"></script>
      <script>
           const url = '{{ url('api/gaisstock') }}'
-          const data = loadInventorTables(url)
-          
-          function loadInventorTables(url) {
+          const urli = generategetUrl(url,{
+               fromdate: document.getElementById('fromdate').value,
+               enddate: document.getElementById('enddate').value
+          })
+
+          const loadInventorTables = (parameter) => {
                new gridjs.Grid({
                     columns: [{
                          name: "Tanggal",
@@ -109,9 +139,9 @@
                     },
                     pagination: {
                     limit: 10
-               },
+                    },
                     server: {
-                    url: url,
+                    url: parameter,
                     then: data => data.map(card => [
                          convertDate(card.income.created_at),
                          card.income.btb,
@@ -129,6 +159,22 @@
                     ])
                }
                }).render(document.getElementById("wrapper"));
+          }
+
+          const data = loadInventorTables(urli)
+
+          const setDate = () => {
+               const urls = generategetUrl(url,{
+               fromdate: document.getElementById('fromdate').value,
+               enddate: document.getElementById('enddate').value
+               })
+
+               document.getElementById("wrapper").remove()
+               const elements = document.createElement('div')
+               elements.setAttribute('id','wrapper')
+
+               document.querySelector('.card-warpper').appendChild(elements)
+               const data = loadInventorTables(urls)
           }
      </script>
      @endsection

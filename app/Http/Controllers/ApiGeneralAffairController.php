@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Hc_rank_ga_structure;
 use App\Models\Income;
 use App\Models\Income_detail;
 use App\Models\Incomereturn;
@@ -36,9 +37,9 @@ class ApiGeneralAffairController extends Controller
             foreach ($query as $key => $vals) {
                 $straws->where($key, $vals);
             }
-            $data = $straws->get();
+            $data = $straws->withTrashed()->get();
         } else {
-            $data = Store::all();
+            $data = Store::withTrashed()->get();
         }
         foreach ($data as $key) {
             $key->vstore;
@@ -91,8 +92,34 @@ class ApiGeneralAffairController extends Controller
         $url_components = parse_url($actual_link);
         if (isset($url_components['query'])) {
             parse_str($url_components['query'] ? $url_components['query'] : null, $query);
+            $dates = [];
+            $filters = [];
+
+            foreach ($query as $key => $val) {
+                if ($key == 'fromdate') {
+                    $dates['fromdate'] = $val;
+                } else if ($key == 'enddate') {
+                    $dates['enddate'] = $val;
+                } else {
+                    $filters[$key] = $val;
+                }
+            }
+            // dd($dates);
+
             $straws = Income_detail::query();
-            foreach ($query as $key => $vals) {
+            foreach ($dates as $key => $value) {
+                if ($key == 'fromdate') {
+                    $input = $value . '01:00:00';
+                    $date = strtotime($input);
+                    $straws->where('created_at', '>=', date('Y-m-d h:i:s', $date));
+                } else {
+                    $input = $value . '23:59:59';
+                    $date = strtotime($input);
+                    $straws->where('created_at', '<=', date('Y-m-d h:i:s', $date));
+                }
+            }
+
+            foreach ($filters as $key => $vals) {
                 $straws->where($key, $vals);
             }
             $data = $straws->with('income.store', 'inventory.component_category', 'inventory.component_unit')->get();
@@ -110,8 +137,33 @@ class ApiGeneralAffairController extends Controller
         $url_components = parse_url($actual_link);
         if (isset($url_components['query'])) {
             parse_str($url_components['query'] ? $url_components['query'] : null, $query);
+            $dates = [];
+            $filters = [];
+
+            foreach ($query as $key => $val) {
+                if ($key == 'fromdate') {
+                    $dates['fromdate'] = $val;
+                } else if ($key == 'enddate') {
+                    $dates['enddate'] = $val;
+                } else {
+                    $filters[$key] = $val;
+                }
+            }
+
             $straws = Outcome_detail::query();
-            foreach ($query as $key => $vals) {
+            foreach ($dates as $key => $value) {
+                if ($key == 'fromdate') {
+                    $input = $value . '01:00:00';
+                    $date = strtotime($input);
+                    $straws->where('created_at', '>=', date('Y-m-d h:i:s', $date));
+                } else {
+                    $input = $value . '23:59:59';
+                    $date = strtotime($input);
+                    $straws->where('created_at', '<=', date('Y-m-d h:i:s', $date));
+                }
+            }
+
+            foreach ($filters as $key => $vals) {
                 $straws->where($key, $vals);
             }
             $data = $straws->with('outcome', 'inventory', 'inventory.component_category', 'inventory.component_unit')->get();
@@ -128,11 +180,36 @@ class ApiGeneralAffairController extends Controller
         $url_components = parse_url($actual_link);
         if (isset($url_components['query'])) {
             parse_str($url_components['query'] ? $url_components['query'] : null, $query);
+            $dates = [];
+            $filters = [];
+
+            foreach ($query as $key => $val) {
+                if ($key == 'fromdate') {
+                    $dates['fromdate'] = $val;
+                } else if ($key == 'enddate') {
+                    $dates['enddate'] = $val;
+                } else {
+                    $filters[$key] = $val;
+                }
+            }
+
             $straws = Incomereturn::query();
-            foreach ($query as $key => $vals) {
+            foreach ($dates as $key => $value) {
+                if ($key == 'fromdate') {
+                    $input = $value . '01:00:00';
+                    $date = strtotime($input);
+                    $straws->where('created_at', '>=', date('Y-m-d h-i-s', $date));
+                } else {
+                    $input = $value . '23:59:59';
+                    $date = strtotime($input);
+                    $straws->where('created_at', '<=', date('Y-m-d h-i-s', $date));
+                }
+            }
+
+            foreach ($filters as $key => $vals) {
                 $straws->where($key, $vals);
             }
-            $data = $straws->with('income_detail.income', 'income_detail.inventory')->get();
+            $data = $straws->with('income_detail', 'income', 'inventory.component_category', 'inventory.component_unit')->get();
         } else {
             $data = Incomereturn::with('income_detail', 'income', 'inventory.component_category', 'inventory.component_unit')->get();
         }
@@ -147,11 +224,37 @@ class ApiGeneralAffairController extends Controller
         $url_components = parse_url($actual_link);
         if (isset($url_components['query'])) {
             parse_str($url_components['query'] ? $url_components['query'] : null, $query);
+
+            $dates = [];
+            $filters = [];
+
+            foreach ($query as $key => $val) {
+                if ($key == 'fromdate') {
+                    $dates['fromdate'] = $val;
+                } else if ($key == 'enddate') {
+                    $dates['enddate'] = $val;
+                } else {
+                    $filters[$key] = $val;
+                }
+            }
+
             $straws = Outcomereturn::query();
-            foreach ($query as $key => $vals) {
+            foreach ($dates as $key => $value) {
+                if ($key == 'fromdate') {
+                    $input = $value . '01:00:00';
+                    $date = strtotime($input);
+                    $straws->where('created_at', '>=', date('Y-m-d h-i-s', $date));
+                } else {
+                    $input = $value . '23:59:59';
+                    $date = strtotime($input);
+                    $straws->where('created_at', '<=', date('Y-m-d h-i-s', $date));
+                }
+            }
+
+            foreach ($filters as $key => $vals) {
                 $straws->where($key, $vals);
             }
-            $data = $straws->with('outcome_detail.outcome', 'outcome_detail.inventory')->get();
+            $data = $straws->with('outcome_detail', 'outcome', 'inventory.component_category', 'inventory.component_unit')->get();
         } else {
             $data = Outcomereturn::with('outcome_detail', 'outcome', 'inventory.component_category', 'inventory.component_unit')->get();
         }
@@ -223,15 +326,48 @@ class ApiGeneralAffairController extends Controller
         $url_components = parse_url($actual_link);
         if (isset($url_components['query'])) {
             parse_str($url_components['query'] ? $url_components['query'] : null, $query);
+
+            $dates = [];
+            $filters = [];
+
+            foreach ($query as $key => $val) {
+                if ($key == 'fromdate') {
+                    $dates['fromdate'] = $val;
+                } else if ($key == 'enddate') {
+                    $dates['enddate'] = $val;
+                } else {
+                    $filters[$key] = $val;
+                }
+            }
+
             $straws = Vmutation::query();
-            foreach ($query as $key => $vals) {
+
+            foreach ($dates as $key => $value) {
+                if ($key == 'fromdate') {
+                    $input = $value . '01:00:00';
+                    $date = strtotime($input);
+                    $straws->where('created_at', '>=', date('Y-m-d h:i:s', $date));
+                } else {
+                    $input = $value . '23:59:59';
+                    $date = strtotime($input);
+                    $straws->where('created_at', '<=', date('Y-m-d h:i:s', $date));
+                }
+            }
+
+            foreach ($filters as $key => $vals) {
                 $straws->where($key, $vals);
             }
-            $data = $straws->with('inventory.component_category', 'inventory.component_unit', 'vincome', 'voutcome', 'incomereturn.income_detail', 'outcomereturn.outcome_detail')->get();
+            $data = $straws->with('inventory.component_category', 'inventory.component_unit', 'vincome', 'voutcome.hc_rank_ga_structure.hc_unit', 'voutcome.hc_rank_ga_structure.hc_sub_unit', 'incomereturn.income_detail', 'outcomereturn.outcome_detail')->get();
         } else {
-            $data = Vmutation::with('inventory.component_category', 'inventory.component_unit', 'vincome', 'voutcome', 'incomereturn.income_detail', 'outcomereturn.outcome_detail')->get();
+            $data = Vmutation::with('inventory.component_category', 'inventory.component_unit', 'vincome', 'voutcome.hc_rank_ga_structure.hc_unit', 'voutcome.hc_rank_ga_structure.hc_sub_unit', 'incomereturn.income_detail', 'outcomereturn.outcome_detail')->get();
         }
 
+        return response()->json($data);
+    }
+
+    public function organisationRanks()
+    {
+        $data = Hc_rank_ga_structure::with('hc_unit', 'hc_sub_unit')->get();
         return response()->json($data);
     }
 }
