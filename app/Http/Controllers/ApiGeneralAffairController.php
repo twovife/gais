@@ -166,9 +166,9 @@ class ApiGeneralAffairController extends Controller
             foreach ($filters as $key => $vals) {
                 $straws->where($key, $vals);
             }
-            $data = $straws->with('outcome', 'inventory', 'inventory.component_category', 'inventory.component_unit')->get();
+            $data = $straws->with('outcome.hc_rank_ga_structure.hc_unit', 'outcome.hc_rank_ga_structure.hc_sub_unit', 'inventory', 'inventory.component_category', 'inventory.component_unit')->get();
         } else {
-            $data = Outcome_detail::with('outcome', 'inventory', 'inventory.component_category', 'inventory.component_unit')->get();
+            $data = Outcome_detail::with('outcome.hc_rank_ga_structure.hc_unit', 'outcome.hc_rank_ga_structure.hc_sub_unit', 'inventory', 'inventory.component_category', 'inventory.component_unit')->get();
         }
 
         return response()->json($data);

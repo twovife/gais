@@ -140,8 +140,8 @@
                         card.inventory.component_category.kategori,
                         card.inventory.component_unit.satuan,
                         card.qty_out,
-                        card.outcome.unit,
-                        card.outcome.divisi,
+                        card.outcome.hc_rank_ga_structure.hc_unit.unit,
+                        card.outcome.hc_rank_ga_structure.hc_sub_unit.sub_unit,
                         card.outcome.nama_request,
                         card.outcome.user_input])
               }

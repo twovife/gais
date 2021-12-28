@@ -91,7 +91,7 @@
      <script src="./jsgrid/gridjs.umd.js"></script>
      <script src="./mazer/vendors/sweetalert2/sweetalert2.all.min.js"></script>
      <script>
-          const url = `http://ihsan-virtualbox/gais/public/api/store`
+          const url = `{{ url('api/store') }}`
 
           const cr8Tables = document.getElementById('creating')
           cr8Tables.addEventListener('show.bs.modal', async function (event) {

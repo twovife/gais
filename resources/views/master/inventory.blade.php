@@ -103,7 +103,7 @@
      <script src="./jsgrid/gridjs.umd.js"></script>
      <script src="./mazer/vendors/sweetalert2/sweetalert2.all.min.js"></script>
      <script>
-          const url = `http://ihsan-virtualbox/gais/public/api/inventory`
+          const url = `{{ url('api/inventory') }}`
           
           const formInputMasterBarang = document.getElementById('creating')
           formInputMasterBarang.addEventListener('show.bs.modal', async function (event) {

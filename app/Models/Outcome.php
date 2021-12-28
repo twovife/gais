@@ -16,5 +16,10 @@ class Outcome extends Model
         return $this->hasMany(Outcome_detail::class);
     }
 
+    function hc_rank_ga_structure()
+    {
+        return $this->belongsTo(Hc_rank_ga_structure::class, 'struktur_id', 'id');
+    }
+
     // relasi tabel untuk pembuatan API BKB 
 }

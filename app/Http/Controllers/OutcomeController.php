@@ -164,6 +164,7 @@ class OutcomeController extends Controller
         $dompdf = new Dompdf();
         $dompdf->loadHtml($html);
 
+
         // (Optional) Setup the paper size and orientation
         $dompdf->setPaper($paper, $orientation = "portrait");
 
@@ -171,10 +172,12 @@ class OutcomeController extends Controller
         $dompdf->render();
 
         // Output the generated PDF to Browser
-        if ($stream) {
-            $dompdf->stream($filename . ".pdf", array("Attachment" => 0));
-        } else {
-            return $dompdf->output();
-        }
+        ob_get_clean();
+        $dompdf->stream($filename . ".pdf", array("Attachment" => 0));
+        exit();
+        // if ($stream) {
+        // } else {
+        //     return $dompdf->output();
+        // }
     }
 }

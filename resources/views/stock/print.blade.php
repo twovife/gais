@@ -9,6 +9,7 @@
      <style>
           body {
                font-size: 14px;
+               font-family: 'Times New Roman', Times, serif
           }
 
           .wrapper {
@@ -126,7 +127,8 @@
           <div style="margin-bottom: 1rem">
                <div style="float: right;">
                     <span>Divisi / Unit :</span>
-                    <span> {{ $data->divisi }} / {{ $data->unit }}</span>
+                    <span> {{ $data->hc_rank_ga_structure->hc_sub_unit->sub_unit }} / {{
+                         $data->hc_rank_ga_structure->hc_unit->unit }}</span>
                </div>
                <div>
                     <span>Diberikan Kepada :</span>
