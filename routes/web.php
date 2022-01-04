@@ -36,6 +36,7 @@ Route::middleware('auth')->group(function () {
      Route::delete('store/{store}', [StoreController::class, 'destroy'])->name('store.destroy');
 
      // Route::resource('store', StoreController::class);
+     Route::put('inventory/restore/{inventory}', [InventoryController::class, 'restore'])->name('inventory.restore');
      Route::resource('inventory', InventoryController::class);
      Route::resource('income', IncomeController::class);
      Route::resource('outcome', OutcomeController::class);

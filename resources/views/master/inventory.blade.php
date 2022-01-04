@@ -144,7 +144,7 @@
                     columns: [{
                          name: "Kode Barang",
                          formatter: (cell, row) => {
-                              return gridjs.html(`<a href="#" class="link-primary fw-bold" data-bs-toggle="modal" data-bs-target="#creating", data-bs-id=${row._cells[5].data}>${cell}</a>`)
+                              return gridjs.html(`<a href="#" class="link-primary fw-bold" data-bs-toggle="modal" data-bs-target="#creating", data-bs-id=${row._cells[6].data}>${cell}</a>`)
                               return gridjs.h('a', {
                                    className: 'pe-auto',
                                    "data-bs-toggle": "modal",
@@ -159,6 +159,8 @@
                          name: "Nama Barang"
                     }, {
                          name: "Satuan"
+                    },{
+                         name: "Min Stock"
                     }, {
                          name: "Keterangan",
                          formatter: (cell, row) => {
@@ -167,9 +169,10 @@
                     }, {
                          name: "Action",
                          formatter: (cell, row) => {
-                              if (row._cells[4].data === null) {
-                                   const routes = '{{ route('inventory.destroy','theid') }}'
-                                   return gridjs.html(formDeleteMaster(cell, routes))
+                              if (row._cells[5].data === null) {
+                                   return gridjs.html(formDeleteMaster(cell))
+                              }else{
+                                   return gridjs.html(formRestore(cell))
                               }
                          }
                     }],
@@ -179,11 +182,18 @@
                     },
                     server: {
                          url: url,
-                         then: data => data.map(card => [card.barcode, card.component_category.kategori, card.nama_barang, card.component_unit.satuan, card.deleted_at, card.id])
+                         then: data => data.map(card => [
+                              card.barcode,
+                              card.component_category.kategori,
+                              card.nama_barang, 
+                              card.component_unit.satuan, 
+                              card.min_stock, 
+                              card.deleted_at, 
+                              card.id])
                     }
                }).render(document.getElementById("wrapper"));
           }
-          
+                         
           function fetchMasterData(url, id) {
                return fetch(url, {
                     headers: {
@@ -195,31 +205,38 @@
                     .then(data => data[0])
           }
 
-          function formDeleteMaster(id, routes) {
-               var urlupdate = routes
+          function formDeleteMaster(id) {
+               var urlupdate = '{{ route('inventory.destroy','theid') }}'
+               // var urlupdate = routes
                urlupdate = urlupdate.replace('theid', id)
-               return `<form action="${urlupdate}" method="post">@csrf @method("delete")<button onClick="validateDeleteMaster(this)" type="button" class="btn btn-danger">Delete</button></form>`
+               return `<form action="${urlupdate}" method="post">@csrf @method("delete")<button onClick="validate(this)" type="button" class="btn btn-danger">Delete</button></form>`
           }
 
-          function validateDeleteMaster(e) {
+          function formRestore(id){
+               var urlupdate = '{{ route('inventory.restore',':id') }}'
+               urlupdate = urlupdate.replace(':id',id)
+               return `<form action="${urlupdate}" method="post">@csrf @method("put")<button onClick="validate(this)" type="button" class="btn btn-warning"><i class="bi bi-arrow-clockwise"></i></button></form>`
+          }
 
+          function validate(e) {
+               
                const domForm = e.parentNode
                Swal.fire({
-                    title: 'Are you sure?',
-                    text: "You won't be able to revert this!",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Yes, delete it!'
-               }).then((result) => {
-                    if (result.isConfirmed) {
-                         Swal.fire(
-                              'Deleted!',
-                              'Your file has been deleted.',
-                              'success').then((result) => domForm.submit())
-                    }
-               })
+               title: 'Are you sure?',
+               text: "Anda tidak bisa mengulang aksi ini",
+               icon: 'warning',
+               showCancelButton: true,
+               confirmButtonColor: '#3085d6',
+               cancelButtonColor: '#d33',
+               confirmButtonText: 'Yes, do it!'
+          }).then((result) => {
+               if (result.isConfirmed) {
+                    Swal.fire(
+                         'Submited!',
+                         'Your file has been modified.',
+                         'success').then((result)=>domForm.submit())
+               }
+          })
           }
 
           @if (Session::has('success'))

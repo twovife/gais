@@ -109,4 +109,11 @@ class InventoryController extends Controller
         $inventory->delete();
         return back();
     }
+
+    public function restore(Request $request, $store)
+    {
+        Inventory::withTrashed()->find($store)->restore();
+        return redirect('inventory');
+        // $store = Store::withTrashed()->find($request->id)->first();
+    }
 }

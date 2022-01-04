@@ -49,6 +49,11 @@ class IncomeController extends Controller
      */
     public function store(Request $request)
     {
+        $detail = $request->inventory_id;
+        if (!$detail) {
+            session()->flash('eror', 'Mohon isi item yang dikeluarkan terlebih dahulu');
+            return redirect('/income');
+        }
 
         $request->validate([
             'btb' => ['required', 'unique:incomes'],
@@ -58,7 +63,7 @@ class IncomeController extends Controller
 
         $dataIncome = [
             'store_id' => $request->store_id,
-            'btb' => $request->btb,
+            'btb' => 'BTB-' . $request->btb,
             'tanggal_btb' => $request->tanggal_btb,
             'user_input' => 'wong ganteng'
         ];
@@ -70,7 +75,7 @@ class IncomeController extends Controller
                 $data = [
                     'inventory_id' => $request->inventory_id[$i],
                     'income_id' => $response_out->id,
-                    'bkk' => $request->bkk[$i],
+                    'bkk' => 'BKK-' . $request->bkk[$i],
                     'tanggal_bkk' => $request->tanggal_bkk[$i],
                     'qty_in' => $request->qty_in[$i],
                     'harga' => $request->harga[$i],
