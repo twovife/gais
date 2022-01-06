@@ -6,6 +6,7 @@ use App\Models\Inventory;
 use App\Models\Outcome;
 use App\Models\Outcomereturn;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class OutcomereturnController extends Controller
 {
@@ -53,6 +54,7 @@ class OutcomereturnController extends Controller
         } else {
             $request['saldo'] = $masterInventory->stock + $request->qty_in;
             $request['nomor_return'] = 'RTO-' . $request->outcome_id . '-' . $request->outcome_detail_id . '-' . (Outcomereturn::count() + 1);
+            $request['user_input'] = Auth::user()->username;
             $response_out = Outcomereturn::create($request->all());
             if ($response_out) {
                 $masterInventory->stock = $masterInventory->stock + $request->qty_in;

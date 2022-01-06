@@ -26,7 +26,7 @@ const convertDate = (dates) => {
      month[11] = "12";
 
      let d = new Date(dates)
-     let hari = d.getDate()
+     let hari = d.getDate() < 10 ? '0' + d.getDate() : d.getDate()
      let bulan = month[d.getMonth()]
      let tahun = d.getFullYear()
      let margeTanggal = `${hari}/${bulan}/${tahun}`
@@ -74,7 +74,7 @@ const showFlexyData = (income, outcome, inret, outret) => {
 
 // function for fetch api
 const fetchGet = (paramsUrl, params) => {
-     return fetch(url + '?' + new URLSearchParams(params), {
+     return fetch(paramsUrl + '?' + new URLSearchParams(params), {
           headers: {
                'Accept': 'application/json'
           },
@@ -84,18 +84,16 @@ const fetchGet = (paramsUrl, params) => {
           .then(data => data)
 }
 
-const fetchPost = (paramsUrl) => {
-     return fetch(url, {
+const fetchPost = (paramsUrl, data) => {
+     return fetch(paramsUrl, {
           headers: {
-               'Accept': 'application/json'
+               'Content-Type': 'application/json'
           },
           method: 'POST',
-          data: {
-               id: 38
-          }
+          body: JSON.stringify(data)
      })
           .then(response => response.json())
-          .then(data => console.log(data))
+          .then(data => data.data)
 }
 
 

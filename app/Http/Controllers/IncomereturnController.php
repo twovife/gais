@@ -7,6 +7,7 @@ use App\Models\Incomereturn;
 use App\Models\Inventory;
 use App\Models\Store;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class IncomereturnController extends Controller
 {
@@ -54,6 +55,7 @@ class IncomereturnController extends Controller
         } else {
             $request['saldo'] = $masterInventory->stock - $request->qty_out;
             $request['nomor_return'] = 'RTI-' . $request->income_id . '-' . $request->income_detail_id . '-' . Incomereturn::count() + 1;
+            $request['user_input'] = Auth::user()->username;
             $response_out = Incomereturn::create($request->all());
             if ($response_out) {
                 $masterInventory->stock = $masterInventory->stock - $request->qty_out;

@@ -63,7 +63,7 @@
                                              <div class="mb-3">
                                                   <label for="btb" class="form-label required">Nomor BTB</label>
                                                   <input type="text" class="form-control" name="btb" id="btb"
-                                                       placeholder="Nomor BTB">
+                                                       placeholder="ex : 000001 ( tanpa awalan BTB )">
                                                   @error('btb')
                                                   <small class="text-danger">{{ $message }}</small>
                                                   @enderror
@@ -75,7 +75,7 @@
                                                        id="tanggal_btb" placeholder="Tanggal BTB" required>
                                              </div>
                                              <div class="mb-3">
-                                                  <label for="store_id" class="form-label">Store</label>
+                                                  <label for="store_id" class="form-label required">Store</label>
                                                   <select class="choices form-select choices__input" id="store_id"
                                                        name="store_id">
                                                        <option value="">Select BKB</option>

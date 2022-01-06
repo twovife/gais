@@ -111,11 +111,11 @@ class ApiGeneralAffairController extends Controller
                 if ($key == 'fromdate') {
                     $input = $value . '01:00:00';
                     $date = strtotime($input);
-                    $straws->where('created_at', '>=', date('Y-m-d h:i:s', $date));
+                    $straws->where('created_at', '>=', date('Y-m-d H:i:s', $date));
                 } else {
                     $input = $value . '23:59:59';
                     $date = strtotime($input);
-                    $straws->where('created_at', '<=', date('Y-m-d h:i:s', $date));
+                    $straws->where('created_at', '<=', date('Y-m-d H:i:s', $date));
                 }
             }
 
@@ -153,13 +153,13 @@ class ApiGeneralAffairController extends Controller
             $straws = Outcome_detail::query();
             foreach ($dates as $key => $value) {
                 if ($key == 'fromdate') {
-                    $input = $value . '01:00:00';
+                    $input = $value . ' 01:00:00';
                     $date = strtotime($input);
-                    $straws->where('created_at', '>=', date('Y-m-d h:i:s', $date));
+                    $straws->where('created_at', '>=', date('Y-m-d H:i:s', $date));
                 } else {
-                    $input = $value . '23:59:59';
+                    $input = $value . ' 23:59:59';
                     $date = strtotime($input);
-                    $straws->where('created_at', '<=', date('Y-m-d h:i:s', $date));
+                    $straws->where('created_at', '<=', date('Y-m-d H:i:s', $date));
                 }
             }
 
@@ -198,11 +198,11 @@ class ApiGeneralAffairController extends Controller
                 if ($key == 'fromdate') {
                     $input = $value . '01:00:00';
                     $date = strtotime($input);
-                    $straws->where('created_at', '>=', date('Y-m-d h-i-s', $date));
+                    $straws->where('created_at', '>=', date('Y-m-d H-i-s', $date));
                 } else {
                     $input = $value . '23:59:59';
                     $date = strtotime($input);
-                    $straws->where('created_at', '<=', date('Y-m-d h-i-s', $date));
+                    $straws->where('created_at', '<=', date('Y-m-d H-i-s', $date));
                 }
             }
 
@@ -243,11 +243,11 @@ class ApiGeneralAffairController extends Controller
                 if ($key == 'fromdate') {
                     $input = $value . '01:00:00';
                     $date = strtotime($input);
-                    $straws->where('created_at', '>=', date('Y-m-d h-i-s', $date));
+                    $straws->where('created_at', '>=', date('Y-m-d H-i-s', $date));
                 } else {
                     $input = $value . '23:59:59';
                     $date = strtotime($input);
-                    $straws->where('created_at', '<=', date('Y-m-d h-i-s', $date));
+                    $straws->where('created_at', '<=', date('Y-m-d H-i-s', $date));
                 }
             }
 
@@ -299,9 +299,9 @@ class ApiGeneralAffairController extends Controller
         return response()->json($data);
     }
 
-    public function lastValBtb($id)
+    public function lastValBtb(Request $request)
     {
-        dd($id);
+        return response()->json($request);
         // $qtyin = Income_detail::find($id);
         // $sumreturn = Incomereturn::where('income_detail_id', $id)->sum('qty_out');
         // $data = [
@@ -346,11 +346,11 @@ class ApiGeneralAffairController extends Controller
                 if ($key == 'fromdate') {
                     $input = $value . '01:00:00';
                     $date = strtotime($input);
-                    $straws->where('created_at', '>=', date('Y-m-d h:i:s', $date));
+                    $straws->where('created_at', '>=', date('Y-m-d H:i:s', $date));
                 } else {
                     $input = $value . '23:59:59';
                     $date = strtotime($input);
-                    $straws->where('created_at', '<=', date('Y-m-d h:i:s', $date));
+                    $straws->where('created_at', '<=', date('Y-m-d H:i:s', $date));
                 }
             }
 
@@ -369,5 +369,14 @@ class ApiGeneralAffairController extends Controller
     {
         $data = Hc_rank_ga_structure::with('hc_unit', 'hc_sub_unit')->get();
         return response()->json($data);
+    }
+
+    public function isLastMutation(Request $request)
+    {
+        $data = Vmutation::where('inventory_id', $request->inventory_id)->where('id', '>=', $request->id)->count();
+        return response()->json([
+            'status' => '200',
+            'data' => $data
+        ]);
     }
 }

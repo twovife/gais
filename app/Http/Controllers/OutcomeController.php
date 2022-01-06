@@ -8,6 +8,7 @@ use App\Models\Outcome;
 use App\Models\Outcome_detail;
 use Illuminate\Http\Request;
 use Dompdf\Dompdf;
+use Illuminate\Support\Facades\Auth;
 
 class OutcomeController extends Controller
 {
@@ -78,7 +79,7 @@ class OutcomeController extends Controller
             'bkb' => 'BKB-' . sprintf("%05d", $countOutcome),
             'struktur_id' => $request->struktur_id,
             'nama_request' => $request->nama_request,
-            'user_input' => $request->user_input
+            'user_input' => Auth::user()->username
         ];
         $response_out = Outcome::create($dataOutcome);
 

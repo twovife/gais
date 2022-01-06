@@ -102,9 +102,10 @@
                                              </div>
                                         </div>
                                         <div class="row mb-5">
-                                             <label for="reason" class="col col-form-label">Keterangan</label>
+                                             <label for="keterangan" class="col col-form-label">Keterangan</label>
                                              <div class="col-sm-10">
-                                                  <input type="text" class="form-control" id="reason" name="reason">
+                                                  <input type="text" class="form-control" id="keterangan"
+                                                       name="keterangan">
                                              </div>
                                         </div>
                                         <button type="submit" class="btn btn-primary">Sign in</button>

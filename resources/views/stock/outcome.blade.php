@@ -19,9 +19,9 @@
       text-align: left;
     }
 
-    tr td:nth-child(11) {
+    /* tr td:nth-child(11) {
       text-align: right;
-    }
+    } */
   </style>
   @endsection
 
@@ -107,13 +107,11 @@
               }, {
                   name: "Nama Barang"
               }, {
-                  name: "Kode Barang"
-              }, {
                   name: "Jenis Barang"
               }, {
-                  name: "Satuan"
-              }, {
                   name: "Qty"
+              }, {
+                  name: "Satuan"
               }, {
                   name: "Unit"
               }, {
@@ -136,10 +134,9 @@
                         convertDate(card.outcome.created_at),
                         card.outcome.bkb,
                         card.inventory.nama_barang,
-                        card.inventory.barcode,
                         card.inventory.component_category.kategori,
-                        card.inventory.component_unit.satuan,
                         card.qty_out,
+                        card.inventory.component_unit.satuan,
                         card.outcome.hc_rank_ga_structure.hc_unit.unit,
                         card.outcome.hc_rank_ga_structure.hc_sub_unit.sub_unit,
                         card.outcome.nama_request,

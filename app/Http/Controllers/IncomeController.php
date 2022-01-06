@@ -9,6 +9,7 @@ use App\Models\Inventory;
 use App\Models\Store;
 use App\Models\Vinventory;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class IncomeController extends Controller
 {
@@ -65,7 +66,7 @@ class IncomeController extends Controller
             'store_id' => $request->store_id,
             'btb' => 'BTB-' . $request->btb,
             'tanggal_btb' => $request->tanggal_btb,
-            'user_input' => 'wong ganteng'
+            'user_input' =>  Auth::user()->username
         ];
         $response_out = Income::create($dataIncome);
         if ($response_out) {
@@ -75,7 +76,7 @@ class IncomeController extends Controller
                 $data = [
                     'inventory_id' => $request->inventory_id[$i],
                     'income_id' => $response_out->id,
-                    'bkk' => 'BKK-' . $request->bkk[$i],
+                    'bkk' => $request->bkk[$i] ? 'BKK-' . $request->bkk[$i] : null,
                     'tanggal_bkk' => $request->tanggal_bkk[$i],
                     'qty_in' => $request->qty_in[$i],
                     'harga' => $request->harga[$i],
@@ -121,9 +122,26 @@ class IncomeController extends Controller
      * @param  \App\Models\Income  $income
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Income $income)
+    public function update(Request $request, Income_detail $income)
     {
-        //
+        // dd($income->qty_in);
+        if ($request->qty_in && $request->qty_in != $income->qty_in) {
+            $data = Inventory::whereId($income->inventory_id)->first();
+            $saldo = $data->stock - $income->qty_in + $request->qty_in;
+            $mainresponse = $data->update(['stock' => $saldo]);
+            if (!$mainresponse) {
+                session()->flash('eror', 'Item telah terupdate !');
+                return back();
+            }
+            $request['saldo'] = $saldo;
+        }
+        $request['bkk'] = $request->bkk ? 'BKK-' . $request->bkk : null;
+        $response = $income->update($request->all());
+        if (!$response) {
+            session()->flash('eror', 'Item telah terupdate !');
+        }
+        session()->flash('success', 'Item telah terupdate !');
+        return back();
     }
 
     /**

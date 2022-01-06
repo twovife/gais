@@ -27,6 +27,7 @@ Route::get('isitembtbduplicate', [ApiGeneralAffairController::class, 'isExistIte
 Route::get('laststock', [ApiGeneralAffairController::class, 'lastStock']);
 Route::get('mutasi', [ApiGeneralAffairController::class, 'vmutasi']);
 Route::post('valbtb', [ApiGeneralAffairController::class, 'lastValBtb']);
+Route::post('islastmutation', [ApiGeneralAffairController::class, 'isLastMutation']);
 Route::get('valbkb/{id}', [ApiGeneralAffairController::class, 'lastValBkb']);
 Route::get('ranks', [ApiGeneralAffairController::class, 'organisationRanks']);
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {

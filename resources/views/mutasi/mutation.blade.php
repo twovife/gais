@@ -15,7 +15,7 @@
     }
 
     tr td:nth-child(1),
-    tr td:nth-child(7) {
+    tr td:nth-child(6) {
       text-align: left;
     }
 
@@ -82,6 +82,30 @@
         enddate: document.getElementById('enddate').value
     })
 
+    const showSaldo = (income, outcome, inreturn, outreturn) => {
+          if (income !== null) {
+            return income.saldo
+          } else if (outcome) {
+            return outcome.saldo
+          } else if (inreturn) {
+            return inreturn.saldo
+          } else if (outreturn) {
+            return outreturn.saldo
+          }
+    }
+    
+    const showKeterangan = (income, outcome, inreturn, outreturn) => {
+          if (income !== null) {
+            return income.keterangan
+          } else if (outcome) {
+            return outcome.keterangan
+          } else if (inreturn) {
+            return inreturn.keterangan
+          } else if (outreturn) {
+            return outreturn.keterangan
+          }
+    }
+
     const loadInventorTables = (url) => {
         new gridjs.Grid({
               columns: [{
@@ -117,14 +141,14 @@
                   name: "Kategory"
               }, {
                   name: "Satuan"
-              }, {
-                  name: "Barcode"
-              }, {
+              },  {
                   name: "Nama Barang"
               }, {
                   name: "Masuk"
               }, {
                   name: "Keluar"
+              },{
+                  name: "Saldo"
               }, {
                   name: "Harga"
               }, {
@@ -133,6 +157,8 @@
                   name: "Divisi"
               }, {
                   name: "Unit"
+              }, {
+                  name: "Keterangan"
               }],
               search: true,
               className: {
@@ -149,15 +175,15 @@
                         showFlexyData(card.vincome, card.voutcome, card.incomereturn, card.outcomereturn),
                         card.inventory.component_category.kategori,
                         card.inventory.component_unit.satuan,
-                        card.inventory.barcode,
                         card.inventory.nama_barang,
-                        // isFalse(card.vincome,'qty_in'),
                         isFalse(card.vincome ?? card.outcomereturn, 'qty_in'),
                         isFalse(card.voutcome ?? card.incomereturn, 'qty_out'),
+                        showSaldo(card.voutcome, card.vincome, card.incomereturn, card.outcomereturn),
                         formatRupiah(isFalse(card.vincome ?? (card.incomereturn ? card.incomereturn.income_detail : null), 'harga')),
                         isFalse(card.voutcome, 'nama_request'),
                         isFalse(card.voutcome ? card.voutcome.hc_rank_ga_structure.hc_sub_unit : 'null', 'sub_unit'),
                         isFalse(card.voutcome ? card.voutcome.hc_rank_ga_structure.hc_unit : 'null', 'unit'),
+                        showKeterangan(card.voutcome, card.vincome, card.incomereturn, card.outcomereturn),
                   ])
               }
         }).render(document.getElementById("wrapper"));

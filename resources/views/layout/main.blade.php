@@ -157,6 +157,13 @@
   <script src="{{ asset('mazer/vendors/perfect-scrollbar/perfect-scrollbar.min.js') }}"></script>
   <script src="{{ asset('mazer/js/bootstrap.bundle.min.js') }}"></script>
   <script src="{{ asset('mazer/js/mazer.js') }}"></script>
+  <script>
+    document.onkeypress = function(e){
+      if (e.charCode == 13) {
+        event.preventDefault();
+      }
+    }
+  </script>
   @yield('javascript')
 </body>
 
