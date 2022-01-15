@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ChangepassController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\IncomeController;
@@ -53,6 +54,9 @@ Route::middleware('auth')->group(function () {
      // register users
      Route::get('users', [RegistrationController::class, 'create'])->name('register');
      Route::post('users', [RegistrationController::class, 'store']);
+
+     Route::get('chpass', [ChangepassController::class, 'show'])->name('chpass');
+     Route::put('chpass/{chpass}', [ChangepassController::class, 'update'])->name('chpass.update');
 
      Route::post('logout', [LogoutController::class, '__invoke'])->name('logout');
 });

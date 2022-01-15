@@ -94,8 +94,11 @@ class InventoryController extends Controller
      */
     public function update(Request $request, Inventory $inventory)
     {
-        Inventory::find($inventory->id)->update($request->all());
-        return redirect('inventory');
+        if ($inventory->update($request->all())) {
+            return back()->with('success', 'Sukses Menambahkan Data');
+        } else {
+            return back()->with('error', 'Data Gagal ditambahkan');
+        };
     }
 
     /**

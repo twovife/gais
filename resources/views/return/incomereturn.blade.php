@@ -112,7 +112,9 @@
                                                        name="keterangan">
                                              </div>
                                         </div>
-                                        <button type="submit" class="btn btn-primary">Sign in</button>
+                                        @if (Auth::user()->role !== 100)
+                                        <button type="submit" class="btn btn-primary">Submit</button>
+                                        @endif
                                    </form>
                               </div>
                          </div>

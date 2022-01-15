@@ -119,7 +119,11 @@
                                              </div>
                                         </div>
                                         <div class="card-footer">
+                                             @if (Auth::user()->role !== 100)
                                              <button class="btn btn-danger" type="submit">submit</button>
+                                             @endif
+
+                                             {{ Auth::user() }}
                                         </div>
                                    </div>
                               </div>

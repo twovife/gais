@@ -49,7 +49,7 @@
           <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-md" role="document">
                <div class="modal-content">
                     <form id="formCreate">
-                         @csrf
+
                          <div class="modal-header">
                               <h4 class="modal-title" id="myModalLabel4">Create</h4>
                               <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
@@ -89,10 +89,13 @@
                                    <i class="bi bi-x d-block d-sm-none"></i>
                                    <span class="d-none d-sm-block">Close</span>
                               </button>
+                              @if (Auth::user()->role == 2 || Auth::user()->role == 99)
+                              @csrf
                               <button type="submit" class="btn btn-primary ml-1">
                                    <i class=" bi bi-check d-block d-sm-none"></i>
-                                   <span class="d-none d-sm-block">Accept</span>
+                                   <span class="d-none d-sm-block">Create</span>
                               </button>
+                              @endif
                          </div>
                     </form>
                </div>
@@ -140,6 +143,7 @@
           const tablesLoad = loadInventorTables(url)
 
           function loadInventorTables(url) {
+               const roles = `{{ Auth::user()->role }}`
                new gridjs.Grid({
                     columns: [{
                          name: "Kode Barang",
@@ -170,9 +174,9 @@
                          name: "Action",
                          formatter: (cell, row) => {
                               if (row._cells[5].data === null) {
-                                   return gridjs.html(formDeleteMaster(cell))
+                                   return gridjs.html(formDeleteMaster(cell,roles))
                               }else{
-                                   return gridjs.html(formRestore(cell))
+                                   return gridjs.html(formRestore(cell,roles))
                               }
                          }
                     }],
@@ -189,7 +193,7 @@
                               card.component_unit.satuan, 
                               card.min_stock, 
                               card.deleted_at, 
-                              card.id])
+                              card])
                     }
                }).render(document.getElementById("wrapper"));
           }
@@ -205,17 +209,17 @@
                     .then(data => data[0])
           }
 
-          function formDeleteMaster(id) {
+          function formDeleteMaster(id,roles) {
                var urlupdate = '{{ route('inventory.destroy','theid') }}'
                // var urlupdate = routes
                urlupdate = urlupdate.replace('theid', id)
-               return `<form action="${urlupdate}" method="post">@csrf @method("delete")<button onClick="validate(this)" type="button" class="btn btn-danger">Delete</button></form>`
+               return `<form action="${urlupdate}" method="post">@csrf @method("delete")<button onClick="validate(this)" type="button" ${roles == 100? 'disabled':''} class="btn btn-danger">Delete</button></form>`
           }
 
-          function formRestore(id){
+          function formRestore(id,roles){
                var urlupdate = '{{ route('inventory.restore',':id') }}'
                urlupdate = urlupdate.replace(':id',id)
-               return `<form action="${urlupdate}" method="post">@csrf @method("put")<button onClick="validate(this)" type="button" class="btn btn-warning"><i class="bi bi-arrow-clockwise"></i></button></form>`
+               return `<form action="${urlupdate}" method="post">@csrf @method("put")<button onClick="validate(this)" type="button" ${roles == 100? 'disabled':''} class="btn btn-warning"><i class="bi bi-arrow-clockwise"></i></button></form>`
           }
 
           function validate(e) {
@@ -256,6 +260,7 @@
                     timer: 1500
                })
           @endif
+          
      </script>
      @endsection
 </x-main>

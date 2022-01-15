@@ -93,25 +93,29 @@
               </ul>
             </li>
 
+            @if (Auth::user()->role === 99)
             <li class="sidebar-item {{ $treeMenu=='auth'?'active':''; }} ">
               <a href="{{ route('register') }}" class='sidebar-link'>
                 <i class="bi bi-grid-fill"></i>
                 <span>Users</span>
               </a>
             </li>
+            @endif
+
           </ul>
         </div>
         <button class="sidebar-toggler btn x"><i data-feather="x"></i></button>
       </div>
     </div>
     <div id="main">
-      <header class="mb-3">
-        <a href="#" class="burger-btn d-block">
-          <i class="bi bi-justify fs-3"></i>
-        </a>
-      </header>
-      @auth
+
       <div class="page-heading d-flex">
+        <header class="mb-3">
+          <a href="#" class="burger-btn d-block">
+            <i class="bi bi-justify fs-3"></i>
+          </a>
+        </header>
+        @auth
         <div class="dropdown ms-auto">
           <a href="#" data-bs-toggle="dropdown" aria-expanded="false" class="">
             <div class="user-menu d-flex">
@@ -130,7 +134,7 @@
             <li>
               <h6 class="dropdown-header">Hello, {{ Auth::user()->name; }}</h6>
             </li>
-            <li><a class="dropdown-item" href="#"><i class="icon-mid bi bi-person me-2"></i>Ganti
+            <li><a class="dropdown-item" href="{{ route('chpass') }}"><i class="icon-mid bi bi-person me-2"></i>Ganti
                 Password</a></li>
             <li>
               <form action="{{ route('logout') }}" method="post">
@@ -141,8 +145,8 @@
             </li>
           </ul>
         </div>
+        @endauth
       </div>
-      @endauth
       <section class="maincontent">
         {{ $slot }}
       </section>

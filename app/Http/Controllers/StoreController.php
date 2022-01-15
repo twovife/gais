@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Store;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 
 class StoreController extends Controller
 {
@@ -23,14 +24,20 @@ class StoreController extends Controller
 
     public function store(Request $request)
     {
-        Store::create($request->all());
-        return back();
+        if (Store::create($request->all())) {
+            return back()->with('success', 'Sukses Menambahkan Data');
+        } else {
+            return back()->with('error', 'Data Gagal ditambahkan');
+        };
     }
 
     public function update(Request $request, Store $store)
     {
-        Store::find($store->id)->update($request->all());
-        return redirect('store');
+        if ($store->update($request->all())) {
+            return back()->with('success', 'Sukses Menambahkan Data');
+        } else {
+            return back()->with('error', 'Data Gagal ditambahkan');
+        };
     }
 
     public function destroy(Store $Store)

@@ -98,7 +98,7 @@
           <div class="modal-dialog modal-dialog-centered">
                <div class="modal-content">
                     <div class="modal-header">
-                         <h5 class="modal-title" id="exampleModalLabel">Edit Peritem</h5>
+                         <h5 class="modal-title" id="exampleModalLabel">Edit Per item</h5>
                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <form id="forms" method="post">
@@ -126,7 +126,9 @@
                                    <input type="number" class="form-control" name="harga" id="harga"
                                         aria-describedby="emailHelp" placeholder="Harga Satuan">
                               </div>
+                              @if (Auth::user()->role !==100)
                               <button type="submit" class="btn btn-primary">Submit</button>
+                              @endif
                          </div>
                     </form>
                </div>

@@ -108,7 +108,9 @@
                                                        name="keterangan">
                                              </div>
                                         </div>
+                                        @if (Auth::user()->role !== 100)
                                         <button type="submit" class="btn btn-primary">Sign in</button>
+                                        @endif
                                    </form>
                               </div>
                          </div>
