@@ -13,6 +13,8 @@ use App\Models\Outcomereturn;
 use App\Models\Store;
 use App\Models\Vmutation;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Symfony\Component\Console\Output\Output;
 
 class ApiGeneralAffairController extends Controller
 {
@@ -378,5 +380,105 @@ class ApiGeneralAffairController extends Controller
             'status' => '200',
             'data' => $data
         ]);
+    }
+
+    public function Btb()
+    {
+        $actual_link = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+        $url_components = parse_url($actual_link);
+        if (isset($url_components['query'])) {
+            parse_str($url_components['query'] ? $url_components['query'] : null, $query);
+            $dates = [];
+            $filters = [];
+
+            foreach ($query as $key => $val) {
+                if ($key == 'fromdate') {
+                    $dates['fromdate'] = $val;
+                } else if ($key == 'enddate') {
+                    $dates['enddate'] = $val;
+                } else {
+                    $filters[$key] = $val;
+                }
+            }
+
+            $straws = Income::query();
+            foreach ($dates as $key => $value) {
+                if ($key == 'fromdate') {
+                    $straws->where(DB::raw("(DATE_FORMAT(created_at,'%Y-%m-%d'))"), '>=', $value);
+                } else {
+                    $straws->where(DB::raw("(DATE_FORMAT(created_at,'%Y-%m-%d'))"), '<=', $value);
+                }
+            }
+
+            foreach ($filters as $key => $vals) {
+                $straws->where($key, $vals);
+            }
+            $data = $straws->with('store')->get();
+        } else {
+            $data = Income::with('store')->get();
+        }
+
+        $arraypush = [];
+        foreach ($data as $key) {
+            array_push($arraypush, [
+                'id' => $key->id,
+                'tanggal' => $key->created_at->format('Y-m-d'),
+                'btb' => $key->btb,
+                'store' => $key->store ? $key->store->nama_toko : '',
+                'user_input' => $key->user_input,
+            ]);
+        };
+        return response()->json($arraypush);
+    }
+
+    public function Bkb()
+    {
+        $actual_link = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+        $url_components = parse_url($actual_link);
+        if (isset($url_components['query'])) {
+            parse_str($url_components['query'] ? $url_components['query'] : null, $query);
+            $dates = [];
+            $filters = [];
+
+            foreach ($query as $key => $val) {
+                if ($key == 'fromdate') {
+                    $dates['fromdate'] = $val;
+                } else if ($key == 'enddate') {
+                    $dates['enddate'] = $val;
+                } else {
+                    $filters[$key] = $val;
+                }
+            }
+
+            $straws = Outcome::query();
+            foreach ($dates as $key => $value) {
+                if ($key == 'fromdate') {
+                    $straws->where(DB::raw("(DATE_FORMAT(created_at,'%Y-%m-%d'))"), '>=', $value);
+                } else {
+                    $straws->where(DB::raw("(DATE_FORMAT(created_at,'%Y-%m-%d'))"), '<=', $value);
+                }
+            }
+
+            foreach ($filters as $key => $vals) {
+                $straws->where($key, $vals);
+            }
+            $data = $straws->with('hc_rank_ga_structure')->get();
+        } else {
+            $data = Outcome::with('hc_rank_ga_structure')->get();
+        }
+
+        $arraypush = [];
+        foreach ($data as $key) {
+            array_push($arraypush, [
+                'id' => $key->id,
+                'tanggal' => $key->created_at->format('Y-m-d'),
+                'bkb' => $key->bkb,
+                'unit' => $key->hc_rank_ga_structure->hc_unit->unit,
+                'divisi' => $key->hc_rank_ga_structure->hc_sub_unit->sub_unit,
+                'nama' => $key->nama_request,
+                'user_input' => $key->user_input,
+            ]);
+        };
+        return response()->json($arraypush);
     }
 }

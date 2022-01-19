@@ -128,13 +128,16 @@ class IncomeController extends Controller
         if ($request->qty_in && $request->qty_in != $income->qty_in) {
             $data = Inventory::whereId($income->inventory_id)->first();
             $saldo = $data->stock - $income->qty_in + $request->qty_in;
+
             $mainresponse = $data->update(['stock' => $saldo]);
+
             if (!$mainresponse) {
                 session()->flash('eror', 'Item telah terupdate !');
                 return back();
             }
             $request['saldo'] = $saldo;
         }
+
         $request['bkk'] = $request->bkk ? 'BKK-' . $request->bkk : null;
         $response = $income->update($request->all());
         if (!$response) {

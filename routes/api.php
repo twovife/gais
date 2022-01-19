@@ -17,6 +17,7 @@ use App\Http\Controllers\ApiInventoryController;
 |
 */
 
+
 Route::get('store', [ApiGeneralAffairController::class, 'store']);
 Route::get('inventory', [ApiGeneralAffairController::class, 'Inventory']);
 Route::get('gaisstock', [ApiGeneralAffairController::class, 'BarangMasuk']);
@@ -30,6 +31,9 @@ Route::post('valbtb', [ApiGeneralAffairController::class, 'lastValBtb']);
 Route::post('islastmutation', [ApiGeneralAffairController::class, 'isLastMutation']);
 Route::get('valbkb/{id}', [ApiGeneralAffairController::class, 'lastValBkb']);
 Route::get('ranks', [ApiGeneralAffairController::class, 'organisationRanks']);
+Route::get('btb', [ApiGeneralAffairController::class, 'btb']);
+Route::get('bkb', [ApiGeneralAffairController::class, 'bkb']);
+
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });

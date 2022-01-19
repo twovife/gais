@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\BkbController;
+use App\Http\Controllers\BtbController;
 use App\Http\Controllers\ChangepassController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
@@ -27,7 +29,7 @@ use App\Http\Controllers\VmutationController;
 
 Route::middleware('auth')->group(function () {
      Route::get('/', [HomeController::class, 'index']);
-     Route::get('outcome/print/{outcome}', [OutcomeController::class, 'print']);
+     Route::get('outcome/print/{outcome}', [OutcomeController::class, 'print'])->name('outcome.print');
 
 
      Route::get('store', [StoreController::class, 'index'])->name('store.index');
@@ -59,7 +61,15 @@ Route::middleware('auth')->group(function () {
      Route::put('chpass/{chpass}', [ChangepassController::class, 'update'])->name('chpass.update');
 
      Route::post('logout', [LogoutController::class, '__invoke'])->name('logout');
+
+     Route::get('btb', [BtbController::class, 'index'])->name('btb.index');
+     Route::get('btb/{income}', [BtbController::class, 'show'])->name('btb.show');
+
+     Route::get('bkb', [BkbController::class, 'index'])->name('bkb.index');
+     Route::get('bkb/{outcome}', [BkbController::class, 'show'])->name('bkb.show');
 });
+
+
 
 
 

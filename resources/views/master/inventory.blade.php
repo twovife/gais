@@ -51,7 +51,7 @@
                     <form id="formCreate">
 
                          <div class="modal-header">
-                              <h4 class="modal-title" id="myModalLabel4">Create</h4>
+                              <h4 class="modal-title" id="myModalLabel4">Create / Edit</h4>
                               <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                                    x
                               </button>
@@ -93,7 +93,7 @@
                               @csrf
                               <button type="submit" class="btn btn-primary ml-1">
                                    <i class=" bi bi-check d-block d-sm-none"></i>
-                                   <span class="d-none d-sm-block">Create</span>
+                                   <span class="d-none d-sm-block" id="tombol-sbm">Create</span>
                               </button>
                               @endif
                          </div>
@@ -117,10 +117,12 @@
                urlupdate = urlupdate.replace(':id', receiptId)
                if (receiptId) {
                     const data = await fetchMasterData(url + '?id=' + receiptId)
-                    console.log(data);
                     this.querySelector('#component_category_id option[value="3"]').setAttribute('selected','selected')
                     this.querySelector('#component_unit_id option[value="3"]').setAttribute('selected','selected')
                     this.querySelector('#nama_barang').value = data.nama_barang
+                    this.querySelector('#min_stock').value = data.min_stock
+                    this.querySelector('span#tombol-sbm').innerText = 'Update'
+
                     this.querySelector('.modal-body').insertAdjacentHTML('beforeend', '<input type="hidden" class="form-control" name="id" id="id" value="' + data.id + '">')
                     this.querySelector('#formCreate').insertAdjacentHTML('afterbegin', '<input type="hidden" name="_method" id="_method" value="put">')
                     this.querySelector('#formCreate').setAttribute('method', 'post')
@@ -128,6 +130,7 @@
                } else {
                     this.querySelector('#formCreate').setAttribute('method', 'post')
                     this.querySelector('#formCreate').setAttribute('action', urlCreate)
+                    this.querySelector('span#tombol-sbm').innerText = 'Create'
                }
           })
 
@@ -148,14 +151,14 @@
                     columns: [{
                          name: "Kode Barang",
                          formatter: (cell, row) => {
-                              return gridjs.html(`<a href="#" class="link-primary fw-bold" data-bs-toggle="modal" data-bs-target="#creating", data-bs-id=${row._cells[6].data}>${cell}</a>`)
-                              return gridjs.h('a', {
-                                   className: 'pe-auto',
-                                   "data-bs-toggle": "modal",
-                                   "data-bs-target": "#creating",
-                                   "data-bs-id": cell,
-                                   "disabled":"disabled"
-                              }, cell);
+                              return gridjs.html(`<a href="#" class="link-primary fw-bold" data-bs-toggle="modal" data-bs-target="#creating", data-bs-id=${cell.id}>${cell.barcode}</a>`)
+                              // return gridjs.h('a', {
+                              //      className: 'pe-auto',
+                              //      "data-bs-toggle": "modal",
+                              //      "data-bs-target": "#creating",
+                              //      "data-bs-id": cell,
+                              //      "disabled":"disabled"
+                              // }, cell);
                          }
                     }, {
                          name: "Kategori"
@@ -187,7 +190,7 @@
                     server: {
                          url: url,
                          then: data => data.map(card => [
-                              card.barcode,
+                              card,
                               card.component_category.kategori,
                               card.nama_barang, 
                               card.component_unit.satuan, 

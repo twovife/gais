@@ -84,6 +84,12 @@
                 <span>Mutasi</span>
               </a>
               <ul class="submenu" style="display: {{ $treeMenu=='mutasi'?'block':'none'; }}">
+                <li class="submenu-item {{ $subMenu=='Data BTB'?'active':''; }}">
+                  <a href="{{ route('btb.index') }}">Data BTB</a>
+                </li>
+                <li class="submenu-item {{ $subMenu=='Data BKB'?'active':''; }}">
+                  <a href="{{ route('bkb.index') }}">Data BKB</a>
+                </li>
                 <li class="submenu-item {{ $subMenu=='mutasi'?'active':''; }}">
                   <a href="{{ route('mutasi.index') }}">Mutasi In / Out</a>
                 </li>

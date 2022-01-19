@@ -15,4 +15,9 @@ class Income extends Model
     {
         return $this->belongsTo(Store::class, 'store_id', 'id')->withTrashed();
     }
+
+    public function income_detail()
+    {
+        return $this->hasMany(Income_detail::class);
+    }
 }

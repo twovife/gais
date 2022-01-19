@@ -30,15 +30,20 @@
     Berhasil Menambahkan Data
   </div>
   <script>
-    var newTab = window.open('outcome/print/{{ session()->get('success') }}');
-          newTab.location
+    window.open('outcome/print/{{ session()->get('success') }}','_blank');
+    // newTab.location
   </script>
   @elseif (session()->has('eror'))
+
+
   <div class="alert alert-danger" role="alert">
     {{ session()->get('eror') }}
   </div>
   @endif
 
+
+
+  {{-- <a href="http://google.com" target="__blank">test</a> --}}
   <div class="container-fluid">
     <div class="card mb-3">
       <div class="card-body">

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 
 class ChangepassController extends Controller
@@ -25,7 +26,7 @@ class ChangepassController extends Controller
         ]);
 
         if (Auth::attempt(['username' => $request->username, 'password' => $request->current_password])) {
-            $chpass->update($request->only('password'));
+            $chpass->update(['password' => Hash::make($request->password)]);
             return back()->with('success', 'Password Anda Telah diubah !');
         }
 
