@@ -1,176 +1,171 @@
 <x-nosidebar :treeMenu="$treeMenu" :subMenu="$subMenu">
-     @section('css')
-     <link rel="stylesheet" href="{{ asset('mazer/vendors/choices.js/choices.min.css') }}">
-     <style>
-          tr>th {
-               text-align: center;
-          }
+  @section('css')
+  <link rel="stylesheet" href="{{ asset('mazer/vendors/choices.js/choices.min.css') }}">
+  <style>
+    tr>th {
+      text-align: center;
+    }
 
-          tr>td:not(:first-child) {
-               text-align: center;
-          }
+    tr>td:not(:first-child) {
+      text-align: center;
+    }
 
-          td>input.noborder {
-               border: none;
-               text-align: center;
-          }
+    td>input.noborder {
+      border: none;
+      text-align: center;
+    }
 
-          .nice-select-search {
-               z-index: 100000,  !important;
-          }
+    .nice-select-search {
+      z-index: 100000,  !important;
+    }
 
-          .required::after {
-               content: '*';
-               color: red;
-          }
-     </style>
-     @endsection
-     @if ($errors->all())
-     <div class="alert alert-danger">
-          @if ($errors->has('qty_in'))
-          ada item dengan jumlah masuk kosong -
-          @endif
-          Kesalahan saat input data . . mohon cek lagi
-     </div>
-     @endif
+    .required::after {
+      content: '*';
+      color: red;
+    }
+  </style>
+  @endsection
+  @if ($errors->all())
+  <div class="alert alert-danger">
+    @if ($errors->has('qty_in'))
+    ada item dengan jumlah masuk kosong -
+    @endif
+    Kesalahan saat input data . . mohon cek lagi
+  </div>
+  @endif
 
-     <div class="container-fluid">
-          <div class="card mb-3 bg-transparent">
-               <div class="card-body">
-                    <div class="card-title mb-3">
-                         <div class="d-flex align-items-center">
-                              <div class="row w-50">
-                                   <h5 class="mb-3">Tambahkan Barang Masuk</h5>
-                              </div>
-                              <div class="extra-btn ms-auto">
-                                   <a href="{{ route('outcome.index') }}" role="button"
-                                        class="btn btn-secondary btn-sm">Back
-                                   </a>
-                              </div>
-                         </div>
-                    </div>
-                    <form action="{{ route('income.store') }}" method="post">
-                         @csrf
-                         <div class="row">
-                              <div class="col-3">
-                                   <div class="card shadow">
-                                        <div class="card-body">
-                                             <div class="mb-3">
-                                                  <label for="roundText" class="form-label">Tanggal Input</label>
-                                                  <input disabled type="text" class="form-control round"
-                                                       value="Hari Ini">
-                                             </div>
-                                             <div class="mb-3">
-                                                  <label for="btb" class="form-label required">Nomor BTB</label>
-                                                  <input type="text" class="form-control" name="btb" id="btb"
-                                                       placeholder="ex : 000001 ( tanpa awalan BTB )">
-                                                  @error('btb')
-                                                  <small class="text-danger">{{ $message }}</small>
-                                                  @enderror
-                                             </div>
-                                             <div class="mb-3">
-                                                  <label for="tanggal_btb" class="form-label required">Tanggal
-                                                       BTB</label>
-                                                  <input type="date" class="form-control" name="tanggal_btb"
-                                                       id="tanggal_btb" placeholder="Tanggal BTB" required>
-                                             </div>
-                                             <div class="mb-3">
-                                                  <label for="store_id" class="form-label required">Store</label>
-                                                  <select class="choices form-select choices__input" id="store_id"
-                                                       name="store_id">
-                                                       <option value="">Select BKB</option>
-                                                       @foreach ($stores as $store)
-                                                       <option value="{{ $store->id }}">{{ $store->nama_toko }}</option>
-                                                       @endforeach
-                                                  </select>
-                                             </div>
-                                        </div>
-                                   </div>
-                              </div>
-                              <div class="col">
-                                   <div class="card shadow">
-                                        <div class="card-body">
-                                             <div class="input-group mb-3">
-                                                  <input disabled type="text" class="form-control" id="inputItem"
-                                                       placeholder="Input Barcode">
-                                                  <button class="btn btn-outline-secondary" type="button"
-                                                       id="addons">Data Barang
-                                                       (F4)
-                                                  </button>
-                                             </div>
-                                             <div class="table-responsive">
-                                                  <table class="table">
-                                                       <thead>
-                                                            <tr>
-                                                                 <th scope="col">#</th>
-                                                                 <th scope="col">Barcode</th>
-                                                                 <th scope="col" class="required">Nama Barang</th>
-                                                                 <th scope="col" class="required">Qty In</th>
-                                                                 <th scope="col">BKK</th>
-                                                                 <th scope="col">BKK Date</th>
-                                                                 <th scope="col">Harga</th>
-                                                                 <th scope="col">Keterangan</th>
-                                                                 <th scope="col">Act</th>
-                                                            </tr>
-                                                       </thead>
-                                                       <tbody id="daftarKeluar">
-                                                       </tbody>
-                                                  </table>
-                                             </div>
-                                        </div>
-                                        <div class="card-footer">
-                                             @if (Auth::user()->role !== 100)
-                                             <button class="btn btn-danger" type="submit">submit</button>
-                                             @endif
-
-                                             {{ Auth::user() }}
-                                        </div>
-                                   </div>
-                              </div>
-                         </div>
-                    </form>
-               </div>
+  <div class="container-fluid">
+    <div class="card mb-3 bg-transparent">
+      <div class="card-body">
+        <div class="card-title mb-3">
+          <div class="d-flex align-items-center">
+            <div class="row w-50">
+              <h5 class="mb-3">Tambahkan Barang Masuk</h5>
+            </div>
+            <div class="extra-btn ms-auto">
+              <a href="{{ route('outcome.index') }}" role="button" class="btn btn-secondary btn-sm">Back
+              </a>
+            </div>
           </div>
-     </div>
+        </div>
+        <form action="{{ route('income.store') }}" method="post">
+          @csrf
+          <div class="row">
+            <div class="col-3">
+              <div class="card shadow">
+                <div class="card-body">
+                  <div class="mb-3">
+                    <label for="roundText" class="form-label">Tanggal Input</label>
+                    <input disabled type="text" class="form-control round" value="Hari Ini">
+                  </div>
+                  <div class="mb-3">
+                    <label for="btb" class="form-label required">Nomor BTB</label>
+                    <input type="text" class="form-control" name="btb" id="btb"
+                      placeholder="ex : 000001 ( tanpa awalan BTB )">
+                    @error('btb')
+                    <small class="text-danger">{{ $message }}</small>
+                    @enderror
+                  </div>
+                  <div class="mb-3">
+                    <label for="tanggal_btb" class="form-label required">Tanggal
+                      BTB</label>
+                    <input type="date" class="form-control" name="tanggal_btb" id="tanggal_btb"
+                      placeholder="Tanggal BTB" required>
+                  </div>
+                  <div class="mb-3">
+                    <label for="store_id" class="form-label required">Store</label>
+                    <select class="choices form-select choices__input" id="store_id" name="store_id">
+                      <option value="">Select BKB</option>
+                      @foreach ($stores as $store)
+                      <option value="{{ $store->id }}">{{ $store->nama_toko }}</option>
+                      @endforeach
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col">
+              <div class="card shadow">
+                <div class="card-body">
+                  <div class="input-group mb-3">
+                    <input disabled type="text" class="form-control" id="inputItem" placeholder="Input Barcode">
+                    <button class="btn btn-outline-secondary" type="button" id="addons">Data Barang
+                      (F4)
+                    </button>
+                  </div>
+                  <div class="table-responsive">
+                    <table class="table">
+                      <thead>
+                        <tr>
+                          <th scope="col">#</th>
+                          <th scope="col">Barcode</th>
+                          <th scope="col" class="required">Nama Barang</th>
+                          <th scope="col" class="required">Qty In</th>
+                          <th scope="col">BKK</th>
+                          <th scope="col">BKK Date</th>
+                          <th scope="col">Harga</th>
+                          <th scope="col">Keterangan</th>
+                          <th scope="col">Act</th>
+                        </tr>
+                      </thead>
+                      <tbody id="daftarKeluar">
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+                <div class="card-footer">
+                  @if (Auth::user()->role !== 100)
+                  <button class="btn btn-danger" type="submit">submit</button>
+                  @endif
 
-     <div class="modal fade" id="selectItem" data-bs-backdrop="static" data-bs-keyboard="false"
-          aria-labelledby="selectItemLabel" aria-hidden="true">
-          <div class="modal-dialog modal-dialog-centered modal-lg">
-               <div class="modal-content">
-                    <div class="modal-header">
-                         <h5 class="modal-title" id="selectItemLabel">Pilih Barang</h5>
-                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                         <div class="input-group input-group-lg mb-3">
-                              <span class="input-group-text" id="inputGroup-sizing-lg">Cari Nama Barang</span>
-                              <input type="text" class="form-control" aria-label="Sizing example input" id="findItem"
-                                   aria-describedby="inputGroup-sizing-lg">
-                         </div>
-                         <div class="table-responsive" style="height: 400px">
-                              <table class="table table-sm">
-                                   <thead>
-                                        <tr>
-                                             <th scope="col">Nama Barang</th>
-                                             <th scope="col">Min Stock</th>
-                                             <th scope="col">Last Stock</th>
-                                             <th scope="col" style="width: 30px">Action</th>
-                                        </tr>
-                                   </thead>
-                                   <tbody id="resultSearch">
-                                   </tbody>
-                              </table>
-                         </div>
-                    </div>
-               </div>
+                  {{ Auth::user() }}
+                </div>
+              </div>
+            </div>
           </div>
-     </div>
+        </form>
+      </div>
+    </div>
+  </div>
 
-     @section('javascript')
-     <script src="{{ asset('mazer/vendors/choices.js/choices.min.js') }}"></script>
-     <script src="{{ asset('mazer/vendors/sweetalert2/sweetalert2.all.min.js') }}"></script>
-     <script>
-          const modalId = document.getElementById('selectItem');
+  <div class="modal fade" id="selectItem" data-bs-backdrop="static" data-bs-keyboard="false"
+    aria-labelledby="selectItemLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="selectItemLabel">Pilih Barang</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="input-group input-group-lg mb-3">
+            <span class="input-group-text" id="inputGroup-sizing-lg">Cari Nama Barang</span>
+            <input type="text" class="form-control" aria-label="Sizing example input" id="findItem"
+              aria-describedby="inputGroup-sizing-lg">
+          </div>
+          <div class="table-responsive" style="height: 400px">
+            <table class="table table-sm">
+              <thead>
+                <tr>
+                  <th scope="col">Nama Barang</th>
+                  <th scope="col">Min Stock</th>
+                  <th scope="col">Last Stock</th>
+                  <th scope="col" style="width: 30px">Action</th>
+                </tr>
+              </thead>
+              <tbody id="resultSearch">
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  @section('javascript')
+  <script src="{{ asset('mazer/vendors/choices.js/choices.min.js') }}"></script>
+  <script src="{{ asset('mazer/vendors/sweetalert2/sweetalert2.all.min.js') }}"></script>
+  <script>
+    const modalId = document.getElementById('selectItem');
           const domCoises = initialChoices(document.querySelectorAll('.choices'))
           const inputan = modalId.querySelector('#findItem');
           var myModal = new bootstrap.Modal(modalId);
@@ -363,7 +358,7 @@
                     tr.insertCell(8).appendChild(buttonRemove)
                     document.getElementById("daftarKeluar").insertAdjacentElement('beforeend',tr);
           }
-     </script>
-     @endsection
+  </script>
+  @endsection
 
 </x-nosidebar>

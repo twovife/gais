@@ -91,6 +91,7 @@
                                                                  <th scope="col">Barcode</th>
                                                                  <th scope="col">Nama Barang</th>
                                                                  <th scope="col" style="width: 20%;">Qty Out</th>
+                                                                 <th scope="col" style="width: 40%;">Keterangan</th>
                                                             </tr>
                                                        </thead>
                                                        <tbody id="daftarKeluar">
@@ -298,13 +299,25 @@
 
           function gotoTables(haystack){
                     let tr = document.createElement("tr");
+
                     let inputId = document.createElement("input")
-                    var inputBarcode = document.createElement("input");
-                    var inputNama = document.createElement("input");
+
+                    let inputBarcode = document.createElement("input");
+
+                    let inputNama = document.createElement("input");
+
+
                     let qtyWrapper = document.createElement("div");
                     let qtyBtn = document.createElement("button")
                     let qtyIcon = document.createElement("i")
-                    var inputQty = document.createElement("input");
+                    let inputQty = document.createElement("input");
+
+
+                    let inputKeterangan = document.createElement('input')
+
+
+                    // generate id
+
                     inputId.setAttribute("name","inventory_id[]")
                     inputId.setAttribute("type","hidden")
                     inputId.value = haystack.id 
@@ -314,6 +327,8 @@
                     //   <button class="btn btn-outline-secondary" type="button" id="button-addon2">Button</button>
                     // </div>
 
+
+                    // generate button
                     qtyWrapper.setAttribute("class","input-group")
 
                     qtyBtn.setAttribute("class","btn btn-danger delete")
@@ -321,6 +336,7 @@
                     qtyBtn.appendChild(document.createTextNode('X'))
 
                     
+                    // generate qtw
                     inputQty.setAttribute("name","qty_out[]")
                     inputQty.setAttribute("class","form-control edit")
                     inputQty.setAttribute("type","number")
@@ -331,16 +347,28 @@
                     qtyWrapper.appendChild(inputQty)
                     qtyWrapper.appendChild(qtyBtn)
 
+
+                    // generate barcode
+
                     inputBarcode.setAttribute("disabled","disabled")
                     inputBarcode.value = haystack.barcode   
 
+
+                    // generate name
                     inputNama.setAttribute("disabled","disabled")
                     inputNama.value = haystack.nama
+
+                    // keterangan
+                    inputKeterangan.setAttribute("name","keterangan[]")
+                    inputKeterangan.setAttribute("class","form-control")
+                    inputKeterangan.setAttribute("type","text")
 
                     tr.insertCell(0).appendChild(inputId)
                     tr.insertCell(1).appendChild(inputBarcode)
                     tr.insertCell(2).appendChild(inputNama)
                     tr.insertCell(3).appendChild(qtyWrapper)
+                    tr.insertCell(4).appendChild(inputKeterangan)
+
                     document.getElementById("daftarKeluar").insertAdjacentElement('beforeend',tr);
           }
 

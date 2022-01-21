@@ -140,6 +140,7 @@ class IncomeController extends Controller
 
         $request['bkk'] = $request->bkk ? 'BKK-' . $request->bkk : null;
         $response = $income->update($request->all());
+
         if (!$response) {
             session()->flash('eror', 'Item telah terupdate !');
         }

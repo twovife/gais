@@ -89,6 +89,7 @@ class OutcomeController extends Controller
                 $lastSaldo = Inventory::find($request->inventory_id[$i]);
                 $data = [
                     'inventory_id' => $request->inventory_id[$i],
+                    'keterangan' => $request->keterangan[$i],
                     'outcome_id' => $response_out->id,
                     'qty_out' => $request->qty_out[$i],
                     'saldo' => $lastSaldo->stock - $request->qty_out[$i]
@@ -135,9 +136,13 @@ class OutcomeController extends Controller
      * @param  \App\Models\Outcome  $outcome
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Outcome $outcome)
+    public function update(Request $request, Outcome_detail $outcome)
     {
-        //
+        if ($request) {
+            $outcome->update($request->only('keterangan'));
+            session()->flash('berhasil', 'Data Berhasil diubah');
+            return redirect('/outcome');
+        }
     }
 
     /**
