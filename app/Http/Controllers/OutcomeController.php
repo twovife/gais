@@ -49,7 +49,9 @@ class OutcomeController extends Controller
      */
     public function store(Request $request)
     {
-        //     // ddd($request->all());
+
+
+        // ddd($request->all());
 
         // Backend Validasi
         $detail = $request->inventory_id;
@@ -59,11 +61,12 @@ class OutcomeController extends Controller
         }
         for ($i = 0; $i < count($detail); $i++) {
             $lastSaldo = Inventory::find($request->inventory_id[$i]);
+            $saldoAkhir = $lastSaldo->stock - $request->qty_out[$i];
             // if ($lastSaldo <= Inventory::find($request->inventory_id[$i])->min_stock || !$lastSaldo) {
             if (!$lastSaldo) {
                 session()->flash('eror', 'barang yang anda masukkan dinonaktifkan, cek ketersediaan dulu ya');
                 return redirect('/outcome');
-            } elseif ($lastSaldo->stock - $request->qty_out[$i] <= Inventory::find($request->inventory_id[$i])->min_stock) {
+            } elseif ($saldoAkhir < Inventory::find($request->inventory_id[$i])->min_stock) {
                 session()->flash('eror', 'Stock yang anda masukkan < minimum stock, mohon periksa kembali stock nya sapa tau habis');
                 return redirect('/outcome');
             }
