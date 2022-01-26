@@ -37,7 +37,8 @@
           <div class="card mb-3">
                <div class="card-body">
                     <div class="card-title">
-                         <h5 class="mb-3">Master Barang</h5>
+                         <h5 class="mb-3">Kartu Stock</h5>
+
                          <div class="d-flex align-items-center">
                               <div class="row w-50">
                                    <div class="col">
@@ -48,7 +49,7 @@
                                                        <div class="input-group-text">From</div>
                                                        <input type="date" class="form-control" id="fromdate"
                                                             name="fromdate" placeholder="Username"
-                                                            value="{{ $tanggal = date('Y-m-d') }}">
+                                                            value="{{ $tanggal = date('Y-m-d', strtotime('Last Sunday')) }}">
                                                   </div>
                                              </div>
 
@@ -69,9 +70,17 @@
                                    </div>
                               </div>
                               <div class="extra-btn ms-auto">
-                                   <button class="btn btn-outline-info btn-sm">Export</button>
+                                   <form id="exportXls" action="{{ route('download.kartustock') }}" method="post">
+                                        @csrf
+                                        <input type="hidden" id="dfrom" name="dfrom">
+                                        <input type="hidden" id="dtrue" name="dtrue">
+                                        <input type="hidden" id="id" name="id" value="{{ $trow_id }}">
+                                        <button onclick="submitForm(event)"
+                                             class="btn btn-outline-info btn-sm">Export</button>
+                                   </form>
                               </div>
                          </div>
+
                     </div>
                </div>
           </div>
@@ -221,7 +230,15 @@
           document.querySelector('.card-warpper').appendChild(elements)
           const data = loadInventorTables(urls)
      }
-
+     
+     const submitForm = (event) => {
+          event.preventDefault();
+          const dfrom = document.getElementById('dfrom');
+          const dtrue = document.getElementById('dtrue');
+          dfrom.value = document.getElementById('fromdate').value;
+          dtrue.value = document.getElementById('enddate').value;
+          event.target.parentNode.submit();
+     }
      </script>
      @endsection
 

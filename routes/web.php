@@ -3,6 +3,7 @@
 use App\Http\Controllers\BkbController;
 use App\Http\Controllers\BtbController;
 use App\Http\Controllers\ChangepassController;
+use App\Http\Controllers\DownloadController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\IncomeController;
@@ -67,6 +68,10 @@ Route::middleware('auth')->group(function () {
 
      Route::get('bkb', [BkbController::class, 'index'])->name('bkb.index');
      Route::get('bkb/{outcome}', [BkbController::class, 'show'])->name('bkb.show');
+
+
+     Route::get('download', [DownloadController::class, 'index'])->name('download.index');
+     Route::post('download/kartustock', [DownloadController::class, 'kartustock'])->name('download.kartustock');
 });
 
 
