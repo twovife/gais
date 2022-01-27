@@ -77,7 +77,7 @@ class IncomeController extends Controller
                     'inventory_id' => $request->inventory_id[$i],
                     'income_id' => $response_out->id,
                     'bkk' => $request->bkk[$i] ? 'BKK-' . $request->bkk[$i] : null,
-                    'tanggal_bkk' => $request->tanggal_bkk[$i],
+                    'tanggal_bkk' => $request->tanggal_bkk[$i] ? $request->tanggal_bkk[$i] : null,
                     'qty_in' => $request->qty_in[$i],
                     'harga' => $request->harga[$i],
                     'saldo' => $lastSaldo->stock + $request->qty_in[$i],

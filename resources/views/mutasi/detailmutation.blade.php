@@ -49,7 +49,7 @@
                                                        <div class="input-group-text">From</div>
                                                        <input type="date" class="form-control" id="fromdate"
                                                             name="fromdate" placeholder="Username"
-                                                            value="{{ $tanggal = date('Y-m-d', strtotime('Last Sunday')) }}">
+                                                            value="{{ $tanggal = date('Y-m-d') }}">
                                                   </div>
                                              </div>
 

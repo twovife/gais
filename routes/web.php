@@ -72,6 +72,13 @@ Route::middleware('auth')->group(function () {
 
      Route::get('download', [DownloadController::class, 'index'])->name('download.index');
      Route::post('download/kartustock', [DownloadController::class, 'kartustock'])->name('download.kartustock');
+     Route::post('download/mutasi', [DownloadController::class, 'mutasi'])->name('download.mutasi');
+     Route::post('download/income', [DownloadController::class, 'income'])->name('download.income');
+     Route::post('download/outcome', [DownloadController::class, 'outcome'])->name('download.outcome');
+     Route::post('download/rincome', [DownloadController::class, 'rincome'])->name('download.rincome');
+     Route::post('download/routcome', [DownloadController::class, 'routcome'])->name('download.routcome');
+     Route::post('download/btb', [DownloadController::class, 'btb'])->name('download.btb');
+     Route::post('download/bkb', [DownloadController::class, 'bkb'])->name('download.bkb');
 });
 
 

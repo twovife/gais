@@ -1,7 +1,6 @@
 <x-nosidebar :treeMenu="$treeMenu" :subMenu="$subMenu">
   @section('css')
   <link rel="stylesheet" href="{{ asset('jsgrid/theme/mermaid.min.css') }}">
-  <link rel="stylesheet" href="{{ asset('tom-select/dist/css/tom-select.default.css') }}">
   <style>
     .table-responsive {
       height: 50vh;
@@ -26,8 +25,44 @@
     <div class="card mb-3">
       <div class="card-body">
         <div class="card-title">
-          <h5 class="mb-3">Master Barang</h5>
-          <div class="d-flex align-items-center">
+          <h5 class="mb-3">Return Barang Keluar</h5>
+          <div class="d-flex flex-column flex-lg-row align-items-center">
+            <div>
+              <div class="row row-cols-lg-auto g-3 align-items-center">
+                <div class="col-12 col-lg-5">
+                  <label class="visually-hidden" for="fromdate">Date From</label>
+                  <div class="input-group">
+                    <div class="input-group-text">From</div>
+                    <input type="date" class="form-control" id="fromdate" name="fromdate" placeholder="date"
+                      value="{{ $tanggal = date('Y-m-d') }}">
+                  </div>
+                </div>
+                <div class="col-12 col-lg-5">
+                  <label class="visually-hidden" for="enddate">Date Thru</label>
+                  <div class="input-group">
+                    <div class="input-group-text">To</div>
+                    <input type="date" class="form-control" id="enddate" name="enddate" placeholder="date"
+                      value="{{ $tanggal = date('Y-m-d') }}">
+                  </div>
+                </div>
+                <div class="col">
+                  <button type="btn" class="btn btn-primary" onclick="setDate()">Search</button>
+                </div>
+              </div>
+            </div>
+            <div class="ms-auto">
+              <div class="d-flex justify-content-end align-items-center">
+                <a href="{{ route('income.create') }}" role="button" class="btn btn-secondary btn-sm">Create</a>
+                <form action="{{ route('download.routcome') }}" method="POST" class="ms-2">
+                  @csrf
+                  <input type="hidden" id="dfrom" name="dfrom">
+                  <input type="hidden" id="dtrue" name="dtrue">
+                  <button onclick="formExportSubmiter(event)" class="btn btn-outline-info btn-sm">Export</button>
+                </form>
+              </div>
+            </div>
+          </div>
+          {{-- <div class="d-flex align-items-center">
             <div class="row w-50">
               <div class="col">
                 <div class="row row-cols-lg-auto g-3 align-items-center">
@@ -59,7 +94,7 @@
               </a>
               <button class="btn btn-outline-info btn-sm">Export</button>
             </div>
-          </div>
+          </div> --}}
         </div>
       </div>
     </div>
@@ -142,6 +177,15 @@
 
         document.querySelector('.card-warpper').appendChild(elements)
         const data = loadInventorTables(urls)
+    }
+
+    const formExportSubmiter = (event) => {
+        event.preventDefault();
+        const dfrom = document.getElementById('dfrom');
+        const dtrue = document.getElementById('dtrue');
+        dfrom.value = document.getElementById('fromdate').value;
+        dtrue.value = document.getElementById('enddate').value;
+        event.target.parentNode.submit();
     }
   </script>
   @endsection

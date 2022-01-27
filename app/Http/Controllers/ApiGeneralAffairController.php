@@ -178,6 +178,7 @@ class ApiGeneralAffairController extends Controller
 
     public function IncomeReturn()
     {
+
         $actual_link = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
         $url_components = parse_url($actual_link);
         if (isset($url_components['query'])) {

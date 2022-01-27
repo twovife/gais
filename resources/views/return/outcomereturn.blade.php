@@ -57,7 +57,7 @@
                     <div class="card-title mb-3">
                          <div class="d-flex align-items-center">
                               <div class="row w-50">
-                                   <h5 class="mb-3">Return Barang Masuk ( Return BTB )</h5>
+                                   <h5 class="mb-3">Form Input</h5>
                               </div>
                               <div class="extra-btn ms-auto">
                                    <a href="{{ route('inreturn.index') }}" role="button"
