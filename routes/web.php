@@ -29,56 +29,56 @@ use App\Http\Controllers\VmutationController;
 */
 
 Route::middleware('auth')->group(function () {
-     Route::get('/', [HomeController::class, 'index']);
-     Route::get('outcome/print/{outcome}', [OutcomeController::class, 'print'])->name('outcome.print');
+  Route::get('/', [HomeController::class, 'index']);
+  Route::get('outcome/print/{outcome}', [OutcomeController::class, 'print'])->name('outcome.print');
 
 
-     Route::get('store', [StoreController::class, 'index'])->name('store.index');
-     Route::post('store', [StoreController::class, 'store'])->name('store.store');
-     Route::put('store/{store}', [StoreController::class, 'update'])->name('store.update');
-     Route::put('store/restore/{store}', [StoreController::class, 'restore'])->name('store.restore');
-     Route::delete('store/{store}', [StoreController::class, 'destroy'])->name('store.destroy');
+  Route::get('store', [StoreController::class, 'index'])->name('store.index');
+  Route::post('store', [StoreController::class, 'store'])->name('store.store');
+  Route::put('store/{store}', [StoreController::class, 'update'])->name('store.update');
+  Route::put('store/restore/{store}', [StoreController::class, 'restore'])->name('store.restore');
+  Route::delete('store/{store}', [StoreController::class, 'destroy'])->name('store.destroy');
 
-     // Route::resource('store', StoreController::class);
-     Route::put('inventory/restore/{inventory}', [InventoryController::class, 'restore'])->name('inventory.restore');
-     Route::resource('inventory', InventoryController::class);
-     Route::resource('income', IncomeController::class);
-     Route::resource('outcome', OutcomeController::class);
-     Route::resource('inreturn', IncomereturnController::class);
-     Route::resource('outreturn', OutcomereturnController::class);
-
-
-     // Route::resource('mutasi', VmutationController::class);
-     Route::get('mutasi', [VmutationController::class, 'index'])->name('mutasi.index');
-     Route::get('mutasi/create', [VmutationController::class, 'create'])->name('mutasi.create');
-     Route::get('mutasi/{id}', [VmutationController::class, 'show'])->name('mutasi.show');
+  // Route::resource('store', StoreController::class);
+  Route::put('inventory/restore/{inventory}', [InventoryController::class, 'restore'])->name('inventory.restore');
+  Route::resource('inventory', InventoryController::class);
+  Route::resource('income', IncomeController::class);
+  Route::resource('outcome', OutcomeController::class);
+  Route::resource('inreturn', IncomereturnController::class);
+  Route::resource('outreturn', OutcomereturnController::class);
 
 
-     // register users
-     Route::get('users', [RegistrationController::class, 'create'])->name('register');
-     Route::post('users', [RegistrationController::class, 'store']);
-
-     Route::get('chpass', [ChangepassController::class, 'show'])->name('chpass');
-     Route::put('chpass/{chpass}', [ChangepassController::class, 'update'])->name('chpass.update');
-
-     Route::post('logout', [LogoutController::class, '__invoke'])->name('logout');
-
-     Route::get('btb', [BtbController::class, 'index'])->name('btb.index');
-     Route::get('btb/{income}', [BtbController::class, 'show'])->name('btb.show');
-
-     Route::get('bkb', [BkbController::class, 'index'])->name('bkb.index');
-     Route::get('bkb/{outcome}', [BkbController::class, 'show'])->name('bkb.show');
+  // Route::resource('mutasi', VmutationController::class);
+  Route::get('mutasi', [VmutationController::class, 'index'])->name('mutasi.index');
+  Route::get('mutasi/create', [VmutationController::class, 'create'])->name('mutasi.create');
+  Route::get('mutasi/{id}', [VmutationController::class, 'show'])->name('mutasi.show');
 
 
-     Route::get('download', [DownloadController::class, 'index'])->name('download.index');
-     Route::post('download/kartustock', [DownloadController::class, 'kartustock'])->name('download.kartustock');
-     Route::post('download/mutasi', [DownloadController::class, 'mutasi'])->name('download.mutasi');
-     Route::post('download/income', [DownloadController::class, 'income'])->name('download.income');
-     Route::post('download/outcome', [DownloadController::class, 'outcome'])->name('download.outcome');
-     Route::post('download/rincome', [DownloadController::class, 'rincome'])->name('download.rincome');
-     Route::post('download/routcome', [DownloadController::class, 'routcome'])->name('download.routcome');
-     Route::post('download/btb', [DownloadController::class, 'btb'])->name('download.btb');
-     Route::post('download/bkb', [DownloadController::class, 'bkb'])->name('download.bkb');
+  // register users
+  Route::get('users', [RegistrationController::class, 'create'])->name('register');
+  Route::post('users', [RegistrationController::class, 'store']);
+
+  Route::get('chpass', [ChangepassController::class, 'show'])->name('chpass');
+  Route::put('chpass/{chpass}', [ChangepassController::class, 'update'])->name('chpass.update');
+
+  Route::post('logout', [LogoutController::class, '__invoke'])->name('logout');
+
+  Route::get('btb', [BtbController::class, 'index'])->name('btb.index');
+  Route::get('btb/{income}', [BtbController::class, 'show'])->name('btb.show');
+
+  Route::get('bkb', [BkbController::class, 'index'])->name('bkb.index');
+  Route::get('bkb/{outcome}', [BkbController::class, 'show'])->name('bkb.show');
+
+
+  Route::get('download', [DownloadController::class, 'index'])->name('download.index');
+  Route::post('download/kartustock', [DownloadController::class, 'kartustock'])->name('download.kartustock');
+  Route::post('download/mutasi', [DownloadController::class, 'mutasi'])->name('download.mutasi');
+  Route::post('download/income', [DownloadController::class, 'income'])->name('download.income');
+  Route::post('download/outcome', [DownloadController::class, 'outcome'])->name('download.outcome');
+  Route::post('download/rincome', [DownloadController::class, 'rincome'])->name('download.rincome');
+  Route::post('download/routcome', [DownloadController::class, 'routcome'])->name('download.routcome');
+  Route::post('download/btb', [DownloadController::class, 'btb'])->name('download.btb');
+  Route::post('download/bkb', [DownloadController::class, 'bkb'])->name('download.bkb');
 });
 
 
@@ -86,8 +86,8 @@ Route::middleware('auth')->group(function () {
 
 
 Route::middleware('guest')->group(function () {
-     Route::get('login', [LoginController::class, 'create'])->name('login');
-     Route::post('login', [LoginController::class, 'store']);
+  Route::get('login', [LoginController::class, 'create'])->name('login');
+  Route::post('login', [LoginController::class, 'store']);
 });
      // login
 

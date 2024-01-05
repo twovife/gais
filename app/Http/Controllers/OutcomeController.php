@@ -37,7 +37,7 @@ class OutcomeController extends Controller
             'treeMenu' => 'Transaction',
             'subMenu' => 'Outcome',
             'inventories' => Inventory::all(),
-            'struktur' => Hc_rank_ga_structure::with('hc_unit', 'hc_sub_unit')->get()
+            'struktur' => Hc_rank_ga_structure::with('hc_unit', 'hc_sub_unit')->where('isactive', 1)->orderBy('unit_id', 'asc')->get()
         ]);
     }
 
@@ -49,7 +49,6 @@ class OutcomeController extends Controller
      */
     public function store(Request $request)
     {
-
 
         // ddd($request->all());
 
@@ -82,7 +81,8 @@ class OutcomeController extends Controller
             'bkb' => 'BKB-' . sprintf("%05d", $countOutcome),
             'struktur_id' => $request->struktur_id,
             'nama_request' => $request->nama_request,
-            'user_input' => Auth::user()->username
+            'user_input' => Auth::user()->username,
+            'keterangan' => $request->keterangan,
         ];
         $response_out = Outcome::create($dataOutcome);
 
@@ -92,7 +92,7 @@ class OutcomeController extends Controller
                 $lastSaldo = Inventory::find($request->inventory_id[$i]);
                 $data = [
                     'inventory_id' => $request->inventory_id[$i],
-                    'keterangan' => $request->keterangan[$i],
+
                     'outcome_id' => $response_out->id,
                     'qty_out' => $request->qty_out[$i],
                     'saldo' => $lastSaldo->stock - $request->qty_out[$i]
@@ -166,7 +166,7 @@ class OutcomeController extends Controller
             'data' => $outcome,
             'countdata' => ceil(count($outcome->all()) / 6)
         ]);
-        $paper = array(0, -10, 595, 311);
+        $paper = array(0, 0, 595, 280);
         $filename = 'Cetak';
         $stream = TRUE;
 

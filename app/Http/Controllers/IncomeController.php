@@ -50,11 +50,13 @@ class IncomeController extends Controller
      */
     public function store(Request $request)
     {
+
         $detail = $request->inventory_id;
         if (!$detail) {
-            session()->flash('eror', 'Mohon isi item yang dikeluarkan terlebih dahulu');
+            session()->flash('eror', 'Item tidak boleh kosong');
             return redirect('/income');
         }
+
 
         $request->validate([
             'btb' => ['required', 'unique:incomes'],
@@ -62,31 +64,38 @@ class IncomeController extends Controller
             'qty_in.*' => ['required', 'numeric']
         ]);
 
-        $dataIncome = [
-            'store_id' => $request->store_id,
-            'btb' => 'BTB-' . $request->btb,
-            'tanggal_btb' => $request->tanggal_btb,
-            'user_input' =>  Auth::user()->username
-        ];
-        $response_out = Income::create($dataIncome);
-        if ($response_out) {
-            $detail = $request->inventory_id;
-            for ($i = 0; $i < count($detail); $i++) {
-                $lastSaldo = Inventory::find($request->inventory_id[$i]);
-                $data = [
-                    'inventory_id' => $request->inventory_id[$i],
-                    'income_id' => $response_out->id,
-                    'bkk' => $request->bkk[$i] ? 'BKK-' . $request->bkk[$i] : null,
-                    'tanggal_bkk' => $request->tanggal_bkk[$i] ? $request->tanggal_bkk[$i] : null,
-                    'qty_in' => $request->qty_in[$i],
-                    'harga' => $request->harga[$i],
-                    'saldo' => $lastSaldo->stock + $request->qty_in[$i],
-                    'keterangan' => $request->keterangan[$i]
-                ];
-                Income_detail::create($data);
-                $lastSaldo->stock = $lastSaldo->stock + $request->qty_in[$i];
-                $lastSaldo->save();
+        try {
+            $dataIncome = [
+                'store_id' => $request->store_id,
+                'btb' => 'BTB-' . $request->btb,
+                'tanggal_btb' => $request->tanggal_btb,
+                'user_input' =>  Auth::user()->username
+            ];
+
+            $response_out = Income::create($dataIncome);
+
+            if ($response_out) {
+                $detail = $request->inventory_id;
+                for ($i = 0; $i < count($detail); $i++) {
+                    $lastSaldo = Inventory::find($request->inventory_id[$i]);
+                    $data = [
+                        'inventory_id' => $request->inventory_id[$i],
+                        'income_id' => $response_out->id,
+                        'bkk' => $request->bkk[$i] ? 'BKK-' . $request->bkk[$i] : null,
+                        'tanggal_bkk' => $request->tanggal_bkk[$i] ? $request->tanggal_bkk[$i] : null,
+                        'qty_in' => $request->qty_in[$i],
+                        'harga' => $request->harga[$i],
+                        'saldo' => $lastSaldo->stock + $request->qty_in[$i],
+                        'keterangan' => $request->keterangan[$i]
+                    ];
+                    Income_detail::create($data);
+                    $lastSaldo->stock = $lastSaldo->stock + $request->qty_in[$i];
+                    $lastSaldo->save();
+                }
             }
+        } catch (\Throwable $th) {
+            session()->flash('eror', 'Item tidak boleh kosong');
+            return redirect('/income');
         }
 
         session()->flash('success', $response_out->id);
